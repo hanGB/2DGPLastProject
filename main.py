@@ -24,20 +24,42 @@ ui2 = load_image('ui2.png')
 uiAct = load_image('uiAct.png')
 uiBack = load_image('uiBackground.png')
 
-act = 3
 
-for i in range(0, 10):
-    clear_canvas()
-    background_map.draw(640, 360)
+def show_ui():
+    global act
+
     uiBack.draw(640, 125)
     ui.clip_draw(0, 0, 250, 100, 160, 190)
     ui.clip_draw(250, 0, 230, 100, 153, 120)
-    ui2.clip_draw(0, 0, 250, 100, 430, 192)
-    ui2.clip_draw(250, 0, 230, 100, 424, 52)
-    ui2.clip_draw(500, 0, 230, 100, 424, 122)
+    ui2.clip_draw(0, 0, 250, 100, 460, 192)
+    ui2.clip_draw(250, 0, 230, 100, 454, 52)
+    ui2.clip_draw(500, 0, 230, 100, 454, 122)
     uiAct.clip_draw(300 * act, 0, 300, 100, 190, 58)
-    enemy.clip_draw(0 + 86 * (i % 2), 0, 85, 100, 640, 460)
+
+def input_key():
+    global act
+    global game
+
+    events = get_events()
+
+    for event in events:
+       if event.type == SDL_QUIT:
+           game = False
+       elif event.type == SDL_KEYDOWN:
+           if event.key == SDLK_DOWN:
+              act = act % 3 + 1
+
+act = 0
+game = True
+i = 0
+
+while game:
+    clear_canvas()
+    background_map.draw(640, 360)
+    show_ui()
+    input_key()
+    enemy.clip_draw(0 + 86 * i, 0, 85, 100, 640, 460)
+    i = (i + 1) % 2
     update_canvas()
-    delay(0.5)
 
 close_canvas()
