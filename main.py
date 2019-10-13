@@ -19,6 +19,7 @@ enemy = load_image('testdemon.png')
 
 now_dir = os.path.join(basic_dir, "resource/ui")
 os.chdir(now_dir)
+
 ui = load_image('ui.png')
 ui2 = load_image('ui2.png')
 uiAct = load_image('uiAct.png')
@@ -71,16 +72,15 @@ act = 0
 game = True
 i = 0
 map = 0
-door_location = [(0, 2), (3, 4), (1, 0), (-1, 3), (-1, 1), (-1, -1), (2, -1), (4, -1)]
+door_location = [(0, 2, -1, -1), (3, 4, -1, -1), (1, 0, -1, -1), (-1, 3, -1, -1),
+                 (-1, 1, -1, -1), (-1, -1, -1, -1), (2, -1, -1, -1), (4, -1, -1, -1)]
 
 while game:
     clear_canvas()
     background_map[map % 2].draw(640, 360)
-    if door_location[map][0] != -1:
-        door[door_location[map][0]].draw(640, 360)
-    if door_location[map][1] != -1:
-        door[door_location[map][1]].draw(640, 360)
-
+    for i in range(0, 4):
+        if door_location[map][i] != -1:
+            door[door_location[map][i]].draw(640, 360)
     # show_ui()
     input_key_in_map()
     # enemy.clip_draw(0 + 86 * i, 0, 85, 100, 640, 460)
