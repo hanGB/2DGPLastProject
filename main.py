@@ -44,6 +44,8 @@ class Room:
             self.maptype = (self.maptype - 1) % 8
         elif turn == 'e':
             self.maptype = (self.maptype + 1) % 8
+        elif turn == 's':
+            self.maptype = (self.maptype + 4) % 8
 
 
     def draw(self):
@@ -72,6 +74,7 @@ def out_of_program():
         if event.type == SDL_QUIT:
             game = False
 
+
 def input_key_in_battle():
     global act
     global game
@@ -97,10 +100,17 @@ def input_key_in_map():
         if event.type == SDL_QUIT:
             game = False
         elif event.type == SDL_KEYDOWN:
-            if event.key == SDLK_q:
+            # 시점 이동
+            if event.key == SDLK_q or event.key == SDLK_LEFT:
                 room.update('q')
-            elif event.key == SDLK_e:
+            elif event.key == SDLK_e or event.key == SDLK_RIGHT:
                 room.update('e')
+            elif event.key == SDLK_DOWN:
+                room.update('s')
+            # 방 이동
+            elif event.key == SDLK_UP:
+                    pass
+
 
 
 act = 0
