@@ -22,12 +22,19 @@ class BattleUi:
 
         self.main_ui = load_image("newUi.png")
         self.turn_number = load_image("turnNumber.png")
+        self.heartbeat = load_image("heartbeat.png")
+        self.heartbeat_case = load_image("heartbeatCase.png")
+        self.beat = 0
+
+    def update(self):
+        self.beat = (self.beat + 1) % 850
 
     def draw(self, menu, act):
         if menu == 0:
             self.main_ui.clip_draw(act * 300, 0, 300, 300, 200, 180)
             self.turn_number.clip_draw(0 * 100, 0, 100, 150, 105, 175)
-
+            self.heartbeat.clip_draw(self.beat, 0, 200, 60, 1100, 210)
+            self.heartbeat_case.draw(1100, 210)
 
 class Room:
     def __init__(self, n, e, s, w):
@@ -153,7 +160,7 @@ while game:
 
     elif where == 1:
         input_key_in_battle()
-
+        battleUi.update()
 
     clear_canvas()
     room[map].draw()
