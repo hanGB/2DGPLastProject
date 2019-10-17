@@ -12,17 +12,25 @@ now_dir = os.path.join(basic_dir, "resource/enemy")
 os.chdir(now_dir)
 enemy = load_image('testdemon.png')
 
-now_dir = os.path.join(basic_dir, "resource/ui")
-os.chdir(now_dir)
 
-ui = load_image('ui.png')
-ui2 = load_image('ui2.png')
-uiAct = load_image('uiAct.png')
-uiBack = load_image('uiBackground.png')
+class BattleUi:
+    def __init__(self):
+        global now_dir
+
+        now_dir = os.path.join(basic_dir, "resource/ui")
+        os.chdir(now_dir)
+
+        self.main_ui = load_image("newUi.png")
+        self.turn_number = load_image("turnNumber.png")
+
+    def draw(self, turn, menu, act):
+        if menu == 0:
+            self.main_ui.draw(200, 180)
+            self.turn_number.clip_draw(turn * 100, 0, 100, 150, 105, 175)
 
 
 class Room:
-    def __init__(self, n, w, e, s):
+    def __init__(self, n, e, s, w):
         # n,s,w,e는 True(1), False(0)를 가지며 door_location 값이 0일 경우 없다.
         global now_dir
 
@@ -38,15 +46,19 @@ class Room:
                          (2 * e, 1 * s, 3 * w) , (4 * s, 0, 5 * w), (2 * s, 1 * w, 3 * n), (4 * w, 0, 5 * n)]
         self.maptype = 0
 
-
-    def update(self, turn):
+    def update(self, turn, sight):
         if turn == 'q':
+            if sight != self.maptype:
+                self.maptype = sight
             self.maptype = (self.maptype - 1) % 8
         elif turn == 'e':
+            if sight != self.maptype:
+                self.maptype = sight
             self.maptype = (self.maptype + 1) % 8
         elif turn == 's':
+            if sight != self.maptype:
+                self.maptype = sight
             self.maptype = (self.maptype + 4) % 8
-
 
     def draw(self):
         self.background_map[self.maptype % 2].draw(640, 360)
@@ -54,17 +66,6 @@ class Room:
             if self.door_location[self.maptype][i] != 0:
                 self.door[self.door_location[self.maptype][i] - 1].draw(640, 360)
 
-
-def show_ui():
-    global act
-
-    uiBack.draw(640, 125)
-    ui.clip_draw(0, 0, 250, 100, 160, 190)
-    ui.clip_draw(250, 0, 230, 100, 153, 120)
-    ui2.clip_draw(0, 0, 250, 100, 460, 192)
-    ui2.clip_draw(250, 0, 230, 100, 454, 52)
-    ui2.clip_draw(500, 0, 230, 100, 454, 122)
-    uiAct.clip_draw(300 * act, 0, 300, 100, 190, 58)
 
 
 def out_of_program():
@@ -91,8 +92,10 @@ def input_key_in_battle():
 
 def input_key_in_map():
     global map
+    global sight
     global game
     global room
+    global room_connect_data
 
     events = get_events()
 
@@ -102,30 +105,79 @@ def input_key_in_map():
         elif event.type == SDL_KEYDOWN:
             # 시점 이동
             if event.key == SDLK_q or event.key == SDLK_LEFT:
-                room.update('q')
+                room[map].update('q', sight)
+                sight = (sight - 1) % 8
             elif event.key == SDLK_e or event.key == SDLK_RIGHT:
-                room.update('e')
+                room[map].update('e', sight)
+                sight = (sight + 1) % 8
             elif event.key == SDLK_DOWN:
-                room.update('s')
+                room[map].update('s', sight)
+                sight = (sight + 4) % 8
             # 방 이동
             elif event.key == SDLK_UP:
-                    pass
+                for i in range(0, 2):
+                   if room_connect_data[map][i][0] == sight:
+                        map = room_connect_data[map][i][0]
 
+
+def input_key_in_battle():
+    global sight
+    global game
+    global turn
+
+    events = get_events()
+
+    for event in events:
+        if event.type == SDL_QUIT:
+            game = False
+        elif event.type == SDL_KEYDOWN:
+            # 메뉴
+            if event.key == SDLK_w:
+                pass
+            elif event.key == SDLK_f:
+                pass
+            elif event.key == SDLK_DOWN:
+                turn = (turn + 1) % 9
+            elif event.key == SDLK_s:
+                pass
+            elif event.key == SDLK_d:
+                pass
+            elif event.key == SDLK_a:
+                pass
+            elif event.key == SDLK_c:
+                pass
+            elif event.key == SDLK_TAB:
+                pass
 
 
 act = 0
 game = True
 i = 0
 map = 0
-room = Room(1, 1, 0, 0)
+sight = 0
+room = (Room(1, 1, 0, 0), Room(0, 1, 1, 0), Room(0, 0, 1, 1), Room(1, 0, 0, 1))
+room_connect_data = (((0, 1), (2, 3)), ((4, 0), (2, 2)),
+                     ((4, 3), (6, 1)), ((6, 0), (0, 2)))
+battleUi = BattleUi()
+turn = 0
+where = 1
 
 while game:
     clear_canvas()
 
-    input_key_in_map()
+    if where == 0:
+        input_key_in_map()
+
+    elif where == 1:
+        input_key_in_battle()
+
 
     clear_canvas()
-    room.draw()
+    room[map].draw()
+
+    if where == 1:
+        battleUi.draw(turn, 0, 0)
+
     update_canvas()
 
 close_canvas()
