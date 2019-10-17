@@ -23,10 +23,10 @@ class BattleUi:
         self.main_ui = load_image("newUi.png")
         self.turn_number = load_image("turnNumber.png")
 
-    def draw(self, turn, menu, act):
+    def draw(self, menu, act):
         if menu == 0:
-            self.main_ui.draw(200, 180)
-            self.turn_number.clip_draw(turn * 100, 0, 100, 150, 105, 175)
+            self.main_ui.clip_draw(act * 300, 0, 300, 300, 200, 180)
+            self.turn_number.clip_draw(0 * 100, 0, 100, 150, 105, 175)
 
 
 class Room:
@@ -67,29 +67,6 @@ class Room:
                 self.door[self.door_location[self.maptype][i] - 1].draw(640, 360)
 
 
-
-def out_of_program():
-    global game
-
-    for event in events:
-        if event.type == SDL_QUIT:
-            game = False
-
-
-def input_key_in_battle():
-    global act
-    global game
-
-    events = get_events()
-
-    for event in events:
-        if event.type == SDL_QUIT:
-            game = False
-        elif event.type == SDL_KEYDOWN:
-            if event.key == SDLK_DOWN:
-                act = act % 3 + 1
-
-
 def input_key_in_map():
     global map
     global sight
@@ -123,7 +100,7 @@ def input_key_in_map():
 def input_key_in_battle():
     global sight
     global game
-    global turn
+    global act
 
     events = get_events()
 
@@ -137,14 +114,19 @@ def input_key_in_battle():
             elif event.key == SDLK_f:
                 pass
             elif event.key == SDLK_DOWN:
-                turn = (turn + 1) % 9
+                act = (act + 1) % 6
+                if act == 0:
+                    act = 1
             elif event.key == SDLK_s:
                 pass
             elif event.key == SDLK_d:
                 pass
-            elif event.key == SDLK_a:
-                pass
+            elif event.key == SDLK_a or event.key == SDLK_LSHIFT:
+                if act != 0:
+                    act = 0
             elif event.key == SDLK_c:
+                pass
+            elif event.key == SDLK_SPACE:
                 pass
             elif event.key == SDLK_TAB:
                 pass
@@ -160,6 +142,7 @@ room_connect_data = (((0, 1), (2, 3)), ((4, 0), (2, 2)),
                      ((4, 3), (6, 1)), ((6, 0), (0, 2)))
 battleUi = BattleUi()
 turn = 0
+act = 0
 where = 1
 
 while game:
@@ -176,7 +159,7 @@ while game:
     room[map].draw()
 
     if where == 1:
-        battleUi.draw(turn, 0, 0)
+        battleUi.draw(0, act)
 
     update_canvas()
 
