@@ -32,7 +32,7 @@ class BattleUi:
             self.heartbeat_case.draw(1100, 210)
 
 
-act = 0
+act = None
 battleUi = None
 battleMap = None
 
@@ -40,9 +40,11 @@ battleMap = None
 def enter():
     global battleUi
     global battleMap
+    global act
 
     battleUi = BattleUi()
     battleMap = map_state.Room(0, 0, 0, 0)
+    act = 0
 
 
 def exit():
@@ -50,9 +52,9 @@ def exit():
     global battleMap
     global act
 
-    del(battleUi)
-    del(battleMap)
-    act = 0
+    del (battleUi)
+    del (battleMap)
+    del (act)
 
 
 def pause():

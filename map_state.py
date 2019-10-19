@@ -2,6 +2,7 @@ from pico2d import *
 
 import game_framework
 import battle_state
+import title_state
 
 name = "map_state"
 
@@ -48,21 +49,30 @@ class Room:
 
 room_connect_data = (((0, 1), (2, 3)), ((4, 0), (2, 2)),
                          ((4, 3), (6, 1)), ((6, 0), (0, 2)))
-map = 0
-sight = 0
+
+map = None
+sight = None
 room = None
 
 
 def enter():
     global room
+    global map
+    global sight
 
+    map = 0
+    sight = 0
     room = (Room(1, 1, 0, 0), Room(0, 1, 1, 0), Room(0, 0, 1, 1), Room(1, 0, 0, 1))
 
 
 def exit():
     global room
+    global map
+    global sight
 
-    del(room)
+    del (room)
+    del (map)
+    del (sight)
 
 
 def pause():
@@ -104,6 +114,8 @@ def handle_events():
             # 임시 배틀 인카운트 키
             elif event.key == SDLK_b:
                 game_framework.push_state(battle_state)
+            elif event.key == SDLK_ESCAPE:
+                game_framework.change_state(title_state)
 
 
 def update():
