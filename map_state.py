@@ -10,6 +10,9 @@ basic_dir = os.getcwd()
 
 
 class Room:
+    door = None
+    background_map = None
+
     def __init__(self, n, e, s, w):
         # n,s,w,e는 True(1), False(0)를 가지며 door_location 값이 0일 경우 없다.
         global now_dir
@@ -17,9 +20,11 @@ class Room:
         now_dir = os.path.join(basic_dir, "resource/map")
         os.chdir(now_dir)
 
-        self.door = [load_image('frontdoor.png'), load_image('leftdoor.png'), load_image('rightdoor.png'),
-                load_image('dialeftdoor.png'), load_image('diarightdoor.png')]
-        self.background_map = [load_image('colormap.png'), load_image('colormapdia.png')]
+        if Room.door is None:
+            Room.door = [load_image('frontdoor.png'), load_image('leftdoor.png'), load_image('rightdoor.png'),
+                         load_image('dialeftdoor.png'), load_image('diarightdoor.png')]
+        if Room.background_map is None:
+            Room.background_map = [load_image('colormap.png'), load_image('colormapdia.png')]
 
         # door_location - 1이 실제 사용 값
         self.door_location = [(2 * w, 1 * n, 3 * e), (4 * n, 0,  5 * e), (2 * n, 1 * e, 3 * s), (4 * e, 0, 5 * s),
@@ -41,10 +46,10 @@ class Room:
             self.maptype = (self.maptype + 4) % 8
 
     def draw(self):
-        self.background_map[self.maptype % 2].draw(640, 360)
+        Room.background_map[self.maptype % 2].draw(640, 360)
         for i in range(0, 3):
             if self.door_location[self.maptype][i] != 0:
-                self.door[self.door_location[self.maptype][i] - 1].draw(640, 360)
+                Room.door[self.door_location[self.maptype][i] - 1].draw(640, 360)
 
 
 room_connect_data = (((0, 1), (2, 3)), ((4, 0), (2, 2)),

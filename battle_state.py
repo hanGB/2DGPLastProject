@@ -26,7 +26,7 @@ class BattleUi:
 
     def draw(self, menu, act):
         if menu == 0:
-            self.main_ui.clip_draw(act * 300, 0, 300, 300, 200, 180)
+            self.main_ui.clip_draw(act * 300, 0, 300, 300, 270, 180)
             self.turn_number.clip_draw((5 - 1) * 100, 0, 100, 150, 105, 175)
             self.heartbeat.clip_draw(self.beat, 0, 200, 60, 1100, 210)
             self.heartbeat_case.draw(1100, 210)
