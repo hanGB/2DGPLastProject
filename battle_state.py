@@ -2,6 +2,7 @@ from pico2d import *
 
 import game_framework
 import map_state
+import batte_skill_state
 
 name = "battle_state"
 
@@ -24,28 +25,29 @@ class BattleUi:
     def update(self):
         self.beat = (self.beat + 1) % 850
 
-    def draw(self, menu, act):
-        if menu == 0:
+    def draw(self, act):
+        if act != -1:
             self.main_ui.clip_draw(act * 300, 0, 300, 300, 270, 180)
-            self.turn_number.clip_draw((5 - 1) * 100, 0, 100, 150, 105, 175)
-            self.heartbeat.clip_draw(self.beat, 0, 200, 60, 1100, 210)
-            self.heartbeat_case.draw(1100, 210)
+        self.turn_number.clip_draw((5 - 1) * 100, 0, 100, 150, 105, 175)
+        self.heartbeat.clip_draw(self.beat, 0, 200, 60, 1100, 210)
+        self.heartbeat_case.draw(1100, 210)
 
 
 act = None
 battleUi = None
 battleMap = None
-
+enemy_slt = None
 
 def enter():
     global battleUi
     global battleMap
     global act
+    global enemy_slt
 
     battleUi = BattleUi()
     battleMap = map_state.Room(0, 0, 0, 0)
     act = 0
-
+    enemy_slt = 0
 
 def exit():
     global battleUi
@@ -67,6 +69,7 @@ def resume():
 
 def handle_events():
     global act
+    global enemy_slt
 
     events = get_events()
 
@@ -76,13 +79,19 @@ def handle_events():
         elif event.type == SDL_KEYDOWN:
             # 메뉴
             if event.key == SDLK_w:
-                pass
+                game_framework.push_state(batte_skill_state)
             elif event.key == SDLK_f:
                 pass
             elif event.key == SDLK_DOWN:
                 act = (act + 1) % 6
                 if act == 0:
                     act = 1
+
+            elif event.key == SDLK_LEFT:
+                enemy_slt = (enemy_slt - 1) % 5
+            elif event.key == SDLK_RIGHT:
+                enemy_slt = (enemy_slt + 1) % 5
+
             elif event.key == SDLK_s:
                 pass
             elif event.key == SDLK_d:
@@ -110,6 +119,6 @@ def draw():
     clear_canvas()
 
     battleMap.draw()
-    battleUi.draw(0, act)
+    battleUi.draw(act)
 
     update_canvas()

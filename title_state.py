@@ -63,12 +63,12 @@ def handle_events():
             elif menu == 1:
                 if event.key == SDLK_UP or event.key == SDLK_DOWN:
                     menu = 2
-                elif event.key == SDLK_SPACE:
+                elif event.key == SDLK_SPACE or event.key == SDLK_RETURN:
                     game_framework.change_state(map_state)
             elif menu == 2:
                 if event.key == SDLK_UP or event.key == SDLK_DOWN:
                     menu = 1
-                elif event.key == SDLK_SPACE:
+                elif event.key == SDLK_SPACE or event.key == SDLK_RETURN:
                     game_framework.quit()
 
 
