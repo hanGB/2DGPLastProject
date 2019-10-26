@@ -1,36 +1,39 @@
 from pico2d import *
-import os
-
 import game_framework
 import battle_state
 
+# test
+import status
+
+skill = [status.Skill(10, 0, 1, 0, 50, 90),
+         status.Skill(22, 0, 3, 0, 350, 90),
+         status.Skill(11, 0, 2, 0, 150, 90)]
+
+skill_cnt = 3
+
 name = "battle_skill_state"
 
-basic_dir = os.getcwd()
 skill_slt = None
 skillUi = None
+
 
 class SkillUi:
     image = None
 
     def __init__(self):
-        global now_dir
-
-        now_dir = os.path.join(basic_dir, "resource/ui")
-        os.chdir(now_dir)
 
         if SkillUi.image is None:
             SkillUi.image = load_image("skillUi.png")
 
     def draw(self):
-        SkillUi.image.draw(300, 170)
+        SkillUi.image.draw(150, 170)
 
 
 def enter():
     global skill_slt
     global skillUi
 
-    skill_slt  = 0
+    skill_slt = 0
     skillUi = SkillUi()
 
 
@@ -86,5 +89,7 @@ def draw():
     battle_state.battleMap.draw()
     battle_state.battleUi.draw(-1)
     skillUi.draw()
+    for i in range(3):
+        skill[i].draw(i)
 
     update_canvas()

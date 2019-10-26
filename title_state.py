@@ -1,22 +1,19 @@
 from pico2d import *
-
 import game_framework
 import map_state
 
 name = "title_state"
 
-basic_dir = os.getcwd()
-
 title = None
 menu = None
 
+basic_dir = os.getcwd()
+now_dir = os.path.join(basic_dir, "resource")
+os.chdir(now_dir)
+
+
 class Title:
     def __init__(self):
-        global now_dir
-
-        now_dir = os.path.join(basic_dir, "resource/title")
-        os.chdir(now_dir)
-
         self.title = load_image("title.png")
         self.menu = load_image("mainMenu.png")
 

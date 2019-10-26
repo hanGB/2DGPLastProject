@@ -6,15 +6,13 @@ import batte_skill_state
 
 name = "battle_state"
 
-basic_dir = os.getcwd()
+# test
+p3 = None
+p4 = None
 
 
 class BattleUi:
     def __init__(self):
-        global now_dir
-
-        now_dir = os.path.join(basic_dir, "resource/ui")
-        os.chdir(now_dir)
 
         self.main_ui = load_image("newUi.png")
         self.turn_number = load_image("turnNumber.png")
@@ -38,16 +36,21 @@ battleUi = None
 battleMap = None
 enemy_slt = None
 
+
 def enter():
     global battleUi
     global battleMap
     global act
     global enemy_slt
+    global p3
+
+    p3 = load_image("testP3.png")
 
     battleUi = BattleUi()
     battleMap = map_state.Room(0, 0, 0, 0)
     act = 0
     enemy_slt = 0
+
 
 def exit():
     global battleUi
@@ -120,5 +123,7 @@ def draw():
 
     battleMap.draw()
     battleUi.draw(act)
+
+    p3.draw(600, 500)
 
     update_canvas()

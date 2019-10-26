@@ -1,6 +1,4 @@
 from pico2d import *
-import os
-
 
 class Player:
 
@@ -17,20 +15,16 @@ class Card:
         self.attribute = [0, 0, 0, 0, 0]  # Fer, IgAq, VentTer, Per, Lar
         self.skill = [0, 10, 11]
 
+
 class Skill:
     def __init__(self, number, attribute, turn, type, damage, rate):
         # type에 따라 damage가 어디에 적용되는 지 달라진다.
-
-        basic_dir = os.getcwd()
-        now_dir = os.path.join(basic_dir, "resource/skill")
-        os.chdir(now_dir)
-
         self.number = number
 
-        if (number / 10) <= 1:
-            self.image = load_image("ig.png")
-        elif (number / 10) <= 2:
-            self.image = load_image("aq.png")
+        #if (self.number / 10) <= 1:
+        #    self.image = load_image("ig.png")
+        #elif (self.number / 10) <= 2:
+         #   self.image = load_image("aq.png")
 
         self.attribute = attribute
         self.turn = turn
@@ -39,6 +33,7 @@ class Skill:
         self.rate = rate
 
     def draw(self, locate):
-        self.image.clip_draw((self.number % 10) * 160, 0, 160, 260, locate * 50, 100)
+        pass
+        #self.image.clip_draw((self.number % 10) * 160, 0, 160, 260,  100, 200 - locate * 10)
 
 

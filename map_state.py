@@ -1,12 +1,9 @@
 from pico2d import *
-
 import game_framework
 import battle_state
 import title_state
 
 name = "map_state"
-
-basic_dir = os.getcwd()
 
 
 class Room:
@@ -15,10 +12,6 @@ class Room:
 
     def __init__(self, n, e, s, w):
         # n,s,w,e는 True(1), False(0)를 가지며 door_location 값이 0일 경우 없다.
-        global now_dir
-
-        now_dir = os.path.join(basic_dir, "resource/map")
-        os.chdir(now_dir)
 
         if Room.door is None:
             Room.door = [load_image('frontdoor.png'), load_image('leftdoor.png'), load_image('rightdoor.png'),
