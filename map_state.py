@@ -14,10 +14,10 @@ class Room:
         # n,s,w,e는 True(1), False(0)를 가지며 door_location 값이 0일 경우 없다.
 
         if Room.door is None:
-            Room.door = [load_image('frontdoor.png'), load_image('leftdoor.png'), load_image('rightdoor.png'),
-                         load_image('dialeftdoor.png'), load_image('diarightdoor.png')]
+            Room.door = [load_image('1frontdoor.png'), load_image('1leftdoor.png'), load_image('1rightdoor.png'),
+                         load_image('1dialeftdoor.png'), load_image('1diarightdoor.png')]
         if Room.background_map is None:
-            Room.background_map = [load_image('colormap.png'), load_image('colormapdia.png')]
+            Room.background_map = [load_image('1colormap.png'), load_image('1colormapdia.png')]
 
         # door_location - 1이 실제 사용 값
         self.door_location = [(2 * w, 1 * n, 3 * e), (4 * n, 0,  5 * e), (2 * n, 1 * e, 3 * s), (4 * e, 0, 5 * s),

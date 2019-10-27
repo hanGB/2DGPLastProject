@@ -23,7 +23,7 @@ class SkillUi:
     def __init__(self):
 
         if SkillUi.image is None:
-            SkillUi.image = load_image("skillUi.png")
+            SkillUi.image = load_image("2skillUi.png")
 
     def draw(self):
         SkillUi.image.draw(150, 170)

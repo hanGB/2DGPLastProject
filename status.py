@@ -22,9 +22,9 @@ class Skill:
         self.number = number
 
         #if (self.number / 10) <= 1:
-        #    self.image = load_image("ig.png")
+        #    self.image = load_image("3ig.png")
         #elif (self.number / 10) <= 2:
-         #   self.image = load_image("aq.png")
+         #   self.image = load_image("3aq.png")
 
         self.attribute = attribute
         self.turn = turn

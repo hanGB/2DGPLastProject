@@ -14,10 +14,10 @@ p4 = None
 class BattleUi:
     def __init__(self):
 
-        self.main_ui = load_image("newUi.png")
-        self.turn_number = load_image("turnNumber.png")
-        self.heartbeat = load_image("heartbeat.png")
-        self.heartbeat_case = load_image("heartbeatCase.png")
+        self.main_ui = load_image("2newUi.png")
+        self.turn_number = load_image("2turnNumber.png")
+        self.heartbeat = load_image("2heartbeat.png")
+        self.heartbeat_case = load_image("2heartbeatCase.png")
         self.beat = 0
 
     def update(self):
@@ -44,7 +44,7 @@ def enter():
     global enemy_slt
     global p3
 
-    p3 = load_image("testP3.png")
+    p3 = load_image("4testP3.png")
 
     battleUi = BattleUi()
     battleMap = map_state.Room(0, 0, 0, 0)

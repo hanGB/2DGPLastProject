@@ -14,8 +14,8 @@ os.chdir(now_dir)
 
 class Title:
     def __init__(self):
-        self.title = load_image("title.png")
-        self.menu = load_image("mainMenu.png")
+        self.title = load_image("0title.png")
+        self.menu = load_image("0mainMenu.png")
 
     def draw(self, menu):
         self.title.draw(640, 360)
