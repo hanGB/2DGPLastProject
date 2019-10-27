@@ -5,14 +5,10 @@ import battle_state
 # test
 import status
 
-skill = [status.Skill(10, 0, 1, 0, 50, 90),
-         status.Skill(22, 0, 3, 0, 350, 90),
-         status.Skill(11, 0, 2, 0, 150, 90)]
-
-skill_cnt = 3
-
 name = "battle_skill_state"
 
+skill = None
+skill_cnt = None
 skill_slt = None
 skillUi = None
 
@@ -32,6 +28,15 @@ class SkillUi:
 def enter():
     global skill_slt
     global skillUi
+    global skill
+    global skill_cnt
+
+    skill_cnt = 5
+    skill = [status.Skill(0, 0, 1, 0, 50, 90),
+             status.Skill(12, 0, 3, 0, 350, 90),
+             status.Skill(81, 0, 2, 0, 150, 90),
+             status.Skill(53, 0, 2, 0, 150, 90),
+             status.Skill(43, 0, 2, 0, 150, 90)]
 
     skill_slt = 0
     skillUi = SkillUi()
@@ -40,9 +45,13 @@ def enter():
 def exit():
     global skill_slt
     global skillUi
+    global skill
+    global skill_cnt
 
     del (skill_slt)
     del (skillUi)
+    del (skill)
+    del (skill_cnt)
 
 
 def pause():
@@ -63,8 +72,9 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN:
             if event.key == SDLK_DOWN:
-                skill_slt = (skill_slt + 1) % 6
-
+                skill_slt = (skill_slt + 1) % skill_cnt
+            if event.key == SDLK_UP:
+                skill_slt = (skill_slt - 1) % skill_cnt
             elif event.key == SDLK_LEFT:
                 battle_state.enemy_slt = (battle_state.enemy_slt - 1) % 5
             elif event.key == SDLK_RIGHT:
@@ -89,7 +99,10 @@ def draw():
     battle_state.battleMap.draw()
     battle_state.battleUi.draw(-1)
     skillUi.draw()
-    for i in range(3):
-        skill[i].draw(i)
 
+    for i in range(skill_cnt):
+        if skill_slt == i:
+            skill[i].draw(i, 1)
+        else:
+            skill[i].draw(i, 0)
     update_canvas()
