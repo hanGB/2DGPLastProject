@@ -7,10 +7,6 @@ name = "title_state"
 title = None
 menu = None
 
-basic_dir = os.getcwd()
-now_dir = os.path.join(basic_dir, "resource")
-os.chdir(now_dir)
-
 
 class Title:
     def __init__(self):
