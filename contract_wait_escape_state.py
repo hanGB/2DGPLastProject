@@ -3,35 +3,40 @@ import game_framework
 import battle_state
 
 
-name = "sword_trigger_state"
+name = "contract_wait_escape_state"
 
-sword_trigger_ui = None
+cwe_ui = None
 
 
-class SwordTriggerUi:
+class CWEUi:
     image = None
 
     def __init__(self, key):
-        self.key = key
+        if key == 2:
+            self.key = 2
+        elif key == 4:
+            self.key = 1
+        elif key == 5:
+            self.key = 0
 
-        if SwordTriggerUi.image is None:
-            SwordTriggerUi.image = load_image("2sdInBattle.png")
+        if CWEUi.image is None:
+            CWEUi.image = load_image("2etcUi.png")
 
     def draw(self):
-        SwordTriggerUi.image.clip_draw(0,  (2 - self.key) * 50, 250, 50, 300, 170)
-        SwordTriggerUi.image.clip_draw(0, 0 * 50, 250, 50, 170, 80)
+        CWEUi.image.clip_draw(0, 90, 300, 30, 300, 170)
+        CWEUi.image.clip_draw(0, self.key * 30, 300, 30, 300, 80)
 
 
 def enter():
-    global sword_trigger_ui
+    global cwe_ui
 
-    sword_trigger_ui = SwordTriggerUi(battle_state.sd_key_check)
+    cwe_ui = CWEUi(battle_state.act)
 
 
 def exit():
-    global sword_trigger_ui
+    global cwe_ui
 
-    del(sword_trigger_ui)
+    del(cwe_ui)
 
 
 def pause():
@@ -53,7 +58,15 @@ def handle_events():
                 battle_state.enemy_slt = (battle_state.enemy_slt - 1) % battle_state.enemy_cnt
             elif event.key == SDLK_RIGHT:
                 battle_state.enemy_slt = (battle_state.enemy_slt + 1) % battle_state.enemy_cnt
-            elif event.key == SDLK_a or event.key == SDLK_LSHIFT or event.key == SDLK_w:
+            elif event.key == SDLK_SPACE:
+                if battle_state.act == 0:
+                    pass
+                elif battle_state.act == 0:
+                    pass
+                elif battle_state.act == 0:
+                    pass
+
+            elif event.key == SDLK_a or event.key == SDLK_LSHIFT:
                 game_framework.pop_state()
 
 
@@ -82,6 +95,6 @@ def draw():
             battle_state.enemy[n].draw(n+ n * 0.2, n - battle_state.enemy_slt)
 
     battle_state.battleUi.draw(-1)
-    sword_trigger_ui.draw()
+    cwe_ui.draw()
 
     update_canvas()

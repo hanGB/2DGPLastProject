@@ -79,7 +79,7 @@ def handle_events():
                 battle_state.enemy_slt = (battle_state.enemy_slt - 1) % battle_state.enemy_cnt
             elif event.key == SDLK_RIGHT:
                 battle_state.enemy_slt = (battle_state.enemy_slt + 1) % battle_state.enemy_cnt
-            elif event.key == SDLK_a or event.key == SDLK_LSHIFT or event.key == SDLK_w:
+            elif event.key == SDLK_a or event.key == SDLK_LSHIFT:
                 game_framework.pop_state()
 
             elif event.key == SDLK_SPACE:

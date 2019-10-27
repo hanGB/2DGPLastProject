@@ -6,6 +6,7 @@ import random
 import math
 import status
 import sword_trigger_state
+import contract_wait_escape_state
 
 name = "battle_state"
 
@@ -120,7 +121,11 @@ def handle_events():
             elif event.key == SDLK_c:
                 pass
             elif event.key == SDLK_SPACE:
-                pass
+                if act == 2 or act == 4 or act == 5:
+                    game_framework.push_state(contract_wait_escape_state)
+                elif act == 3:
+                    sd_key_check = 1
+                    game_framework.push_state(sword_trigger_state)
             elif event.key == SDLK_TAB:
                 pass
 
