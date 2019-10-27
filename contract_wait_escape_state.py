@@ -9,7 +9,9 @@ cwe_ui = None
 
 
 class CWEUi:
-    image = None
+    image_do = None
+    image_act = None
+    image_ny = None
 
     def __init__(self, key):
         if key == 2:
@@ -19,13 +21,20 @@ class CWEUi:
         elif key == 5:
             self.key = 0
 
-        if CWEUi.image is None:
-            CWEUi.image = load_image("2etcUi.png")
+        if CWEUi.image_do is None:
+            CWEUi.image_do = load_image("2doyouwant.png")
+
+        if CWEUi.image_act is None:
+            CWEUi.image_act = load_image("2etcAct.png")
+
+        if CWEUi.image_ny is None:
+            CWEUi.image_ny = load_image("2noyes.png")
+
 
     def draw(self):
-        CWEUi.image.clip_draw(0, 90, 300, 30, 300, 170)
-        CWEUi.image.clip_draw(0, self.key * 30, 300, 30, 300, 80)
-
+        CWEUi.image_do.draw(390, 180)
+        CWEUi.image_act.clip_draw(0, self.key * 50, 300, 50, 410, 150)
+        CWEUi.image_ny.draw(340, 80)
 
 def enter():
     global cwe_ui
