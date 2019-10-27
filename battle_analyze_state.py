@@ -1,37 +1,33 @@
 from pico2d import *
 import game_framework
 import battle_state
-import battle_analyze_state
 
-name = "sword_trigger_state"
+name = "battle_analyze_state"
 
-sword_trigger_ui = None
+analyze_ui = None
 
 
-class SwordTriggerUi:
+class AnalyzeUi:
     image = None
 
-    def __init__(self, key):
-        self.key = key
-
-        if SwordTriggerUi.image is None:
-            SwordTriggerUi.image = load_image("2sdInBattle.png")
+    def __init__(self):
+        if AnalyzeUi.image is None:
+            AnalyzeUi.image = load_image("2analyzeUi.png")
 
     def draw(self):
-        SwordTriggerUi.image.clip_draw(0,  (2 - self.key) * 50, 250, 50, 300, 170)
-        SwordTriggerUi.image.clip_draw(0, 0 * 50, 250, 50, 170, 80)
+        AnalyzeUi.image.draw(200, 100)
 
 
 def enter():
-    global sword_trigger_ui
+    global analyze_ui
 
-    sword_trigger_ui = SwordTriggerUi(battle_state.sd_key_check)
+    analyze_ui = AnalyzeUi()
 
 
 def exit():
-    global sword_trigger_ui
+    global analyze_ui
 
-    del(sword_trigger_ui)
+    del (analyze_ui)
 
 
 def pause():
@@ -53,10 +49,8 @@ def handle_events():
                 battle_state.enemy_slt = (battle_state.enemy_slt - 1) % battle_state.enemy_cnt
             elif event.key == SDLK_RIGHT:
                 battle_state.enemy_slt = (battle_state.enemy_slt + 1) % battle_state.enemy_cnt
-            elif event.key == SDLK_a or event.key == SDLK_LSHIFT:
+            elif event.key == SDLK_a or event.key == SDLK_LSHIFT or event.key == SDLK_TAB:
                 game_framework.pop_state()
-            elif event.key == SDLK_TAB:
-                game_framework.push_state(battle_analyze_state)
 
 
 def update():
@@ -82,8 +76,6 @@ def draw():
     elif battle_state.enemy_cnt == 4:
         for n in range(battle_state.enemy_cnt):
             battle_state.enemy[n].draw(n+ n * 0.2, n - battle_state.enemy_slt)
-
-    battle_state.battleUi.draw(-1)
-    sword_trigger_ui.draw()
+    analyze_ui.draw()
 
     update_canvas()

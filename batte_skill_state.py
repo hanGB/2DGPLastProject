@@ -1,6 +1,7 @@
 from pico2d import *
 import game_framework
 import battle_state
+import battle_analyze_state
 
 # test
 import status
@@ -85,8 +86,7 @@ def handle_events():
             elif event.key == SDLK_SPACE:
                 pass
             elif event.key == SDLK_TAB:
-               # game_framework.push_state(battle_analyze_state)
-                pass
+               game_framework.push_state(battle_analyze_state)
 
 
 def update():

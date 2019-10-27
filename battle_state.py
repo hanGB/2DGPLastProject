@@ -7,6 +7,7 @@ import math
 import status
 import sword_trigger_state
 import contract_wait_escape_state
+import battle_analyze_state
 
 name = "battle_state"
 
@@ -126,8 +127,10 @@ def handle_events():
                 elif act == 3:
                     sd_key_check = 1
                     game_framework.push_state(sword_trigger_state)
+                elif act == 1:
+                    game_framework.push_state(battle_analyze_state)
             elif event.key == SDLK_TAB:
-                pass
+                game_framework.push_state(battle_analyze_state)
 
             # 임시 배틀 종료 키
             elif event.key == SDLK_b:
