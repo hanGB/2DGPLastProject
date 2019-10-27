@@ -5,8 +5,10 @@ import batte_skill_state
 import random
 import math
 import status
+import sword_trigger_state
 
 name = "battle_state"
+
 
 class BattleUi:
     def __init__(self):
@@ -27,12 +29,14 @@ class BattleUi:
         self.heartbeat.clip_draw(self.beat, 0, 200, 60, 1100, 210)
         self.heartbeat_case.draw(1100, 210)
 
+
 enemy = None
 act = None
 battleUi = None
 battleMap = None
 enemy_slt = None
 enemy_cnt = None
+sd_key_check = None
 
 
 def enter():
@@ -81,6 +85,7 @@ def resume():
 def handle_events():
     global act
     global enemy_slt
+    global sd_key_check
 
     events = get_events()
 
@@ -104,9 +109,11 @@ def handle_events():
                 enemy_slt = (enemy_slt + 1) % enemy_cnt
 
             elif event.key == SDLK_s:
-                pass
+                sd_key_check = 0
+                game_framework.push_state(sword_trigger_state)
             elif event.key == SDLK_d:
-                pass
+                sd_key_check = 1
+                game_framework.push_state(sword_trigger_state)
             elif event.key == SDLK_a or event.key == SDLK_LSHIFT:
                 if act != 0:
                     act = 0
@@ -140,11 +147,11 @@ def draw():
 
     elif enemy_cnt == 3:
         for n in range(enemy_cnt):
-            enemy[n].draw(n + 1, n - enemy_slt)
+            enemy[n].draw(n + n * 0.7, n - enemy_slt)
 
     elif enemy_cnt == 4:
         for n in range(enemy_cnt):
-            enemy[n].draw(n, n - enemy_slt)
+            enemy[n].draw(n + n * 0.2, n - enemy_slt)
 
     battleUi.draw(act)
     update_canvas()
