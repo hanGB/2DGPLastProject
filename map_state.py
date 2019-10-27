@@ -58,6 +58,10 @@ def enter():
     global map
     global sight
 
+    # test
+    game_framework.push_state(battle_state)
+    #
+
     map = 0
     sight = 0
     room = (Room(1, 1, 0, 0), Room(0, 1, 1, 0), Room(0, 0, 1, 1), Room(1, 0, 0, 1))

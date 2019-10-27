@@ -22,6 +22,10 @@ def enter():
     global title
     global menu
 
+    # test
+    game_framework.change_state(map_state)
+    #
+
     title = Title()
     menu = 0
 

@@ -76,9 +76,9 @@ def handle_events():
             if event.key == SDLK_UP:
                 skill_slt = (skill_slt - 1) % skill_cnt
             elif event.key == SDLK_LEFT:
-                battle_state.enemy_slt = (battle_state.enemy_slt - 1) % 5
+                battle_state.enemy_slt = (battle_state.enemy_slt - 1) % battle_state.enemy_cnt
             elif event.key == SDLK_RIGHT:
-                battle_state.enemy_slt = (battle_state.enemy_slt + 1) % 5
+                battle_state.enemy_slt = (battle_state.enemy_slt + 1) % battle_state.enemy_cnt
             elif event.key == SDLK_a or event.key == SDLK_LSHIFT or event.key == SDLK_w:
                 game_framework.pop_state()
 
@@ -98,6 +98,21 @@ def draw():
 
     battle_state.battleMap.draw()
     battle_state.battleUi.draw(-1)
+    if battle_state.enemy_cnt == 1:
+        battle_state.enemy[0].draw(2, 0)
+
+    elif battle_state.enemy_cnt == 2:
+        for n in range(battle_state.enemy_cnt):
+            battle_state.enemy[n].draw(2 * n + 0.5, n - battle_state.enemy_slt)
+
+    elif battle_state.enemy_cnt == 3:
+        for n in range(battle_state.enemy_cnt):
+            battle_state.enemy[n].draw(n + 1, n - battle_state.enemy_slt)
+
+    elif battle_state.enemy_cnt == 4:
+        for n in range(battle_state.enemy_cnt):
+            battle_state.enemy[n].draw(n, n - battle_state.enemy_slt)
+
     skillUi.draw()
 
     for i in range(skill_cnt):

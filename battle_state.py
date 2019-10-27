@@ -1,15 +1,12 @@
 from pico2d import *
-
 import game_framework
 import map_state
 import batte_skill_state
+import random
+import math
+import status
 
 name = "battle_state"
-
-# test
-p3 = None
-p4 = None
-
 
 class BattleUi:
     def __init__(self):
@@ -30,11 +27,12 @@ class BattleUi:
         self.heartbeat.clip_draw(self.beat, 0, 200, 60, 1100, 210)
         self.heartbeat_case.draw(1100, 210)
 
-
+enemy = None
 act = None
 battleUi = None
 battleMap = None
 enemy_slt = None
+enemy_cnt = None
 
 
 def enter():
@@ -42,9 +40,13 @@ def enter():
     global battleMap
     global act
     global enemy_slt
-    global p3
+    global enemy
+    global enemy_cnt
 
-    p3 = load_image("4testP3.png")
+    enemy_cnt = random.randint(1, 4)
+    enemy_slt = math.floor(enemy_cnt / 2)
+
+    enemy = [status.Enemy(random.randint(1, 11)) for n in range(enemy_cnt)]
 
     battleUi = BattleUi()
     battleMap = map_state.Room(0, 0, 0, 0)
@@ -56,7 +58,13 @@ def exit():
     global battleUi
     global battleMap
     global act
+    global enemy_slt
+    global enemy
+    global enemy_cnt
 
+    del (enemy)
+    del (enemy_slt)
+    del (enemy_cnt)
     del (battleUi)
     del (battleMap)
     del (act)
@@ -91,9 +99,9 @@ def handle_events():
                     act = 1
 
             elif event.key == SDLK_LEFT:
-                enemy_slt = (enemy_slt - 1) % 5
+                enemy_slt = (enemy_slt - 1) % enemy_cnt
             elif event.key == SDLK_RIGHT:
-                enemy_slt = (enemy_slt + 1) % 5
+                enemy_slt = (enemy_slt + 1) % enemy_cnt
 
             elif event.key == SDLK_s:
                 pass
@@ -122,8 +130,21 @@ def draw():
     clear_canvas()
 
     battleMap.draw()
+
+    if enemy_cnt == 1:
+        enemy[0].draw(2, 0)
+
+    elif enemy_cnt == 2:
+        for n in range(enemy_cnt):
+            enemy[n].draw(2 * n + 0.5, n - enemy_slt)
+
+    elif enemy_cnt == 3:
+        for n in range(enemy_cnt):
+            enemy[n].draw(n + 1, n - enemy_slt)
+
+    elif enemy_cnt == 4:
+        for n in range(enemy_cnt):
+            enemy[n].draw(n, n - enemy_slt)
+
     battleUi.draw(act)
-
-    p3.draw(600, 500)
-
     update_canvas()

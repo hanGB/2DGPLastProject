@@ -5,7 +5,7 @@ import title_state
 name = "warning_state"
 
 warning = None
-warning_time = 0.0
+warning_time = 3.1  # test 끝나면 0.0으로 변경
 
 basic_dir = os.getcwd()
 now_dir = os.path.join(basic_dir, "resource")
