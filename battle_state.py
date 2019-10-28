@@ -8,6 +8,7 @@ import sword_trigger_state
 import contract_wait_escape_state
 import battle_analyze_state
 import enemyData
+import playerData
 
 name = "battle_state"
 
@@ -17,7 +18,6 @@ class BattleUi:
 
         self.main_ui = load_image("2newUi.png")
         self.turn_number = load_image("2turnNumber.png")
-       # self.heartbeat = load_image("2heartbeat.png")
         self.heartbeat_case = load_image("2heartbeatCase.png")
         self.beat = 0
 
@@ -29,10 +29,10 @@ class BattleUi:
         if act != -1:
             self.main_ui.clip_draw(act * 300, 0, 300, 300, 270, 180)
         self.turn_number.clip_draw((5 - 1) * 100, 0, 100, 150, 105, 175)
-        # self.heartbeat.clip_draw(self.beat, 0, 200, 60, 1100, 210)
-        self.heartbeat_case.draw(1100, 210)
 
 
+player = None
+player_cnt = None
 enemy = None
 act = None
 battleUi = None
@@ -49,6 +49,14 @@ def enter():
     global enemy_slt
     global enemy
     global enemy_cnt
+    global player
+    global player_cnt
+
+    player = [playerData.Player(0, 100, 100, [10, 10, 10, 10, 10]),
+              playerData.Player(1, 100, 100, [10, 10, 10, 10, 10]),
+              playerData.Player(3, 100, 100, [10, 10, 10, 10, 10])]
+
+    player_cnt = len(player)
 
     enemy_cnt = random.randint(1, 4)
     enemy_slt = math.floor(enemy_cnt / 2)
@@ -163,4 +171,8 @@ def draw():
             enemy[n].draw(n + n * 0.2, n - enemy_slt)
 
     battleUi.draw(act)
+
+    for n in range(player_cnt):
+        player[n].draw(n)
+
     update_canvas()

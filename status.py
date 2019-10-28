@@ -1,18 +1,6 @@
 from pico2d import *
 
 
-class Player:
-
-    def __init__(self):
-        self.max_Bd = 300
-        self.max_Md = 200
-        self.max_Turn = 3
-        self.status = [10, 10, 10, 10, 10, 10]  # MatAtt, MindAtt, MatDef, MindDef, HitRate, AvoidRate
-        self.buff = [0, 0]
-        self.now_Bd = self.max_Bd
-        self.now_Md = self.max_Md
-
-
 class Card:
     def __init__(self, attribute, skill):
         self.attribute = attribute  # BS, RS, BD, RD, BH, RH, BC, RC

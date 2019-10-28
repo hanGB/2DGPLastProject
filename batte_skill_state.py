@@ -120,4 +120,7 @@ def draw():
             skill[i].draw(i, 1)
         else:
             skill[i].draw(i, 0)
+
+    for n in range(battle_state.player_cnt):
+        battle_state.player[n].draw(n)
     update_canvas()

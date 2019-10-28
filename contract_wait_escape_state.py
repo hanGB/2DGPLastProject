@@ -108,5 +108,7 @@ def draw():
 
     battle_state.battleUi.draw(-1)
     cwe_ui.draw()
+    for n in range(battle_state.player_cnt):
+        battle_state.player[n].draw(n)
 
     update_canvas()
