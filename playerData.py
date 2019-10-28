@@ -50,4 +50,3 @@ class Player:
         Player.BdBar.draw(972 - (1 - BdRate) * 72, 200 - slt * 50, 150 * BdRate, 20)
         Player.MdBar.draw(1143 - (1 - MdRate) * 72, 200 - slt * 50, 150 * MdRate, 20)
         Player.pattern.clip_draw(self.pat * 30, 0, 30, 30, 880, 200 - slt * 50)
-

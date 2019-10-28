@@ -2,13 +2,15 @@ from pico2d import *
 import game_framework
 import map_state
 import batte_skill_state
+import battle_item_state
+import battle_analyze_state
 import random
 import math
 import sword_trigger_state
 import contract_wait_escape_state
-import battle_analyze_state
 import enemyData
 import playerData
+
 
 name = "battle_state"
 
@@ -108,12 +110,13 @@ def handle_events():
             if event.key == SDLK_w:
                 game_framework.push_state(batte_skill_state)
             elif event.key == SDLK_f:
-                pass
+                game_framework.push_state(battle_item_state)
             elif event.key == SDLK_DOWN:
                 act = (act + 1) % 6
                 if act == 0:
                     act = 1
-
+            elif event.key == SDLK_UP:
+                act = 0
             elif event.key == SDLK_LEFT:
                 enemy_slt = (enemy_slt - 1) % enemy_cnt
             elif event.key == SDLK_RIGHT:
