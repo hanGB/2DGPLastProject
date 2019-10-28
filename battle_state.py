@@ -4,10 +4,10 @@ import map_state
 import batte_skill_state
 import random
 import math
-import status
 import sword_trigger_state
 import contract_wait_escape_state
 import battle_analyze_state
+import enemyData
 
 name = "battle_state"
 
@@ -17,18 +17,19 @@ class BattleUi:
 
         self.main_ui = load_image("2newUi.png")
         self.turn_number = load_image("2turnNumber.png")
-        self.heartbeat = load_image("2heartbeat.png")
+       # self.heartbeat = load_image("2heartbeat.png")
         self.heartbeat_case = load_image("2heartbeatCase.png")
         self.beat = 0
 
     def update(self):
-        self.beat = (self.beat + 1) % 850
+        # self.beat = (self.beat + 1) % 850
+        pass
 
     def draw(self, act):
         if act != -1:
             self.main_ui.clip_draw(act * 300, 0, 300, 300, 270, 180)
         self.turn_number.clip_draw((5 - 1) * 100, 0, 100, 150, 105, 175)
-        self.heartbeat.clip_draw(self.beat, 0, 200, 60, 1100, 210)
+        # self.heartbeat.clip_draw(self.beat, 0, 200, 60, 1100, 210)
         self.heartbeat_case.draw(1100, 210)
 
 
@@ -52,7 +53,7 @@ def enter():
     enemy_cnt = random.randint(1, 4)
     enemy_slt = math.floor(enemy_cnt / 2)
 
-    enemy = [status.Enemy(random.randint(1, 11)) for n in range(enemy_cnt)]
+    enemy = [enemyData.Enemy(random.randint(1, 11)) for n in range(enemy_cnt)]
 
     battleUi = BattleUi()
     battleMap = map_state.Room(0, 0, 0, 0)
