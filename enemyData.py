@@ -1,4 +1,5 @@
 from pico2d import *
+import status
 
 
 class Enemy:
@@ -87,13 +88,13 @@ class Enemy:
             self.max_turn = 4
 
         elif type == 12:
-            self.image = load_image("4-12rucipel.png")
+            self.image = load_image("4-12lucipel.png")
             self.max_Bd = 5000
             self.status = [50, 50, 50, 50, 50]
             self.max_turn = 5
 
         elif type == 13:
-            self.image = load_image("4-13ruciper.png")
+            self.image = load_image("4-13luciper.png")
             self.max_Bd = 9999
             self.status = [99, 99, 19, 19, 19]
             self.max_turn = 9
@@ -102,12 +103,19 @@ class Enemy:
         self.buf = [0, 0]
         self.turn = self.max_turn
         self.down = 0
+        self.card = status.Card(self.type)
 
     def getBd(self):
         return self.Bd
 
     def setBd(self, Bd):
         self.Bd = Bd
+
+    def getType(self):
+        return self.type
+
+    def getAttribute(self):
+        return self.card.getAttribute()
 
     def draw(self, position, slt):
         self.image.draw(200 + position * 200, 300)

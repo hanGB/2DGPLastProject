@@ -59,7 +59,7 @@ def enter():
     global sight
 
     # test
-    game_framework.push_state(battle_state)
+    # game_framework.push_state(battle_state)
     #
 
     map = 0

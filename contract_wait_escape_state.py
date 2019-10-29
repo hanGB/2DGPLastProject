@@ -33,7 +33,7 @@ class CWEUi:
     def draw(self):
         CWEUi.image_do.draw(390, 180)
         CWEUi.image_act.clip_draw(0, self.key * 50, 300, 50, 410, 150)
-        CWEUi.image_ny.draw(340, 80)
+        CWEUi.image_ny.draw(370, 90)
 
 
 def enter():
