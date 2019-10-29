@@ -97,7 +97,7 @@ def draw():
             battle_state.enemy[n].draw(n + n * 0.2, 1)
 
     itemUi.draw()
-
+    battle_state.player[0].draw_item_number(item_slt)
     for n in range(battle_state.player_cnt):
         battle_state.player[n].draw(n)
     update_canvas()

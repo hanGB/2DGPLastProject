@@ -6,6 +6,8 @@ class Player:
     BdBar = None
     MdBar = None
     pattern = None
+    item_number = None
+    item_sign = None
 
     def __init__(self, p, Bd, Md, status):
 
@@ -30,6 +32,13 @@ class Player:
         self.Bd = self.max_Bd
         self.Md = self.max_Md
 
+        if self.pat == 0:
+            if Player.item_number is None:
+                Player.item_number = load_image("2itemNum.png")
+            if Player.item_sign is None:
+                Player.item_sign = load_image("2itemSign.png")
+            self.item = [3, 0, 0, 2, 0, 0, 0]
+
     def getBd(self):
         return self.Bd
 
@@ -50,3 +59,10 @@ class Player:
         Player.BdBar.draw(972 - (1 - BdRate) * 72, 200 - slt * 50, 150 * BdRate, 20)
         Player.MdBar.draw(1143 - (1 - MdRate) * 72, 200 - slt * 50, 150 * MdRate, 20)
         Player.pattern.clip_draw(self.pat * 30, 0, 30, 30, 880, 200 - slt * 50)
+
+    def draw_item_number(self, number):
+        if self.pat == 0:
+            for i in range(7):
+                Player.item_number.clip_draw(20 * self.item[i], 0, 20, 30, 375, 275 - 30 * i)
+                if i == number:
+                    Player.item_sign.draw(315, 278 - 30 * i)
