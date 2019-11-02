@@ -9,26 +9,14 @@ analyze_ui = None
 
 class AnalyzeUi:
     image = None
-    name = None
-    attribute = None
 
     def __init__(self):
         if AnalyzeUi.image is None:
             AnalyzeUi.image = load_image("2analyzeUi.png")
-        if AnalyzeUi.name is None:
-            AnalyzeUi.name = load_image("2enemyName.png")
-        if AnalyzeUi.attribute is None:
-            AnalyzeUi.attribute = load_image("2analWeakness.png")
 
-    def draw(self, enemy, attri):
+    def draw(self, enemy):
         AnalyzeUi.image.draw(200, 100)
-        AnalyzeUi.name.clip_draw(0, 400 - enemy * 30, 250, 30, 200, 235)
-        for n in range(8):
-            if attri[n] != 0:
-                if n < 4:
-                    AnalyzeUi.attribute.clip_draw((attri[n] - 1) * 60, 0, 60, 20, 90 + 67 * n, 145)
-                else:
-                    AnalyzeUi.attribute.clip_draw((attri[n] - 1) * 60, 0, 60, 20, 90 + 67 * (n - 4), 64)
+        battle_state.enemy[battle_state.enemy_slt].draw_attribute_data()
 
 
 def enter():
@@ -67,13 +55,13 @@ def handle_events():
 
 
 def update():
-    battle_state.battleUi.update()
+    battle_state.battle_ui.update()
 
 
 def draw():
     clear_canvas()
 
-    battle_state.battleMap.draw()
+    battle_state.battle_map.draw()
 
     if battle_state.enemy_cnt == 1:
         battle_state.enemy[0].draw(2, 0)
@@ -89,7 +77,6 @@ def draw():
     elif battle_state.enemy_cnt == 4:
         for n in range(battle_state.enemy_cnt):
             battle_state.enemy[n].draw(n + n * 0.2, n - battle_state.enemy_slt)
-    analyze_ui.draw(battle_state.enemy[battle_state.enemy_slt].getType(),
-                    battle_state.enemy[battle_state.enemy_slt].getAttribute())
+    analyze_ui.draw(battle_state.enemy[battle_state.enemy_slt])
 
     update_canvas()

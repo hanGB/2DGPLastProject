@@ -3,7 +3,6 @@ import game_framework
 import battle_state
 import battle_analyze_state
 
-# test
 import status
 
 name = "battle_skill_state"
@@ -11,7 +10,7 @@ name = "battle_skill_state"
 skill = None
 skill_cnt = None
 skill_slt = None
-skillUi = None
+skill_ui = None
 
 
 class SkillUi:
@@ -26,33 +25,14 @@ class SkillUi:
         SkillUi.image.draw(150, 170)
 
 
+
 def enter():
-    global skill_slt
-    global skillUi
-    global skill
-    global skill_cnt
+    global skill_ui
 
-    skill_cnt = 5
-    skill = [status.Skill(0, 0, 1, 0, 50, 90),
-             status.Skill(12, 0, 3, 0, 350, 90),
-             status.Skill(81, 0, 2, 0, 150, 90),
-             status.Skill(53, 0, 2, 0, 150, 90),
-             status.Skill(43, 0, 2, 0, 150, 90)]
-
-    skill_slt = 0
-    skillUi = SkillUi()
+    skill_ui = SkillUi()
 
 
 def exit():
-    global skill_slt
-    global skillUi
-    global skill
-    global skill_cnt
-
-    del (skill_slt)
-    del (skillUi)
-    del (skill)
-    del (skill_cnt)
 
 
 def pause():
@@ -90,14 +70,14 @@ def handle_events():
 
 
 def update():
-    battle_state.battleUi.update()
+    battle_state.battle_ui.update()
 
 
 def draw():
     clear_canvas()
 
-    battle_state.battleMap.draw()
-    battle_state.battleUi.draw(-1)
+    battle_state.battle_map.draw()
+    battle_state.battle_ui.draw(-1)
     if battle_state.enemy_cnt == 1:
         battle_state.enemy[0].draw(2, 0)
 
@@ -111,15 +91,8 @@ def draw():
 
     elif battle_state.enemy_cnt == 4:
         for n in range(battle_state.enemy_cnt):
-            battle_state.enemy[n].draw(n+ n * 0.2, n - battle_state.enemy_slt)
+            battle_state.enemy[n].draw(n + n * 0.2, n - battle_state.enemy_slt)
 
-    skillUi.draw()
-
-    for i in range(skill_cnt):
-        if skill_slt == i:
-            skill[i].draw(i, 1)
-        else:
-            skill[i].draw(i, 0)
 
     for n in range(battle_state.player_cnt):
         battle_state.player[n].draw(n)

@@ -22,6 +22,7 @@ class ItemUi:
 
     def draw(self):
         ItemUi.image.draw(360, 220)
+        battle_state.player[0].draw_item_number(item_slt)
 
 
 def enter():
@@ -74,13 +75,13 @@ def handle_events():
 
 
 def update():
-    battle_state.battleUi.update()
+    battle_state.battle_ui.update()
 
 
 def draw():
     clear_canvas()
 
-    battle_state.battleMap.draw()
+    battle_state.battle_map.draw()
     if battle_state.enemy_cnt == 1:
         battle_state.enemy[0].draw(2, 1)
 

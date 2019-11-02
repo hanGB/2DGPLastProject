@@ -83,13 +83,13 @@ def handle_events():
 
 
 def update():
-    battle_state.battleUi.update()
+    battle_state.battle_ui.update()
 
 
 def draw():
     clear_canvas()
 
-    battle_state.battleMap.draw()
+    battle_state.battle_map.draw()
 
     if battle_state.enemy_cnt == 1:
         battle_state.enemy[0].draw(2, 0)
@@ -106,7 +106,7 @@ def draw():
         for n in range(battle_state.enemy_cnt):
             battle_state.enemy[n].draw(n+ n * 0.2, n - battle_state.enemy_slt)
 
-    battle_state.battleUi.draw(-1)
+    battle_state.battle_ui.draw(-1)
     cwe_ui.draw()
     for n in range(battle_state.player_cnt):
         battle_state.player[n].draw(n)

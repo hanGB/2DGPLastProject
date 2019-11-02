@@ -5,6 +5,8 @@ import status
 class Enemy:
     target = None
     BdBar = None
+    name = None
+    attribute = None
 
     def __init__(self, type):
         if Enemy.target is None:
@@ -12,6 +14,12 @@ class Enemy:
 
         if Enemy.BdBar is None:
             Enemy.BdBar = load_image("2targetBd.png")
+
+        if Enemy.name is None:
+            Enemy.name = load_image("2enemyName.png")
+
+        if Enemy.attribute is None:
+            Enemy.attribute = load_image("2analWeakness.png")
 
         self.type = type
 
@@ -132,3 +140,12 @@ class Enemy:
             else:
                 Enemy.target.draw(230 + position * 200 + 100, 340)
                 Enemy.BdBar.draw(241 + position * 200 - (1 - BdRate) * 30 + 100, 356, BdRate * 60, 10)
+
+    def draw_attribute_data(self):
+        Enemy.name.clip_draw(0, 400 - self.type * 30, 250, 30, 200, 235)
+        for n in range(8):
+            if self.card.attribute[n] != 0:
+                if n < 4:
+                    Enemy.attribute.clip_draw((self.card.attribute[n] - 1) * 60, 0, 60, 20, 90 + 67 * n, 145)
+                else:
+                    Enemy.attribute.clip_draw((self.card.attribute[n] - 1) * 60, 0, 60, 20, 90 + 67 * (n - 4), 64)

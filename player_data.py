@@ -1,5 +1,5 @@
 from pico2d import *
-
+import status
 
 class Player:
     bar = None
@@ -9,7 +9,7 @@ class Player:
     item_number = None
     item_sign = None
 
-    def __init__(self, p, Bd, Md, status):
+    def __init__(self, p, Bd, Md, stat):
 
         if Player.bar is None:
             Player.bar = load_image("2BdMdBar.png")
@@ -27,10 +27,11 @@ class Player:
         self.max_Bd = Bd
         self.max_Md = Md
         self.max_Turn = 3
-        self.status = status  # MatAtt, MindAtt, MatDef, MindDef, HitRate, AvoidRate
+        self.stat = stat  # MatAtt, MindAtt, MatDef, MindDef, HitRate, AvoidRate
         self.buff = [0, 0]
         self.Bd = self.max_Bd
         self.Md = self.max_Md
+        self.card = status.Card(1)
 
         if self.pat == 0:
             if Player.item_number is None:
@@ -50,6 +51,9 @@ class Player:
 
     def setMd(self, Md):
         self.Md = Md
+
+    def getTurn(self):
+        return self.max_Turn
 
     def draw(self, slt):
         BdRate = self.Bd / self.max_Bd
