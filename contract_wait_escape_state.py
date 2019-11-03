@@ -2,6 +2,7 @@ from pico2d import *
 import game_framework
 import battle_state
 import battle_analyze_state
+import game_world
 
 name = "contract_wait_escape_state"
 
@@ -33,6 +34,9 @@ class CWEUi:
     def getKey(self):
         return self.key
 
+    def update(self):
+        pass
+
     def draw(self):
         CWEUi.image_do.draw(390, 180)
         CWEUi.image_act.clip_draw(0, self.key * 50, 300, 50, 410, 150)
@@ -43,12 +47,13 @@ def enter():
     global cwe_ui
 
     cwe_ui = CWEUi(battle_state.battle_ui.get_act())
+    game_world.add_object(cwe_ui, 2)
 
 
 def exit():
     global cwe_ui
 
-    del(cwe_ui)
+    game_world.remove_object(cwe_ui)
 
 
 def pause():
@@ -89,17 +94,12 @@ def handle_events():
 
 
 def update():
-    battle_state.battle_enemy.update()
+    for game_object in game_world.all_objects():
+        game_object.update()
 
 
 def draw():
     clear_canvas()
-
-    battle_state.battle_map.draw()
-    battle_state.battle_enemy.draw()
-    battle_state.battle_ui.draw()
-    battle_state.player.draw()
-    cwe_ui.draw()
-
-
+    for game_object in game_world.all_objects():
+        game_object.draw()
     update_canvas()

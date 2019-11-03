@@ -1,6 +1,7 @@
 from pico2d import *
 import game_framework
 import battle_state
+import game_world
 
 name = "battle_analyze_state"
 
@@ -14,21 +15,24 @@ class AnalyzeUi:
         if AnalyzeUi.image is None:
             AnalyzeUi.image = load_image("2analyzeUi.png")
 
-    def draw(self, enemy):
+    def update(self):
+        pass
+
+    def draw(self):
         AnalyzeUi.image.draw(200, 100)
-        battle_state.battle_enemy.enemy[enemy].draw_attribute_data()
+        battle_state.battle_enemy.enemy[battle_state.battle_enemy.get_enemy_slt()].draw_attribute_data()
 
 
 def enter():
     global analyze_ui
 
     analyze_ui = AnalyzeUi()
+    game_world.add_object(analyze_ui, 2)
 
 
 def exit():
     global analyze_ui
-
-    del (analyze_ui)
+    game_world.remove_object(analyze_ui)
 
 
 def pause():
@@ -56,14 +60,13 @@ def handle_events():
 
 
 def update():
-    battle_state.battle_enemy.update()
+    for game_object in game_world.all_objects():
+        game_object.update()
 
 
 def draw():
     clear_canvas()
-
     battle_state.battle_map.draw()
     battle_state.battle_enemy.draw()
-    analyze_ui.draw(battle_state.battle_enemy.get_enemy_slt())
-
+    analyze_ui.draw()
     update_canvas()

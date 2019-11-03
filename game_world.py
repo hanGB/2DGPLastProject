@@ -23,8 +23,18 @@ def remove_object(o):
 
 
 def clear():
-    for o in all_objects():
-        del o
+
+    for i in range(len(objects)):
+        for o in objects[i]:
+            objects[i].remove(o)
+            del o
+
+# 처음에 삭제시 완전 삭제가 안되는 버그 존재하여 한 번 더 탐색하여 나머지 삭제
+
+    for i in range(len(objects)):
+        for o in objects[i]:
+            objects[i].remove(o)
+            del o
 
 
 def all_objects():

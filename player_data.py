@@ -1,6 +1,7 @@
 from pico2d import *
 import status
 
+
 class Player:
     bar = None
     Bd_bar = None

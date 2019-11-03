@@ -24,7 +24,7 @@ class Room:
                               (2 * e, 1 * s, 3 * w), (4 * s, 0, 5 * w), (2 * s, 1 * w, 3 * n), (4 * w, 0, 5 * n)]
         self.map_type = 0
 
-    def update(self, turn, sight):
+    def turn_sight(self, turn, sight):
         if turn == 'q':
             if sight != self.map_type:
                 self.map_type = sight
@@ -37,6 +37,9 @@ class Room:
             if sight != self.map_type:
                 self.map_type = sight
             self.map_type = (self.map_type + 4) % 8
+
+    def update(self):
+        pass
 
     def draw(self):
         Room.background_map[self.map_type % 2].draw(640, 360)
@@ -99,13 +102,13 @@ def handle_events():
         elif event.type == SDL_KEYDOWN:
             # 시점 이동
             if event.key == SDLK_q or event.key == SDLK_LEFT:
-                room[map].update('q', sight)
+                room[map].turn_sight('q', sight)
                 sight = (sight - 1) % 8
             elif event.key == SDLK_e or event.key == SDLK_RIGHT:
-                room[map].update('e', sight)
+                room[map].turn_sight('e', sight)
                 sight = (sight + 1) % 8
             elif event.key == SDLK_DOWN:
-                room[map].update('s', sight)
+                room[map].turn_sight('s', sight)
                 sight = (sight + 4) % 8
             # 방 이동
             elif event.key == SDLK_UP:

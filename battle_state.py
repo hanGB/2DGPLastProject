@@ -6,6 +6,7 @@ import battle_component
 import battle_enemy_controller
 import battle_player
 import game_world
+
 name = "battle_state"
 
 player = None
@@ -19,12 +20,11 @@ def enter():
     global battle_map
     global battle_enemy
     global player
-    global player_cnt
 
 # 테스트 용, 플레이어 생성은 게임 시작할 때 할 것
     test_player = [player_data.Player(0, 100, 100, [10, 10, 10, 10, 10]),
-              player_data.Player(1, 100, 100, [10, 10, 10, 10, 10]),
-              player_data.Player(3, 100, 100, [10, 10, 10, 10, 10])]
+                   player_data.Player(1, 100, 100, [10, 10, 10, 10, 10]),
+                   player_data.Player(3, 100, 100, [10, 10, 10, 10, 10])]
 
     player = battle_player.BattlePlayer(test_player)
 
@@ -32,17 +32,14 @@ def enter():
     battle_enemy = battle_enemy_controller.BattleEnemy()
     battle_ui = battle_component.BattleUi()
 
+    game_world.add_object(battle_map, 0)
+    game_world.add_object(battle_enemy, 1)
+    game_world.add_object(player, 2)
+    game_world.add_object(battle_ui, 2)
+
 
 def exit():
-    global battle_ui
-    global battle_map
-    global battle_enemy
-    global player
-
-    del (battle_enemy)
-    del (battle_ui)
-    del (battle_map)
-    del (player)
+    game_world.clear()
 
 
 def pause():
@@ -69,16 +66,12 @@ def handle_events():
 
 
 def update():
-    battle_ui.update()
-    battle_enemy.update()
+    for game_object in game_world.all_objects():
+        game_object.update()
 
 
 def draw():
     clear_canvas()
-
-    battle_map.draw()
-    battle_enemy.draw()
-    battle_ui.draw()
-    player.draw()
-
+    for game_object in game_world.all_objects():
+        game_object.draw()
     update_canvas()

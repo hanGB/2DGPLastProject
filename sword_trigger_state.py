@@ -2,6 +2,7 @@ from pico2d import *
 import game_framework
 import battle_state
 import battle_analyze_state
+import game_world
 
 name = "sword_trigger_state"
 
@@ -20,6 +21,9 @@ class SwordTriggerUi:
     def getKey(self):
         return self.key
 
+    def update(self):
+        pass
+
     def draw(self):
         SwordTriggerUi.image.clip_draw(0,  (2 - self.key) * 50, 250, 50, 300, 170)
         SwordTriggerUi.image.clip_draw(0, 0 * 50, 250, 50, 170, 80)
@@ -29,12 +33,12 @@ def enter():
     global sword_trigger_ui
 
     sword_trigger_ui = SwordTriggerUi(battle_state.battle_ui.get_sd_key())
+    game_world.add_object(sword_trigger_ui, 2)
 
 
 def exit():
     global sword_trigger_ui
-
-    del (sword_trigger_ui)
+    game_world.remove_object(sword_trigger_ui)
 
 
 def pause():
@@ -73,17 +77,12 @@ def handle_events():
 
 
 def update():
-    battle_state.battle_enemy.update()
+    for game_object in game_world.all_objects():
+        game_object.update()
 
 
 def draw():
     clear_canvas()
-
-    battle_state.battle_map.draw()
-    battle_state.battle_enemy.draw()
-    battle_state.battle_ui.draw()
-    battle_state.player.draw()
-    sword_trigger_ui.draw()
-
-
+    for game_object in game_world.all_objects():
+        game_object.draw()
     update_canvas()
