@@ -74,6 +74,9 @@ class BattleEnemy:
         self.cur_state = EnemySelectState
         self.cur_state.enter(self, None)
 
+    def get_enemy_slt(self):
+        return self.enemy_slt
+
     def update_state(self):
         if len(self.event_que) > 0:
             event = self.event_que.pop()

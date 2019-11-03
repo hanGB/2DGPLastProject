@@ -113,33 +113,33 @@ class Enemy:
         self.down = 0
         self.card = status.Card(self.type)
 
-    def getBd(self):
+    def get_Bd(self):
         return self.Bd
 
-    def setBd(self, Bd):
+    def set_Bd(self, Bd):
         self.Bd = Bd
 
-    def getType(self):
+    def get_type(self):
         return self.type
 
-    def getAttribute(self):
+    def get_attribute(self):
         return self.card.getAttribute()
 
     def draw(self, position, slt):
         self.image.draw(200 + position * 200, 300)
 
-        BdRate = self.Bd / self.max_Bd
+        Bd_rate = self.Bd / self.max_Bd
 
         if slt == 0:
             if self.type == 1:
                 Enemy.target.draw(230 + position * 200 + 100, 250)
-                Enemy.BdBar.draw(241 + position * 200 - (1 - BdRate) * 30 + 100, 266, BdRate * 60, 10)
+                Enemy.BdBar.draw(241 + position * 200 - (1 - Bd_rate) * 30 + 100, 266, Bd_rate * 60, 10)
             elif self.type == 2 or self.type == 3 or self.type == 4 or self.type == 6:
                 Enemy.target.draw(230 + position * 200 + 100, 310)
-                Enemy.BdBar.draw(241 + position * 200 - (1 - BdRate) * 30 + 100, 326, BdRate * 60, 10)
+                Enemy.BdBar.draw(241 + position * 200 - (1 - Bd_rate) * 30 + 100, 326, Bd_rate * 60, 10)
             else:
                 Enemy.target.draw(230 + position * 200 + 100, 340)
-                Enemy.BdBar.draw(241 + position * 200 - (1 - BdRate) * 30 + 100, 356, BdRate * 60, 10)
+                Enemy.BdBar.draw(241 + position * 200 - (1 - Bd_rate) * 30 + 100, 356, Bd_rate * 60, 10)
 
     def draw_attribute_data(self):
         Enemy.name.clip_draw(0, 400 - self.type * 30, 250, 30, 200, 235)

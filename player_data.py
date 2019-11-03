@@ -3,8 +3,8 @@ import status
 
 class Player:
     bar = None
-    BdBar = None
-    MdBar = None
+    Bd_bar = None
+    Md_bar = None
     pattern = None
     item_number = None
     item_sign = None
@@ -14,11 +14,11 @@ class Player:
         if Player.bar is None:
             Player.bar = load_image("2BdMdBar.png")
 
-        if Player.BdBar is None:
-            Player.BdBar = load_image("2BdBar.png")
+        if Player.Bd_bar is None:
+            Player.Bd_bar = load_image("2BdBar.png")
 
-        if Player.MdBar is None:
-            Player.MdBar = load_image("2MdBar.png")
+        if Player.Md_bar is None:
+            Player.Md_bar = load_image("2MdBar.png")
 
         if Player.pattern is None:
             Player.pattern = load_image("2pattern.png")
@@ -40,28 +40,28 @@ class Player:
                 Player.item_sign = load_image("2itemSign.png")
             self.item = [3, 0, 0, 2, 0, 0, 0]
 
-    def getBd(self):
+    def get_Bd(self):
         return self.Bd
 
-    def setBd(self, Bd):
+    def set_Bd(self, Bd):
         self.Bd = Bd
 
-    def getMd(self):
+    def get_Md(self):
         return self.Md
 
-    def setMd(self, Md):
+    def set_Md(self, Md):
         self.Md = Md
 
-    def getTurn(self):
+    def get_turn(self):
         return self.max_Turn
 
     def draw(self, slt):
-        BdRate = self.Bd / self.max_Bd
-        MdRate = self.Md / self.max_Md
+        Bd_rate = self.Bd / self.max_Bd
+        Md_rate = self.Md / self.max_Md
 
         Player.bar.draw(1060, 200 - slt * 50)
-        Player.BdBar.draw(972 - (1 - BdRate) * 72, 200 - slt * 50, 150 * BdRate, 20)
-        Player.MdBar.draw(1143 - (1 - MdRate) * 72, 200 - slt * 50, 150 * MdRate, 20)
+        Player.Bd_bar.draw(972 - (1 - Bd_rate) * 72, 200 - slt * 50, 150 * Bd_rate, 20)
+        Player.Md_bar.draw(1143 - (1 - Md_rate) * 72, 200 - slt * 50, 150 * Md_rate, 20)
         Player.pattern.clip_draw(self.pat * 30, 0, 30, 30, 880, 200 - slt * 50)
 
     def draw_item_number(self, number):
