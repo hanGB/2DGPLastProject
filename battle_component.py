@@ -90,7 +90,8 @@ class MainState:
     def draw(battle_ui):
         if battle_ui.is_main is True:
             battle_ui.main_ui.clip_draw(battle_ui.act * 300, 0, 300, 300, 270, 180)
-        battle_ui.turn_number.clip_draw((5 - 1) * 100, 0, 100, 150, 105, 175)
+        battle_ui.turn_number.clip_draw((battle_state.player.get_player(battle_ui.player).get_turn() - 1) * 100, 0
+                                        , 100, 150, 105, 175)
 
 
 class SkillState:
@@ -98,7 +99,7 @@ class SkillState:
 
     @staticmethod
     def enter(battle_ui, event):
-        SkillState.skill_cnt = len(battle_state.player[battle_ui.player].card.getSkill())
+        SkillState.skill_cnt = len(battle_state.player.get_player(battle_ui.player).get_card().getSkill())
         if event == DOWN_DOWN:
             battle_ui.selecting = 1
             battle_ui.skill_slt = (battle_ui.skill_slt + battle_ui.selecting) % SkillState.skill_cnt
@@ -132,14 +133,15 @@ class SkillState:
 
     @staticmethod
     def draw(battle_ui):
-        battle_ui.turn_number.clip_draw((5 - 1) * 100, 0, 100, 150, 105, 175)
+        battle_ui.turn_number.clip_draw((battle_state.player.get_player(battle_ui.player).get_turn() - 1) * 100, 0
+                                        , 100, 150, 105, 175)
         battle_ui.skill_ui.draw(150, 170)
 
-        for i in range(len(battle_state.player[battle_ui.player].card.getSkill())):
+        for i in range(len(battle_state.player.get_player(battle_ui.player).get_card().getSkill())):
             if battle_ui.skill_slt == i:
-                battle_state.player[battle_ui.player].card.getSkill()[i].draw(i, 1)
+                battle_state.player.get_player(battle_ui.player).get_card().getSkill()[i].draw(i, 1)
             else:
-                battle_state.player[battle_ui.player].card.getSkill()[i].draw(i, 0)
+                battle_state.player.get_player(battle_ui.player).get_card().getSkill()[i].draw(i, 0)
 
 
 class ItemState:
@@ -176,7 +178,7 @@ class ItemState:
     @staticmethod
     def draw(battle_ui):
         battle_ui.item_ui.draw(360, 220)
-        battle_state.player[0].draw_item_number(battle_ui.item_slt)
+        battle_state.player.get_player(0).draw_item_number(battle_ui.item_slt)
 
 
 next_state_table = {

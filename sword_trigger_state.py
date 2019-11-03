@@ -51,12 +51,15 @@ def handle_events():
     for event in events:
         if event.type == SDL_QUIT:
             game_framework.quit()
+
         elif event.key == SDLK_s and event.type == SDL_KEYDOWN:
             if sword_trigger_ui.getKey() == 0:
                 print("sword")
+
         elif event.key == SDLK_d and event.type == SDL_KEYDOWN:
             if sword_trigger_ui.getKey() == 1:
                 print("trigger")
+
         elif event.key == (SDLK_a and event.type == SDL_KEYDOWN) \
                 or (event.key == SDLK_LSHIFT and event.type == SDL_KEYDOWN):
             battle_state.battle_ui.set_is_main(True)
@@ -79,9 +82,8 @@ def draw():
     battle_state.battle_map.draw()
     battle_state.battle_enemy.draw()
     battle_state.battle_ui.draw()
+    battle_state.player.draw()
     sword_trigger_ui.draw()
 
-    for n in range(battle_state.player_cnt):
-        battle_state.player[n].draw(n)
 
     update_canvas()

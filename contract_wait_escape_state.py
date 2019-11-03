@@ -65,14 +65,19 @@ def handle_events():
     for event in events:
         if event.type == SDL_QUIT:
             game_framework.quit()
+
         elif event.key == SDLK_SPACE and event.type == SDL_KEYDOWN:
             if cwe_ui.getKey() == 2:
                 print("contract")
+
             elif cwe_ui.getKey() == 1:
                 print("wait")
+
             elif cwe_ui.getKey() == 0:
                 print("escape")
-        elif (event.key == SDLK_a and event.type == SDL_KEYDOWN) or (event.key == SDLK_LSHIFT and event.type == SDL_KEYDOWN):
+
+        elif (event.key == SDLK_a and event.type == SDL_KEYDOWN) \
+                or (event.key == SDLK_LSHIFT and event.type == SDL_KEYDOWN):
             battle_state.battle_ui.set_is_main(True)
             game_framework.pop_state()
 
@@ -93,10 +98,8 @@ def draw():
     battle_state.battle_map.draw()
     battle_state.battle_enemy.draw()
     battle_state.battle_ui.draw()
-
+    battle_state.player.draw()
     cwe_ui.draw()
 
-    for n in range(battle_state.player_cnt):
-        battle_state.player[n].draw(n)
 
     update_canvas()

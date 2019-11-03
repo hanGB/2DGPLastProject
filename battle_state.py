@@ -4,11 +4,11 @@ import map_state
 import player_data
 import battle_component
 import battle_enemy_controller
-
+import battle_player
+import game_world
 name = "battle_state"
 
 player = None
-player_cnt = None
 battle_enemy = None
 battle_ui = None
 battle_map = None
@@ -22,11 +22,12 @@ def enter():
     global player_cnt
 
 # 테스트 용, 플레이어 생성은 게임 시작할 때 할 것
-    player = [player_data.Player(0, 100, 100, [10, 10, 10, 10, 10]),
+    test_player = [player_data.Player(0, 100, 100, [10, 10, 10, 10, 10]),
               player_data.Player(1, 100, 100, [10, 10, 10, 10, 10]),
               player_data.Player(3, 100, 100, [10, 10, 10, 10, 10])]
 
-    player_cnt = len(player)
+    player = battle_player.BattlePlayer(test_player)
+
     battle_map = map_state.Room(0, 0, 0, 0)
     battle_enemy = battle_enemy_controller.BattleEnemy()
     battle_ui = battle_component.BattleUi()
@@ -37,13 +38,11 @@ def exit():
     global battle_map
     global battle_enemy
     global player
-    global player_cnt
 
     del (battle_enemy)
     del (battle_ui)
     del (battle_map)
     del (player)
-    del (player_cnt)
 
 
 def pause():
@@ -80,8 +79,6 @@ def draw():
     battle_map.draw()
     battle_enemy.draw()
     battle_ui.draw()
-
-    for n in range(player_cnt):
-        player[n].draw(n)
+    player.draw()
 
     update_canvas()

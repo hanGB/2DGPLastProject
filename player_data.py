@@ -55,7 +55,10 @@ class Player:
     def get_turn(self):
         return self.max_Turn
 
-    def draw(self, slt):
+    def get_card(self):
+        return self.card
+
+    def draw_bar(self, slt):
         Bd_rate = self.Bd / self.max_Bd
         Md_rate = self.Md / self.max_Md
 

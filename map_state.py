@@ -21,32 +21,32 @@ class Room:
 
         # door_location - 1이 실제 사용 값
         self.door_location = [(2 * w, 1 * n, 3 * e), (4 * n, 0,  5 * e), (2 * n, 1 * e, 3 * s), (4 * e, 0, 5 * s),
-                         (2 * e, 1 * s, 3 * w) , (4 * s, 0, 5 * w), (2 * s, 1 * w, 3 * n), (4 * w, 0, 5 * n)]
-        self.maptype = 0
+                              (2 * e, 1 * s, 3 * w), (4 * s, 0, 5 * w), (2 * s, 1 * w, 3 * n), (4 * w, 0, 5 * n)]
+        self.map_type = 0
 
     def update(self, turn, sight):
         if turn == 'q':
-            if sight != self.maptype:
-                self.maptype = sight
-            self.maptype = (self.maptype - 1) % 8
+            if sight != self.map_type:
+                self.map_type = sight
+            self.map_type = (self.map_type - 1) % 8
         elif turn == 'e':
-            if sight != self.maptype:
-                self.maptype = sight
-            self.maptype = (self.maptype + 1) % 8
+            if sight != self.map_type:
+                self.map_type = sight
+            self.map_type = (self.map_type + 1) % 8
         elif turn == 's':
-            if sight != self.maptype:
-                self.maptype = sight
-            self.maptype = (self.maptype + 4) % 8
+            if sight != self.map_type:
+                self.map_type = sight
+            self.map_type = (self.map_type + 4) % 8
 
     def draw(self):
-        Room.background_map[self.maptype % 2].draw(640, 360)
+        Room.background_map[self.map_type % 2].draw(640, 360)
         for i in range(0, 3):
-            if self.door_location[self.maptype][i] != 0:
-                Room.door[self.door_location[self.maptype][i] - 1].draw(640, 360)
+            if self.door_location[self.map_type][i] != 0:
+                Room.door[self.door_location[self.map_type][i] - 1].draw(640, 360)
 
 
 room_connect_data = (((0, 1), (2, 3)), ((4, 0), (2, 2)),
-                         ((4, 3), (6, 1)), ((6, 0), (0, 2)))
+                     ((4, 3), (6, 1)), ((6, 0), (0, 2)))
 
 map = None
 sight = None
