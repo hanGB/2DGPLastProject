@@ -1,6 +1,8 @@
 from pico2d import *
 import battle_state
 import battle_analyze_state
+import sword_trigger_state
+import contract_wait_escape_state
 import game_framework
 
 W_KEY, A_KEY, S_KEY, D_KEY, F_KEY, C_KEY, TAB_KEY, SHIFT_KEY, SPACE_KEY, \
@@ -83,15 +85,14 @@ class SkillState:
             battle_ui.selecting = 1
             battle_ui.skill_slt = (battle_ui.skill_slt + battle_ui.selecting) % SkillState.skill_cnt
             battle_ui.sub_counter = 0
-        elif event == DOWN_UP:
+        elif event == DOWN_UP or event == UP_UP:
             battle_ui.selecting = 0
 
         elif event == UP_DOWN:
             battle_ui.selecting = -1
             battle_ui.skill_slt = (battle_ui.skill_slt + battle_ui.selecting) % SkillState.skill_cnt
             battle_ui.sub_counter = 0
-        elif event == UP_UP:
-            battle_ui.selecting = 0
+
         elif event == TAB_KEY:
             game_framework.push_state(battle_analyze_state)
 
@@ -130,15 +131,13 @@ class ItemState:
             battle_ui.selecting = 1
             battle_ui.item_slt = (battle_ui.item_slt + battle_ui.selecting) % 7
             battle_ui.sub_counter = 0
-        elif event == DOWN_UP:
+        elif event == DOWN_UP or event == UP_UP:
             battle_ui.selecting = 0
 
         elif event == UP_DOWN:
             battle_ui.selecting = -1
             battle_ui.item_slt = (battle_ui.item_slt + battle_ui.selecting) % 7
             battle_ui.sub_counter = 0
-        elif event == UP_UP:
-            battle_ui.selecting = 0
 
         elif event == SPACE_KEY:
             print("use item")
@@ -244,13 +243,7 @@ next_state_table = {
                  C_KEY: SkillState, TAB_KEY: SkillState, SHIFT_KEY: MainState, SPACE_KEY: SkillState},
     ItemState: {DOWN_DOWN: ItemState, DOWN_UP: ItemState, UP_DOWN: ItemState, UP_UP: ItemState,
                 W_KEY: ItemState, F_KEY: MainState, A_KEY: MainState, S_KEY: ItemState, D_KEY: ItemState,
-                C_KEY: ItemState, TAB_KEY: MainState, SHIFT_KEY: MainState, SPACE_KEY: ItemState},
-    AttackState: {DOWN_DOWN: AttackState, DOWN_UP: AttackState, UP_DOWN: AttackState, UP_UP: AttackState,
-                  W_KEY: AttackState, F_KEY: AttackState, A_KEY: MainState, S_KEY: AttackState, D_KEY: AttackState,
-                  C_KEY: AttackState, TAB_KEY: AttackState, SHIFT_KEY: MainState, SPACE_KEY: AttackState},
-    ActState: {DOWN_DOWN: ActState, DOWN_UP: ActState, UP_DOWN: ActState, UP_UP: ActState,
-               W_KEY: ActState, F_KEY: ActState, A_KEY: ActState, S_KEY: ActState, D_KEY: ActState,
-               C_KEY: ActState, TAB_KEY: MainState, SHIFT_KEY: MainState, SPACE_KEY: ActState}
+                C_KEY: ItemState, TAB_KEY: MainState, SHIFT_KEY: MainState, SPACE_KEY: ItemState}
 }
 
 

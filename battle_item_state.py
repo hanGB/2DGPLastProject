@@ -83,19 +83,19 @@ def draw():
 
     battle_state.battle_map.draw()
     if battle_state.enemy_cnt == 1:
-        battle_state.enemy[0].draw(2, 1)
+        battle_state.battle_enemy[0].draw(2, 1)
 
     elif battle_state.enemy_cnt == 2:
         for n in range(battle_state.enemy_cnt):
-            battle_state.enemy[n].draw(2 * n + 0.5, 1)
+            battle_state.battle_enemy[n].draw(2 * n + 0.5, 1)
 
     elif battle_state.enemy_cnt == 3:
         for n in range(battle_state.enemy_cnt):
-            battle_state.enemy[n].draw(n + n * 0.7, 1)
+            battle_state.battle_enemy[n].draw(n + n * 0.7, 1)
 
     elif battle_state.enemy_cnt == 4:
         for n in range(battle_state.enemy_cnt):
-            battle_state.enemy[n].draw(n + n * 0.2, 1)
+            battle_state.battle_enemy[n].draw(n + n * 0.2, 1)
 
     itemUi.draw()
     battle_state.player[0].draw_item_number(item_slt)

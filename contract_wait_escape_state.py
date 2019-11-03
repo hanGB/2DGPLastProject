@@ -2,6 +2,7 @@ from pico2d import *
 import game_framework
 import battle_state
 import battle_analyze_state
+import battle_component
 
 name = "contract_wait_escape_state"
 
@@ -92,19 +93,19 @@ def draw():
     battle_state.battle_map.draw()
 
     if battle_state.enemy_cnt == 1:
-        battle_state.enemy[0].draw(2, 0)
+        battle_state.battle_enemy[0].draw(2, 0)
 
     elif battle_state.enemy_cnt == 2:
         for n in range(battle_state.enemy_cnt):
-            battle_state.enemy[n].draw(2 * n + 0.5, n - battle_state.enemy_slt)
+            battle_state.battle_enemy[n].draw(2 * n + 0.5, n - battle_state.enemy_slt)
 
     elif battle_state.enemy_cnt == 3:
         for n in range(battle_state.enemy_cnt):
-            battle_state.enemy[n].draw(n + n * 0.7, n - battle_state.enemy_slt)
+            battle_state.battle_enemy[n].draw(n + n * 0.7, n - battle_state.enemy_slt)
 
     elif battle_state.enemy_cnt == 4:
         for n in range(battle_state.enemy_cnt):
-            battle_state.enemy[n].draw(n+ n * 0.2, n - battle_state.enemy_slt)
+            battle_state.battle_enemy[n].draw(n + n * 0.2, n - battle_state.enemy_slt)
 
     battle_state.battle_ui.draw(-1)
     cwe_ui.draw()
