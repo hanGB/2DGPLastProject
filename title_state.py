@@ -10,8 +10,8 @@ menu = None
 
 class Title:
     def __init__(self):
-        self.title = load_image("0title.png")
-        self.menu = load_image("0mainMenu.png")
+        self.title = load_image("resource/title/title.png")
+        self.menu = load_image("resource/title/mainMenu.png")
 
     def draw(self, menu):
         self.title.draw(640, 360)

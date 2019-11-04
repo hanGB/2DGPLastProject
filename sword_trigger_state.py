@@ -16,7 +16,7 @@ class SwordTriggerUi:
         self.key = key
 
         if SwordTriggerUi.image is None:
-            SwordTriggerUi.image = load_image("2sdInBattle.png")
+            SwordTriggerUi.image = load_image("resource/interface/sdInBattle.png")
 
     def getKey(self):
         return self.key

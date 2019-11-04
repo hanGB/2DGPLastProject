@@ -7,14 +7,10 @@ name = "warning_state"
 warning = None
 warning_time = 3.1  # test 시 3.1 끝나면 0.0으로 변경
 
-basic_dir = os.getcwd()
-now_dir = os.path.join(basic_dir, "resource")
-os.chdir(now_dir)
-
 
 class Warning:
     def __init__(self):
-        self.image = load_image("0warning.png")
+        self.image = load_image("resource/title/warning.png")
 
     def draw(self):
         self.image.draw(640, 360)

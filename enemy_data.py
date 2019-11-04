@@ -10,99 +10,99 @@ class Enemy:
 
     def __init__(self, type):
         if Enemy.target is None:
-            Enemy.target = load_image("2target.png")
+            Enemy.target = load_image("resource/interface/target.png")
 
         if Enemy.BdBar is None:
-            Enemy.BdBar = load_image("2targetBd.png")
+            Enemy.BdBar = load_image("resource/interface/targetBd.png")
 
         if Enemy.name is None:
-            Enemy.name = load_image("2enemyName.png")
+            Enemy.name = load_image("resource/interface/enemyName.png")
 
         if Enemy.attribute is None:
-            Enemy.attribute = load_image("2analWeakness.png")
+            Enemy.attribute = load_image("resource/interface/analWeakness.png")
 
         self.type = type
 
         if type == 0:
-            self.image = load_image("4-0alice.png")
+            self.image = load_image("resource/enemy/0alice.png")
             self.max_Bd = 2000
             self.status = [35, 35, 35, 35, 35]
             self.max_turn = 5
 
         elif type == 1:
-            self.image = load_image("4-1slame.png")
+            self.image = load_image("resource/enemy/1slame.png")
             self.max_Bd = 100
             self.status = [10, 10, 10, 10, 10]
             self.max_turn = 1
 
         elif type == 2:
-            self.image = load_image("4-2jack_o_lantern.png")
+            self.image = load_image("resource/enemy/2jack_o_lantern.png")
             self.max_Bd = 100
             self.status = [10, 10, 10, 10, 10]
             self.max_turn = 1
 
         elif type == 3:
-            self.image = load_image("4-3jack_frost.png")
+            self.image = load_image("resource/enemy/3jack_frost.png")
             self.max_Bd = 100
             self.status = [10, 10, 10, 10, 10]
             self.max_turn = 2
 
         elif type == 4:
-            self.image = load_image("4-4loa.png")
+            self.image = load_image("resource/enemy/4loa.png")
             self.max_Bd = 100
             self.status = [10, 10, 10, 10, 10]
             self.max_turn = 2
 
         elif type == 5:
-            self.image = load_image("4-5high_pixie.png")
+            self.image = load_image("resource/enemy/5high_pixie.png")
             self.max_Bd = 100
             self.status = [10, 10, 10, 10, 10]
             self.max_turn = 2
 
         elif type == 6:
-            self.image = load_image("4-6kaiwan.png")
+            self.image = load_image("resource/enemy/6kaiwan.png")
             self.max_Bd = 100
             self.status = [10, 10, 10, 10, 10]
             self.max_turn = 3
 
         elif type == 7:
-            self.image = load_image("4-7legion.png")
+            self.image = load_image("resource/enemy/7legion.png")
             self.max_Bd = 100
             self.status = [10, 10, 10, 10, 10]
             self.max_turn = 3
 
         elif type == 8:
-            self.image = load_image("4-8naga.png")
+            self.image = load_image("resource/enemy/8naga.png")
             self.max_Bd = 100
             self.status = [10, 10, 10, 10, 10]
             self.max_turn = 3
 
         elif type == 9:
-            self.image = load_image("4-9dol.png")
+            self.image = load_image("resource/enemy/9dol.png")
             self.max_Bd = 100
             self.status = [10, 10, 10, 10, 10]
             self.max_turn = 3
 
         elif type == 10:
-            self.image = load_image("4-10surt.png")
+            self.image = load_image("resource/enemy/10surt.png")
             self.max_Bd = 100
             self.status = [10, 10, 10, 10, 10]
             self.max_turn = 4
 
         elif type == 11:
-            self.image = load_image("4-11norn.png")
+            self.image = load_image("resource/enemy/11norn.png")
             self.max_Bd = 100
             self.status = [10, 10, 10, 10, 10]
             self.max_turn = 4
 
         elif type == 12:
-            self.image = load_image("4-12lucipel.png")
+            self.image = load_image("resource/enemy/12lucipel.png")
             self.max_Bd = 5000
             self.status = [50, 50, 50, 50, 50]
             self.max_turn = 5
 
         elif type == 13:
-            self.image = load_image("4-13luciper.png")
+            self.image = load_image("resource/enemy/13luciper.png")
             self.max_Bd = 9999
             self.status = [99, 99, 19, 19, 19]
             self.max_turn = 9

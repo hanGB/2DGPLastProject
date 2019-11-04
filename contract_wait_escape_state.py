@@ -23,13 +23,13 @@ class CWEUi:
             self.key = 0
 
         if CWEUi.image_do is None:
-            CWEUi.image_do = load_image("2doyouwant.png")
+            CWEUi.image_do = load_image("resource/interface/doyouwant.png")
 
         if CWEUi.image_act is None:
-            CWEUi.image_act = load_image("2etcAct.png")
+            CWEUi.image_act = load_image("resource/interface/etcAct.png")
 
         if CWEUi.image_ny is None:
-            CWEUi.image_ny = load_image("2noyes.png")
+            CWEUi.image_ny = load_image("resource/interface/noyes.png")
 
     def getKey(self):
         return self.key

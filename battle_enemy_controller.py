@@ -17,11 +17,13 @@ class EnemySelectState:
     def enter(battle_enemy, event):
         if event == LEFT_DOWN:
             battle_enemy.selecting = -1
-            battle_enemy.enemy_slt = (battle_enemy.enemy_slt + battle_enemy.selecting) % battle_enemy.enemy_cnt
+            battle_enemy.selected_enemy = (battle_enemy.selected_enemy + battle_enemy.selecting) \
+                                          % battle_enemy.number_of_enemys
             battle_enemy.sub_counter = 0
         elif event == RIGHT_DOWN:
             battle_enemy.selecting = 1
-            battle_enemy.enemy_slt = (battle_enemy.enemy_slt + battle_enemy.selecting) % battle_enemy.enemy_cnt
+            battle_enemy.selected_enemy = (battle_enemy.selected_enemy + battle_enemy.selecting) \
+                                          % battle_enemy.number_of_enemys
             battle_enemy.sub_counter = 0
         elif event == LEFT_UP or event == RIGHT_UP:
             battle_enemy.selecting = 0
@@ -37,24 +39,25 @@ class EnemySelectState:
 
             if battle_enemy.sub_counter == 100:
                 battle_enemy.sub_counter = 0
-                battle_enemy.enemy_slt = (battle_enemy.enemy_slt + battle_enemy.selecting) % battle_enemy.enemy_cnt
+                battle_enemy.selected_enemy = (battle_enemy.selected_enemy + battle_enemy.selecting) \
+                                         % battle_enemy.number_of_enemys
 
     @staticmethod
     def draw(battle_enemy):
-        if battle_enemy.enemy_cnt == 1:
+        if battle_enemy.number_of_enemys == 1:
             battle_enemy.enemy[0].draw(2, 0)
 
-        elif battle_enemy.enemy_cnt == 2:
-            for n in range(battle_enemy.enemy_cnt):
-                battle_enemy.enemy[n].draw(2 * n + 0.5, n - battle_enemy.enemy_slt)
+        elif battle_enemy.number_of_enemys == 2:
+            for n in range(battle_enemy.number_of_enemys):
+                battle_enemy.enemy[n].draw(2 * n + 0.5, n - battle_enemy.selected_enemy)
 
-        elif battle_enemy.enemy_cnt == 3:
-            for n in range(battle_enemy.enemy_cnt):
-                battle_enemy.enemy[n].draw(n + n * 0.7, n - battle_enemy.enemy_slt)
+        elif battle_enemy.number_of_enemys == 3:
+            for n in range(battle_enemy.number_of_enemys):
+                battle_enemy.enemy[n].draw(n + n * 0.7, n - battle_enemy.selected_enemy)
 
-        elif battle_enemy.enemy_cnt == 4:
-            for n in range(battle_enemy.enemy_cnt):
-                battle_enemy.enemy[n].draw(n + n * 0.2, n - battle_enemy.enemy_slt)
+        elif battle_enemy.number_of_enemys == 4:
+            for n in range(battle_enemy.number_of_enemys):
+                battle_enemy.enemy[n].draw(n + n * 0.2, n - battle_enemy.selected_enemy)
 
 
 next_state_table = {
@@ -67,15 +70,15 @@ class BattleEnemy:
     def __init__(self):
         self.selecting = 0
         self.sub_counter = 0
-        self.enemy_cnt = random.randint(1, 4)
-        self.enemy_slt = 0
-        self.enemy = [enemy_data.Enemy(random.randint(1, 11)) for n in range(self.enemy_cnt)]
+        self.number_of_enemys = random.randint(1, 4)
+        self.selected_enemy = 0
+        self.enemy = [enemy_data.Enemy(random.randint(1, 11)) for n in range(self.number_of_enemys)]
         self.event_que = []
         self.cur_state = EnemySelectState
         self.cur_state.enter(self, None)
 
-    def get_enemy_slt(self):
-        return self.enemy_slt
+    def get_selected_enemy(self):
+        return self.selected_enemy
 
     def update_state(self):
         if len(self.event_que) > 0:

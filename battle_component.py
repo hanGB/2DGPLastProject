@@ -102,14 +102,14 @@ class SkillState:
         SkillState.skill_cnt = len(battle_state.player.get_player(battle_ui.player).get_card().getSkill())
         if event == DOWN_DOWN:
             battle_ui.selecting = 1
-            battle_ui.skill_slt = (battle_ui.skill_slt + battle_ui.selecting) % SkillState.skill_cnt
+            battle_ui.selected_skill = (battle_ui.selected_skill + battle_ui.selecting) % SkillState.skill_cnt
             battle_ui.sub_counter = 0
         elif event == DOWN_UP or event == UP_UP:
             battle_ui.selecting = 0
 
         elif event == UP_DOWN:
             battle_ui.selecting = -1
-            battle_ui.skill_slt = (battle_ui.skill_slt + battle_ui.selecting) % SkillState.skill_cnt
+            battle_ui.selected_skill = (battle_ui.selected_skill + battle_ui.selecting) % SkillState.skill_cnt
             battle_ui.sub_counter = 0
 
         elif event == TAB_KEY:
@@ -129,7 +129,7 @@ class SkillState:
 
             if battle_ui.sub_counter == 80:
                 battle_ui.sub_counter = 0
-                battle_ui.skill_slt = (battle_ui.skill_slt + battle_ui.selecting) % SkillState.skill_cnt
+                battle_ui.selected_skill = (battle_ui.selected_skill + battle_ui.selecting) % SkillState.skill_cnt
 
     @staticmethod
     def draw(battle_ui):
@@ -138,7 +138,7 @@ class SkillState:
         battle_ui.skill_ui.draw(150, 170)
 
         for i in range(len(battle_state.player.get_player(battle_ui.player).get_card().getSkill())):
-            if battle_ui.skill_slt == i:
+            if battle_ui.selected_skill == i:
                 battle_state.player.get_player(battle_ui.player).get_card().getSkill()[i].draw(i, 1)
             else:
                 battle_state.player.get_player(battle_ui.player).get_card().getSkill()[i].draw(i, 0)
@@ -149,14 +149,14 @@ class ItemState:
     def enter(battle_ui, event):
         if event == DOWN_DOWN:
             battle_ui.selecting = 1
-            battle_ui.item_slt = (battle_ui.item_slt + battle_ui.selecting) % 7
+            battle_ui.selected_item = (battle_ui.selected_item + battle_ui.selecting) % 7
             battle_ui.sub_counter = 0
         elif event == DOWN_UP or event == UP_UP:
             battle_ui.selecting = 0
 
         elif event == UP_DOWN:
             battle_ui.selecting = -1
-            battle_ui.item_slt = (battle_ui.item_slt + battle_ui.selecting) % 7
+            battle_ui.selected_item = (battle_ui.selected_item + battle_ui.selecting) % 7
             battle_ui.sub_counter = 0
 
         elif event == SPACE_KEY:
@@ -173,12 +173,12 @@ class ItemState:
 
             if battle_ui.sub_counter == 80:
                 battle_ui.sub_counter = 0
-                battle_ui.item_slt = (battle_ui.item_slt + battle_ui.selecting) % 7
+                battle_ui.selected_item = (battle_ui.selected_item + battle_ui.selecting) % 7
 
     @staticmethod
     def draw(battle_ui):
         battle_ui.item_ui.draw(360, 220)
-        battle_state.player.get_player(0).draw_item_number(battle_ui.item_slt)
+        battle_state.player.get_player(0).draw_item_number(battle_ui.selected_item)
 
 
 next_state_table = {
@@ -202,21 +202,21 @@ class BattleUi:
 
     def __init__(self):
         if BattleUi.main_ui is None:
-            BattleUi.main_ui = load_image("2newUi.png")
+            BattleUi.main_ui = load_image("resource/interface/newUi.png")
         if BattleUi.turn_number is None:
-            BattleUi.turn_number = load_image("2turnNumber.png")
+            BattleUi.turn_number = load_image("resource/interface/turnNumber.png")
 
         if BattleUi.skill_ui is None:
-            BattleUi.skill_ui = load_image("2skillUi.png")
+            BattleUi.skill_ui = load_image("resource/interface/skillUi.png")
 
         if BattleUi.item_ui is None:
-            BattleUi.item_ui = load_image("2item.png")
+            BattleUi.item_ui = load_image("resource/interface/item.png")
 
         self.act = 0
         self.sd_key = -1
         self.player = 0
-        self.item_slt = 0
-        self.skill_slt = 0
+        self.selected_item = 0
+        self.selected_skill = 0
         self.sub_counter = 0
         self.sub_menu_select = -1
         self.selecting = 0

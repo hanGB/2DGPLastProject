@@ -13,16 +13,16 @@ class Player:
     def __init__(self, p, Bd, Md, stat):
 
         if Player.bar is None:
-            Player.bar = load_image("2BdMdBar.png")
+            Player.bar = load_image("resource/interface/BdMdBar.png")
 
         if Player.Bd_bar is None:
-            Player.Bd_bar = load_image("2BdBar.png")
+            Player.Bd_bar = load_image("resource/interface/BdBar.png")
 
         if Player.Md_bar is None:
-            Player.Md_bar = load_image("2MdBar.png")
+            Player.Md_bar = load_image("resource/interface/MdBar.png")
 
         if Player.pattern is None:
-            Player.pattern = load_image("2pattern.png")
+            Player.pattern = load_image("resource/interface/pattern.png")
 
         self.pat = p
         self.max_Bd = Bd
@@ -36,9 +36,9 @@ class Player:
 
         if self.pat == 0:
             if Player.item_number is None:
-                Player.item_number = load_image("2itemNum.png")
+                Player.item_number = load_image("resource/interface/itemNum.png")
             if Player.item_sign is None:
-                Player.item_sign = load_image("2itemSign.png")
+                Player.item_sign = load_image("resource/interface/itemSign.png")
             self.item = [3, 0, 0, 2, 0, 0, 0]
 
     def get_Bd(self):

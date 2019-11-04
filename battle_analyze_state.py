@@ -13,14 +13,14 @@ class AnalyzeUi:
 
     def __init__(self):
         if AnalyzeUi.image is None:
-            AnalyzeUi.image = load_image("2analyzeUi.png")
+            AnalyzeUi.image = load_image("resource/interface/analyzeUi.png")
 
     def update(self):
         pass
 
     def draw(self):
         AnalyzeUi.image.draw(200, 100)
-        battle_state.battle_enemy.enemy[battle_state.battle_enemy.get_enemy_slt()].draw_attribute_data()
+        battle_state.battle_enemy.enemy[battle_state.battle_enemy.get_selected_enemy()].draw_attribute_data()
 
 
 def enter():
