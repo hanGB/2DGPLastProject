@@ -1,5 +1,5 @@
 from pico2d import *
-import status
+import status_data
 
 
 class Enemy:
@@ -111,7 +111,7 @@ class Enemy:
         self.buf = [0, 0]
         self.turn = self.max_turn
         self.down = 0
-        self.card = status.Card(self.type)
+        self.card = status_data.Card(self.type)
 
     def get_Bd(self):
         return self.Bd

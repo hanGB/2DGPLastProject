@@ -1,6 +1,6 @@
 from pico2d import *
 import game_framework
-import map_state
+import room_data
 import player_data
 import battle_component
 import battle_enemy_controller
@@ -28,7 +28,7 @@ def enter():
 
     player = battle_player.BattlePlayer(test_player)
 
-    battle_map = map_state.Room(0, 0, 0, 0)
+    battle_map = room_data.Room(0, 0, 0, 0)
     battle_enemy = battle_enemy_controller.BattleEnemy()
     battle_ui = battle_component.BattleUi()
 

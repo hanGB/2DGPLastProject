@@ -1,5 +1,5 @@
 from pico2d import *
-import status
+import status_data
 
 
 class Player:
@@ -32,7 +32,7 @@ class Player:
         self.buff = [0, 0]
         self.Bd = self.max_Bd
         self.Md = self.max_Md
-        self.card = status.Card(1)
+        self.card = status_data.Card(1)
 
         if self.pat == 0:
             if Player.item_number is None:

@@ -95,21 +95,21 @@ class MainState:
 
 
 class SkillState:
-    skill_cnt = 0
+    number_of_skills = 0
 
     @staticmethod
     def enter(battle_ui, event):
-        SkillState.skill_cnt = len(battle_state.player.get_player(battle_ui.player).get_card().getSkill())
+        SkillState.number_of_skills = len(battle_state.player.get_player(battle_ui.player).get_card().getSkill())
         if event == DOWN_DOWN:
             battle_ui.selecting = 1
-            battle_ui.selected_skill = (battle_ui.selected_skill + battle_ui.selecting) % SkillState.skill_cnt
+            battle_ui.selected_skill = (battle_ui.selected_skill + battle_ui.selecting) % SkillState.number_of_skills
             battle_ui.sub_counter = 0
         elif event == DOWN_UP or event == UP_UP:
             battle_ui.selecting = 0
 
         elif event == UP_DOWN:
             battle_ui.selecting = -1
-            battle_ui.selected_skill = (battle_ui.selected_skill + battle_ui.selecting) % SkillState.skill_cnt
+            battle_ui.selected_skill = (battle_ui.selected_skill + battle_ui.selecting) % SkillState.number_of_skills
             battle_ui.sub_counter = 0
 
         elif event == TAB_KEY:
@@ -129,7 +129,7 @@ class SkillState:
 
             if battle_ui.sub_counter == 80:
                 battle_ui.sub_counter = 0
-                battle_ui.selected_skill = (battle_ui.selected_skill + battle_ui.selecting) % SkillState.skill_cnt
+                battle_ui.selected_skill = (battle_ui.selected_skill + battle_ui.selecting) % SkillState.number_of_skills
 
     @staticmethod
     def draw(battle_ui):
