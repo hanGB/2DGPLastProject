@@ -76,6 +76,8 @@ class NormalMap:
         map.rooms[map.location_y][map.location_x].draw()
         map.compass.clip_draw(map.rooms[map.location_y][map.location_x].get_map_direction() * 200, 0,
                               200, 150, 1150, 100)
+        map.room_number.clip_draw(20 * map.location_y, 0, 20, 30, 1210, 140)
+        map.room_number.clip_draw(20 * map.location_x, 0, 20, 30, 1100, 55)
 
 
 next_state_table = {
@@ -87,10 +89,13 @@ next_state_table = {
 
 class Map:
     compass = None
+    room_number = None
 
     def __init__(self, type):
         if Map.compass is None:
             Map.compass = load_image("resource/interface/compass.png")
+        if Map.room_number is None:
+            Map.room_number = load_image("resource/interface/roomNum.png")
 
         self.direction = 0
         self.sub_counter = 0
