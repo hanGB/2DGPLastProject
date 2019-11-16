@@ -1,7 +1,6 @@
 from pico2d import *
 import game_framework
 import room_data
-import player_data
 import battle_component
 import battle_enemy_controller
 import battle_player

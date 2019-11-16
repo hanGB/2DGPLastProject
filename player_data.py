@@ -9,6 +9,7 @@ class Player:
     pattern = None
     item_number = None
     item_sign = None
+    down_fall = None
 
     def __init__(self, p, Bd, Md, stat):
 
@@ -24,6 +25,9 @@ class Player:
         if Player.pattern is None:
             Player.pattern = load_image("resource/interface/pattern.png")
 
+        if Player.down_fall is None:
+            Player.down_fall = load_image("resource/interface/playerDownFall.png")
+
         self.pat = p
         self.max_Bd = Bd
         self.max_Md = Md
@@ -33,7 +37,7 @@ class Player:
         self.Bd = self.max_Bd
         self.Md = self.max_Md
         self.card = status_data.Card(1)
-
+        self.down_level = 0
         if self.pat == 0:
             if Player.item_number is None:
                 Player.item_number = load_image("resource/interface/itemNum.png")
@@ -59,14 +63,23 @@ class Player:
     def get_card(self):
         return self.card
 
-    def draw_bar(self, slt):
+    def get_down_level(self):
+        return self.down_level
+
+    def set_down_level(self, down_level):
+        self.down_fall = down_level
+
+    def draw_bar(self, sit):
         Bd_rate = self.Bd / self.max_Bd
         Md_rate = self.Md / self.max_Md
 
-        Player.bar.draw(1060, 200 - slt * 50)
-        Player.Bd_bar.draw(972 - (1 - Bd_rate) * 72, 200 - slt * 50, 150 * Bd_rate, 20)
-        Player.Md_bar.draw(1143 - (1 - Md_rate) * 72, 200 - slt * 50, 150 * Md_rate, 20)
-        Player.pattern.clip_draw(self.pat * 30, 0, 30, 30, 880, 200 - slt * 50)
+        Player.bar.draw(1060, 200 - sit * 50)
+        Player.Bd_bar.draw(972 - (1 - Bd_rate) * 72, 200 - sit * 50, 150 * Bd_rate, 20)
+        Player.Md_bar.draw(1143 - (1 - Md_rate) * 72, 200 - sit * 50, 150 * Md_rate, 20)
+        Player.pattern.clip_draw(self.pat * 30, 0, 30, 30, 880, 200 - sit * 50)
+
+        if self.down_level != 0:
+            Player.down_fall.clip_draw((self.down_level - 1) * 100, 0, 100, 30, 815, 198 - sit * 50)
 
     def draw_item_number(self, number):
         if self.pat == 0:

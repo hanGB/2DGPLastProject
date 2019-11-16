@@ -7,6 +7,7 @@ class Enemy:
     BdBar = None
     name = None
     attribute = None
+    down_fall = None
 
     def __init__(self, type):
         if Enemy.target is None:
@@ -20,6 +21,9 @@ class Enemy:
 
         if Enemy.attribute is None:
             Enemy.attribute = load_image("resource/interface/analWeakness.png")
+
+        if Enemy.down_fall is None:
+            Enemy.down_fall = load_image("resource/interface/enemyDownFall.png")
 
         self.type = type
 
@@ -110,7 +114,7 @@ class Enemy:
         self.Bd = self.max_Bd
         self.buf = [0, 0]
         self.turn = self.max_turn
-        self.down = 0
+        self.down_level = 0
         self.card = status_data.Card(self.type)
 
     def get_Bd(self):
@@ -125,21 +129,40 @@ class Enemy:
     def get_attribute(self):
         return self.card.getAttribute()
 
+    def get_down_level(self):
+        return self.down_level
+
+    def set_down_level(self, down_level):
+        self.down_fall = down_level
+
     def draw(self, position, slt):
-        self.image.draw(200 + position * 200, 300)
+        if self.type == 1:
+            self.image.draw(200 + position * 200, 255)
+        else:
+            self.image.draw(200 + position * 200, 300)
 
         Bd_rate = self.Bd / self.max_Bd
 
-        if slt == 0:
-            if self.type == 1:
-                Enemy.target.draw(230 + position * 200 + 100, 250)
-                Enemy.BdBar.draw(241 + position * 200 - (1 - Bd_rate) * 30 + 100, 266, Bd_rate * 60, 10)
-            elif self.type == 2 or self.type == 3 or self.type == 4 or self.type == 6:
+        if self.type == 1:
+            if slt == 0:
+                Enemy.target.draw(230 + position * 200 + 100, 240)
+                Enemy.BdBar.draw(241 + position * 200 - (1 - Bd_rate) * 30 + 100, 256, Bd_rate * 60, 10)
+            if self.down_level != 0:
+                Enemy.down_fall.clip_draw((self.down_level - 1) * 100, 0, 100, 30, 230 + position * 200 + 155, 235)
+
+        elif self.type == 2 or self.type == 3 or self.type == 4 or self.type == 6:
+            if slt == 0:
                 Enemy.target.draw(230 + position * 200 + 100, 310)
                 Enemy.BdBar.draw(241 + position * 200 - (1 - Bd_rate) * 30 + 100, 326, Bd_rate * 60, 10)
-            else:
+            if self.down_level != 0:
+                Enemy.down_fall.clip_draw((self.down_level - 1) * 100, 0, 100, 30, 230 + position * 200 + 155, 305)
+
+        else:
+            if slt == 0:
                 Enemy.target.draw(230 + position * 200 + 100, 340)
                 Enemy.BdBar.draw(241 + position * 200 - (1 - Bd_rate) * 30 + 100, 356, Bd_rate * 60, 10)
+            if self.down_level != 0:
+                Enemy.down_fall.clip_draw((self.down_level - 1) * 100, 0, 100, 30, 230 + position * 200 + 155, 335)
 
     def draw_attribute_data(self):
         Enemy.name.clip_draw(0, 400 - self.type * 30, 250, 30, 200, 235)

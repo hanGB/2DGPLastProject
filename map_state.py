@@ -37,6 +37,9 @@ def handle_events():
     for event in events:
         if event.type == SDL_QUIT:
             game_framework.quit()
+        # 배틀 진입 테스트
+        if event.type == SDL_KEYDOWN and event.key == SDLK_b:
+            game_framework.push_state(battle_state)
         else:
             map.handle_events(event)
 
