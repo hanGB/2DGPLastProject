@@ -5,6 +5,10 @@ import sword_trigger_state
 import contract_wait_escape_state
 import game_framework
 
+TIME_PER_SELECTING = 2
+SELECTING_PER_TIME = 1.0 / TIME_PER_SELECTING
+FRAMES_PER_SELECTING = 8
+
 W_KEY, A_KEY, S_KEY, D_KEY, F_KEY, C_KEY, TAB_KEY, SHIFT_KEY, SPACE_KEY, \
 UP_DOWN, DOWN_DOWN, UP_UP, DOWN_UP = range(13)
 
@@ -78,9 +82,9 @@ class MainState:
     @staticmethod
     def do(battle_ui):
         if battle_ui.selecting == 1:
-            battle_ui.sub_counter += 1
+            battle_ui.sub_counter += game_framework.frame_time * FRAMES_PER_SELECTING * SELECTING_PER_TIME
 
-            if battle_ui.sub_counter == 100:
+            if battle_ui.sub_counter > 1:
                 battle_ui.sub_counter = 0
                 battle_ui.act = (battle_ui.act + 1) % 6
                 if battle_ui.act == 0:
@@ -125,9 +129,9 @@ class SkillState:
     @staticmethod
     def do(battle_ui):
         if battle_ui.selecting == 1 or battle_ui.selecting == -1:
-            battle_ui.sub_counter += 1
+            battle_ui.sub_counter += game_framework.frame_time * FRAMES_PER_SELECTING * SELECTING_PER_TIME
 
-            if battle_ui.sub_counter == 80:
+            if battle_ui.sub_counter > 1:
                 battle_ui.sub_counter = 0
                 battle_ui.selected_skill = (battle_ui.selected_skill + battle_ui.selecting) % SkillState.number_of_skills
 
@@ -169,9 +173,9 @@ class ItemState:
     @staticmethod
     def do(battle_ui):
         if battle_ui.selecting == 1 or battle_ui.selecting == -1:
-            battle_ui.sub_counter += 1
+            battle_ui.sub_counter += game_framework.frame_time * FRAMES_PER_SELECTING * SELECTING_PER_TIME
 
-            if battle_ui.sub_counter == 80:
+            if battle_ui.sub_counter > 1:
                 battle_ui.sub_counter = 0
                 battle_ui.selected_item = (battle_ui.selected_item + battle_ui.selecting) % 7
 

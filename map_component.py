@@ -4,6 +4,10 @@ import random
 import battle_state
 import game_framework
 
+TIME_PER_CAMERA_MOVE = 2
+CAMERA_MOVE_PER_TIME = 1.0 / TIME_PER_CAMERA_MOVE
+FRAMES_PER_CAMERA_MOVE = 8
+
 LEFT_DOWN, RIGHT_DOWN, LEFT_UP, RIGHT_UP, UP_KEY, DOWN_KEY = range(6)
 
 key_event_table = {
@@ -61,9 +65,9 @@ class NormalMap:
     @staticmethod
     def do(map):
         if map.direction == 1 or map.direction == -1:
-            map.sub_counter += 1
+            map.sub_counter += game_framework.frame_time * FRAMES_PER_CAMERA_MOVE * CAMERA_MOVE_PER_TIME
 
-            if map.sub_counter == 80:
+            if map.sub_counter > 1:
                 map.sub_counter = 0
 
                 if map.direction == 1:

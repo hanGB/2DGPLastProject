@@ -1,6 +1,11 @@
 from pico2d import *
 import random
 import enemy_data
+import game_framework
+
+TIME_PER_SELECTING = 2
+SELECTING_PER_TIME = 1.0 / TIME_PER_SELECTING
+FRAMES_PER_SELECTING = 8
 
 LEFT_DOWN, RIGHT_DOWN, LEFT_UP, RIGHT_UP = range(4)
 
@@ -35,9 +40,9 @@ class EnemySelectState:
     @staticmethod
     def do(battle_enemy):
         if battle_enemy.selecting == 1 or battle_enemy.selecting == -1:
-            battle_enemy.sub_counter += 1
+            battle_enemy.sub_counter += game_framework.frame_time * FRAMES_PER_SELECTING * SELECTING_PER_TIME
 
-            if battle_enemy.sub_counter == 100:
+            if battle_enemy.sub_counter > 1:
                 battle_enemy.sub_counter = 0
                 battle_enemy.selected_enemy = (battle_enemy.selected_enemy + battle_enemy.selecting) \
                                          % battle_enemy.number_of_enemys

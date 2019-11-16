@@ -1,9 +1,6 @@
 from pico2d import *
 import game_framework
-import battle_state
-import title_state
 import map_component
-import room_data
 
 name = "map_state"
 
@@ -40,7 +37,6 @@ def handle_events():
     for event in events:
         if event.type == SDL_QUIT:
             game_framework.quit()
-            # 임시 배틀 인카운트 키
         else:
             map.handle_events(event)
 
