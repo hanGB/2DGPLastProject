@@ -105,31 +105,36 @@ class Map:
         self.sub_counter = 0
         if type == 0:
             # 0번 던전의 맵 데이터
-            self.rooms = [[room_data.Room(1, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(1, 1, 0, 0),
-                           room_data.Room(1, 0, 0, 1), room_data.Room(1, 0, 0, 0), room_data.Room(0, 0, 0, 0),
+            # 0, 4 S에서 출발해서 6, 2 N으로 나가는 던전
+            self.rooms = [[room_data.Room(1, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0),
+                           room_data.Room(0, 0, 0, 0), room_data.Room(1, 0, 0, 0), room_data.Room(0, 0, 0, 0),
                            room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0)],
 
-                          [room_data.Room(0, 1, 1, 0), room_data.Room(0, 0, 0, 1), room_data.Room(1, 0, 1, 0),
-                           room_data.Room(0, 1, 1, 0), room_data.Room(1, 0, 1, 1), room_data.Room(0, 0, 0, 0),
+                          [room_data.Room(1, 0, 1, 0), room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0),
+                           room_data.Room(0, 0, 0, 0), room_data.Room(1, 0, 1, 0), room_data.Room(0, 0, 0, 0),
                            room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0)],
 
-                          [room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 1, 0), room_data.Room(1, 1, 1, 0),
-                           room_data.Room(1, 0, 0, 1), room_data.Room(1, 0, 1, 0), room_data.Room(0, 0, 0, 0),
-                           room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0)],
+                          [room_data.Room(0, 1, 1, 0), room_data.Room(0, 1, 0, 1), room_data.Room(0, 1, 0, 1),
+                           room_data.Room(0, 1, 0, 1), room_data.Room(0, 1, 1, 1), room_data.Room(0, 1, 0, 1),
+                           room_data.Room(1, 0, 0, 1), room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0)],
 
-                          [room_data.Room(1, 1, 0, 0), room_data.Room(0, 0, 1, 1), room_data.Room(0, 1, 1, 0),
-                           room_data.Room(0, 0, 1, 1), room_data.Room(1, 0, 1, 0), room_data.Room(0, 0, 0, 0),
-                           room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0)],
+                          [room_data.Room(1, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0),
+                           room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0),
+                           room_data.Room(0, 1, 1, 0), room_data.Room(1, 0, 0, 1), room_data.Room(0, 0, 0, 0)],
 
-                          [room_data.Room(1, 1, 1, 0), room_data.Room(1, 0, 0, 1), room_data.Room(0, 0, 0, 0),
-                           room_data.Room(1, 1, 0, 0), room_data.Room(0, 0, 1, 1), room_data.Room(0, 0, 0, 0),
-                           room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0)],
+                          [room_data.Room(0, 1, 1, 0), room_data.Room(1, 1, 0, 1), room_data.Room(0, 1, 0, 1),
+                           room_data.Room(0, 1, 0, 1), room_data.Room(1, 0, 0, 1), room_data.Room(0, 0, 0, 0),
+                           room_data.Room(0, 0, 0, 0), room_data.Room(1, 0, 1, 0), room_data.Room(0, 0, 0, 0)],
 
-                          [room_data.Room(0, 0, 1, 0), room_data.Room(0, 1, 1, 0), room_data.Room(0, 1, 0, 1),
-                           room_data.Room(0, 1, 1, 1), room_data.Room(0, 0, 0, 1), room_data.Room(0, 0, 0, 0),
-                           room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0)]]
-            self.location_y = 3
-            self.location_x = 2
+                          [room_data.Room(0, 0, 0, 0), room_data.Room(1, 0, 1, 0), room_data.Room(0, 0, 0, 0),
+                           room_data.Room(0, 0, 0, 0), room_data.Room(1, 0, 1, 0), room_data.Room(0, 0, 0, 0),
+                           room_data.Room(0, 0, 0, 0), room_data.Room(1, 0, 1, 0), room_data.Room(0, 0, 0, 0)],
+
+                          [room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 1, 0), room_data.Room(0, 0, 0, 0),
+                           room_data.Room(0, 0, 0, 0), room_data.Room(0, 1, 1, 0), room_data.Room(0, 1, 0, 1),
+                           room_data.Room(0, 1, 0, 1), room_data.Room(0, 1, 1, 1), room_data.Room(0, 0, 0, 1)]]
+            self.location_y = 0
+            self.location_x = 4
 
         else:
             # 초기화 된 던전 맵

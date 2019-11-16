@@ -1,7 +1,7 @@
 from pico2d import *
 import game_framework
 import map_component
-
+import battle_state
 name = "map_state"
 
 map = None
@@ -11,7 +11,7 @@ def enter():
     global map
 
     # test
-    # game_framework.push_state(battle_state)
+    game_framework.push_state(battle_state)
     #
 
     map = map_component.Map(0)

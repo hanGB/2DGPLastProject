@@ -1,6 +1,6 @@
 from pico2d import *
 import game_framework
-import map_state
+import initium_state
 
 TIME_PER_SELECTING = 1
 SELECTING_PER_TIME = 1.0 / TIME_PER_SELECTING
@@ -28,7 +28,7 @@ def enter():
     global menu
     global selecting_menu
     # test
-    # game_framework.change_state(map_state)
+    game_framework.change_state(initium_state)
     #
 
     title = Title()
@@ -73,7 +73,7 @@ def handle_events():
                         selecting_menu = True
                 if event.key == SDLK_SPACE or event.key == SDLK_RETURN:
                     if int(menu) == 1:
-                        game_framework.change_state(map_state)
+                        game_framework.change_state(initium_state)
                     elif int(menu) == 0:
                         game_framework.quit()
         elif event.type == SDL_KEYUP:
