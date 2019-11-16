@@ -9,8 +9,8 @@ TIME_PER_SELECTING = 2
 SELECTING_PER_TIME = 1.0 / TIME_PER_SELECTING
 FRAMES_PER_SELECTING = 8
 
-W_KEY, A_KEY, S_KEY, D_KEY, F_KEY, C_KEY, TAB_KEY, SHIFT_KEY, SPACE_KEY, \
-UP_DOWN, DOWN_DOWN, UP_UP, DOWN_UP = range(13)
+W_KEY, A_KEY, S_KEY, D_KEY, F_KEY, X_KEY, C_KEY, TAB_KEY, SHIFT_KEY, SPACE_KEY, \
+UP_DOWN, DOWN_DOWN, UP_UP, DOWN_UP = range(14)
 
 key_event_table = {
     (SDL_KEYDOWN, SDLK_w): W_KEY,
@@ -18,6 +18,7 @@ key_event_table = {
     (SDL_KEYDOWN, SDLK_s): S_KEY,
     (SDL_KEYDOWN, SDLK_d): D_KEY,
     (SDL_KEYDOWN, SDLK_f): F_KEY,
+    (SDL_KEYDOWN, SDLK_x): X_KEY,
     (SDL_KEYDOWN, SDLK_c): C_KEY,
     (SDL_KEYDOWN, SDLK_TAB): TAB_KEY,
     (SDL_KEYDOWN, SDLK_LSHIFT): SHIFT_KEY,
@@ -75,6 +76,12 @@ class MainState:
         elif event == TAB_KEY:
             game_framework.push_state(battle_analyze_state)
 
+        elif event == X_KEY:
+            for p in range(battle_state.player.number_of_players):
+                battle_ui.player_now = (battle_ui.player_now + 1) % battle_state.player.number_of_players
+                if battle_state.player.get_player(battle_ui.player_now).get_turn() != 0:
+                    break
+
     @staticmethod
     def exit(battle_ui, event):
         pass
@@ -94,8 +101,10 @@ class MainState:
     def draw(battle_ui):
         if battle_ui.is_main is True:
             battle_ui.main_ui.clip_draw(battle_ui.act * 300, 0, 300, 300, 270, 180)
-        battle_ui.turn_number.clip_draw((battle_state.player.get_player(battle_ui.player).get_turn() - 1) * 100, 0
+        battle_ui.turn_number.clip_draw((battle_state.player.get_player(battle_ui.player_now).get_turn() - 1) * 100, 0
                                         , 100, 150, 105, 175)
+        battle_ui.player_sign.draw(1250, 200 - battle_ui.player_now * 50)
+        battle_ui.battle_explain.draw(645, 15)
 
 
 class SkillState:
@@ -103,7 +112,7 @@ class SkillState:
 
     @staticmethod
     def enter(battle_ui, event):
-        SkillState.number_of_skills = len(battle_state.player.get_player(battle_ui.player).get_card().getSkill())
+        SkillState.number_of_skills = len(battle_state.player.get_player(battle_ui.player_now).get_card().getSkill())
         if event == DOWN_DOWN:
             battle_ui.selecting = 1
             battle_ui.selected_skill = (battle_ui.selected_skill + battle_ui.selecting) % SkillState.number_of_skills
@@ -122,6 +131,9 @@ class SkillState:
         elif event == SPACE_KEY:
             print("use skill")
 
+        elif event == X_KEY:
+            battle_ui.player_target = (battle_ui.player_target + 1) % battle_state.player.number_of_players
+
     @staticmethod
     def exit(battle_ui, event):
         pass
@@ -137,15 +149,17 @@ class SkillState:
 
     @staticmethod
     def draw(battle_ui):
-        battle_ui.turn_number.clip_draw((battle_state.player.get_player(battle_ui.player).get_turn() - 1) * 100, 0
+        battle_ui.turn_number.clip_draw((battle_state.player.get_player(battle_ui.player_now).get_turn() - 1) * 100, 0
                                         , 100, 150, 105, 175)
         battle_ui.skill_ui.draw(150, 170)
+        battle_ui.player_sign.draw(1250, 200 - battle_ui.player_target * 50)
 
-        for i in range(len(battle_state.player.get_player(battle_ui.player).get_card().getSkill())):
+        for i in range(len(battle_state.player.get_player(battle_ui.player_now).get_card().getSkill())):
             if battle_ui.selected_skill == i:
-                battle_state.player.get_player(battle_ui.player).get_card().getSkill()[i].draw(i, 1)
+                battle_state.player.get_player(battle_ui.player_now).get_card().getSkill()[i].draw(i, 1)
             else:
-                battle_state.player.get_player(battle_ui.player).get_card().getSkill()[i].draw(i, 0)
+                battle_state.player.get_player(battle_ui.player_now).get_card().getSkill()[i].draw(i, 0)
+        battle_ui.battle_explain.draw(645, 15)
 
 
 class ItemState:
@@ -166,6 +180,9 @@ class ItemState:
         elif event == SPACE_KEY:
             print("use item")
 
+        elif event == X_KEY:
+            battle_ui.player_target = (battle_ui.player_target + 1) % battle_state.player.number_of_players
+
     @staticmethod
     def exit(battle_ui, event):
         pass
@@ -183,18 +200,20 @@ class ItemState:
     def draw(battle_ui):
         battle_ui.item_ui.draw(360, 220)
         battle_state.player.get_player(0).draw_item_number(battle_ui.selected_item)
+        battle_ui.player_sign.draw(1250, 200 - battle_ui.player_target * 50)
+        battle_ui.battle_explain.draw(645, 15)
 
 
 next_state_table = {
     MainState: {DOWN_DOWN: MainState, DOWN_UP: MainState, UP_DOWN: MainState, UP_UP: MainState,
                 W_KEY: SkillState, F_KEY: ItemState, A_KEY: MainState, S_KEY: MainState, D_KEY: MainState,
-                C_KEY: MainState, TAB_KEY: MainState, SHIFT_KEY: MainState, SPACE_KEY: MainState},
+                X_KEY: MainState, C_KEY: MainState, TAB_KEY: MainState, SHIFT_KEY: MainState, SPACE_KEY: MainState},
     SkillState: {DOWN_DOWN: SkillState, DOWN_UP: SkillState, UP_DOWN: SkillState, UP_UP: SkillState,
                  W_KEY: MainState, F_KEY: SkillState, A_KEY: MainState, S_KEY: SkillState, D_KEY: SkillState,
-                 C_KEY: SkillState, TAB_KEY: SkillState, SHIFT_KEY: MainState, SPACE_KEY: SkillState},
+                 X_KEY: SkillState, C_KEY: SkillState, TAB_KEY: SkillState, SHIFT_KEY: MainState, SPACE_KEY: SkillState},
     ItemState: {DOWN_DOWN: ItemState, DOWN_UP: ItemState, UP_DOWN: ItemState, UP_UP: ItemState,
                 W_KEY: ItemState, F_KEY: MainState, A_KEY: MainState, S_KEY: ItemState, D_KEY: ItemState,
-                C_KEY: ItemState, TAB_KEY: MainState, SHIFT_KEY: MainState, SPACE_KEY: ItemState}
+                X_KEY: ItemState, C_KEY: ItemState, TAB_KEY: MainState, SHIFT_KEY: MainState, SPACE_KEY: ItemState}
 }
 
 
@@ -203,6 +222,8 @@ class BattleUi:
     turn_number = None
     skill_ui = None
     item_ui = None
+    player_sign = None
+    battle_explain = None
 
     def __init__(self):
         if BattleUi.main_ui is None:
@@ -216,14 +237,21 @@ class BattleUi:
         if BattleUi.item_ui is None:
             BattleUi.item_ui = load_image("resource/interface/item.png")
 
+        if BattleUi.player_sign is None:
+            BattleUi.player_sign = load_image("resource/interface/playerSign.png")
+
+        if BattleUi.battle_explain is None:
+            BattleUi.battle_explain = load_image("resource/interface/battleExplain.png")
+
         self.act = 0
         self.sd_key = -1
-        self.player = 0
+        self.player_now = 0
         self.selected_item = 0
         self.selected_skill = 0
         self.sub_counter = 0
         self.sub_menu_select = -1
         self.selecting = 0
+        self.player_target = 0
         self.is_main = True
         self.event_que = []
         self.cur_state = MainState

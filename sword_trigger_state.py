@@ -26,7 +26,7 @@ class SwordTriggerUi:
 
     def draw(self):
         SwordTriggerUi.image.clip_draw(0,  (2 - self.key) * 50, 250, 50, 300, 170)
-        SwordTriggerUi.image.clip_draw(0, 0 * 50, 250, 50, 170, 80)
+        # SwordTriggerUi.image.clip_draw(0, 0 * 50, 250, 50, 170, 80)
 
 
 def enter():
@@ -68,6 +68,13 @@ def handle_events():
                 or (event.key == SDLK_LSHIFT and event.type == SDL_KEYDOWN):
             battle_state.battle_ui.set_is_main(True)
             game_framework.pop_state()
+
+        elif event.key == SDLK_x and event.type == SDL_KEYDOWN:
+            for p in range(battle_state.player.number_of_players):
+                battle_state.battle_ui.player_now = (battle_state.battle_ui.player_now + 1) \
+                                                    % battle_state.player.number_of_players
+                if battle_state.player.get_player(battle_state.battle_ui.player_now).get_turn() != 0:
+                    break
 
         elif event.key == SDLK_TAB and event.type == SDL_KEYDOWN:
             game_framework.push_state(battle_analyze_state)

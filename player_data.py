@@ -31,13 +31,14 @@ class Player:
         self.pat = p
         self.max_Bd = Bd
         self.max_Md = Md
-        self.max_Turn = 3
+        self.max_turn = 3
         self.stat = stat  # MatAtt, MindAtt, MatDef, MindDef, HitRate, AvoidRate
         self.buff = [0, 0]
         self.Bd = self.max_Bd
         self.Md = self.max_Md
         self.card = status_data.Card(1)
         self.down_level = 0
+        self.turn = self.max_turn
         if self.pat == 0:
             if Player.item_number is None:
                 Player.item_number = load_image("resource/interface/itemNum.png")
@@ -58,7 +59,10 @@ class Player:
         self.Md = Md
 
     def get_turn(self):
-        return self.max_Turn
+        return self.turn
+
+    def set_turn(self, turn):
+        self.turn = turn
 
     def get_card(self):
         return self.card

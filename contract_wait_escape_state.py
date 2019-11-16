@@ -40,7 +40,7 @@ class CWEUi:
     def draw(self):
         CWEUi.image_do.draw(390, 180)
         CWEUi.image_act.clip_draw(0, self.key * 50, 300, 50, 410, 150)
-        CWEUi.image_ny.draw(370, 90)
+        CWEUi.image_ny.clip_draw(200, 0, 200, 50, 450, 90)
 
 
 def enter():
@@ -80,6 +80,12 @@ def handle_events():
 
             elif cwe_ui.getKey() == 0:
                 print("escape")
+        elif event.key == SDLK_x and event.type == SDL_KEYDOWN:
+            for p in range(battle_state.player.number_of_players):
+                battle_state.battle_ui.player_now = (battle_state.battle_ui.player_now + 1) \
+                                                    % battle_state.player.number_of_players
+                if battle_state.player.get_player(battle_state.battle_ui.player_now).get_turn() != 0:
+                    break
 
         elif (event.key == SDLK_a and event.type == SDL_KEYDOWN) \
                 or (event.key == SDLK_LSHIFT and event.type == SDL_KEYDOWN):

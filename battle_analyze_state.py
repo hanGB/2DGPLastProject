@@ -21,6 +21,7 @@ class AnalyzeUi:
     def draw(self):
         AnalyzeUi.image.draw(200, 100)
         battle_state.battle_enemy.enemy[battle_state.battle_enemy.get_selected_enemy()].draw_attribute_data()
+        battle_state.battle_ui.battle_explain.draw(645, 15)
 
 
 def enter():
