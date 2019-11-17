@@ -14,6 +14,10 @@ class AnalyzeUi:
     def __init__(self):
         if AnalyzeUi.image is None:
             AnalyzeUi.image = load_image("resource/interface/analyzeUi.png")
+        md = battle_state.player.get_player(battle_state.battle_ui.player_now).get_Md() - 1
+
+        if md != 0:
+            battle_state.player.get_player(battle_state.battle_ui.player_now).set_Md(md)
 
     def update(self):
         pass

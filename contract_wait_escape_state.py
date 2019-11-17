@@ -31,7 +31,7 @@ class CWEUi:
         if CWEUi.image_ny is None:
             CWEUi.image_ny = load_image("resource/interface/noyes.png")
 
-    def getKey(self):
+    def get_key(self):
         return self.key
 
     def update(self):
@@ -72,14 +72,17 @@ def handle_events():
             game_framework.quit()
 
         elif event.key == SDLK_SPACE and event.type == SDL_KEYDOWN:
-            if cwe_ui.getKey() == 2:
+            if cwe_ui.get_key() == 2:
                 print("contract")
 
-            elif cwe_ui.getKey() == 1:
-                print("wait")
+            elif cwe_ui.get_key() == 1:
+                battle_state.player.get_player(battle_state.battle_ui.player_now).set_turn(0)
 
-            elif cwe_ui.getKey() == 0:
-                print("escape")
+            elif cwe_ui.get_key() == 0:
+                battle_state.battle_ui.set_is_main(True)
+                battle_state.battle_ui.set_escape(True)
+                game_framework.pop_state()
+
         elif event.key == SDLK_x and event.type == SDL_KEYDOWN:
             for p in range(battle_state.player.number_of_players):
                 battle_state.battle_ui.player_now = (battle_state.battle_ui.player_now + 1) \
@@ -100,6 +103,10 @@ def handle_events():
 
 
 def update():
+    if battle_state.player.get_player(battle_state.battle_ui.get_player_now()).get_turn() == 0:
+        battle_state.battle_ui.set_is_main(True)
+        game_framework.pop_state()
+        
     for game_object in game_world.all_objects():
         game_object.update()
 

@@ -2,6 +2,8 @@ from pico2d import *
 import status_data
 import game_framework
 
+MATTER_ATTACK, MIND_ATTACK, MATTER_DEFENCE, MIND_DEFENCE, HIT_RATE, AVOID_RATE = range(6)
+
 TIME_PER_SHOW = 2
 SHOW_PER_TIME = 1.0 / TIME_PER_SHOW
 FRAMES_PER_SHOW = 8
@@ -41,6 +43,8 @@ class Player:
         self.max_Bd = Bd
         self.max_Md = Md
         self.max_turn = 3
+        self.level = 10
+        self.exp = 0
         self.stat = stat  # MatAtt, MindAtt, MatDef, MindDef, HitRate, AvoidRate
         self.buff = [0, 0]
         self.Bd = self.max_Bd
@@ -48,7 +52,7 @@ class Player:
         self.card = status_data.Card(1)
         self.down_level = 0
         self.turn = self.max_turn
-        if self.pattern == 0:
+        if self.pattern == 8:
             if Player.item_number is None:
                 Player.item_number = load_image("resource/interface/itemNum.png")
             if Player.item_sign is None:
@@ -85,6 +89,15 @@ class Player:
     def get_stat(self):
         return self.stat
 
+    def get_max_Bd(self):
+        return self.max_Bd
+
+    def get_max_Md(self):
+        return self.max_Md
+
+    def get_max_turn(self):
+        return self.max_turn
+
     def set_hit_weakness(self, hit_weakness):
         self.hit_weakness = hit_weakness
 
@@ -93,6 +106,68 @@ class Player:
 
     def set_down_level(self, down_level):
         self.down_level = down_level
+
+    def give_exp(self, exp):
+        if self.level != 99:
+            self.exp += exp
+            if self.exp > self.level * 100:
+                self.exp = self.exp - self.level * 100
+                self.level += 1
+
+            if self.pattern == 8:
+                if self.level % 2 == 0:
+                    self.stat[MATTER_ATTACK] += 1
+                    self.stat[MATTER_DEFENCE] += 1
+                    self.stat[HIT_RATE] += 1
+                else:
+                    self.stat[MIND_ATTACK] += 1
+                    self.stat[MIND_DEFENCE] += 1
+                    self.stat[AVOID_RATE] += 1
+
+            elif self.pattern == 0:
+                if self.level % 3 == 0:
+                    self.stat[MATTER_ATTACK] += 1
+                    self.stat[MATTER_DEFENCE] += 1
+                elif self.level % 3 == 1:
+                    self.stat[MATTER_ATTACK] += 1
+                    self.stat[MIND_ATTACK] += 1
+                    self.stat[MIND_DEFENCE] += 1
+                elif self.level % 3 == 2:
+                    self.stat[MATTER_ATTACK] += 1
+                    self.stat[AVOID_RATE] += 1
+                    self.stat[HIT_RATE] += 1
+
+            elif self.pattern == 3:
+                if self.level % 2 == 0:
+                    self.stat[MATTER_ATTACK] += 2
+                    self.stat[MATTER_DEFENCE] += 1
+                    self.stat[HIT_RATE] += 1
+                else:
+                    self.stat[MIND_DEFENCE] += 1
+                    self.stat[AVOID_RATE] += 1
+
+            elif self.pattern == 5:
+                if self.level % 2 == 0:
+                    self.stat[MATTER_ATTACK] += 2
+                    self.stat[MATTER_DEFENCE] += 1
+                    self.stat[HIT_RATE] += 1
+                else:
+                    self.stat[MIND_DEFENCE] += 1
+                    self.stat[AVOID_RATE] += 1
+
+            elif self.pattern == 6:
+                if self.level % 3 == 0:
+                    self.stat[MIND_ATTACK] += 1
+                    self.stat[MATTER_ATTACK] += 1
+                    self.stat[MATTER_DEFENCE] += 1
+                elif self.level % 3 == 1:
+                    self.stat[MIND_ATTACK] += 1
+                    self.stat[MIND_ATTACK] += 1
+                    self.stat[MIND_DEFENCE] += 1
+                elif self.level % 3 == 2:
+                    self.stat[MIND_ATTACK] += 1
+                    self.stat[AVOID_RATE] += 1
+                    self.stat[HIT_RATE] += 1
 
     def draw_bar(self, sit):
         Bd_rate = self.Bd / self.max_Bd
@@ -115,7 +190,7 @@ class Player:
                 self.time_to_show_hit = 0
 
     def draw_item_number(self, number):
-        if self.pattern == 0:
+        if self.pattern == 8:
             for i in range(7):
                 Player.item_number.clip_draw(20 * self.item[i], 0, 20, 30, 375, 275 - 30 * i)
                 if i == number:

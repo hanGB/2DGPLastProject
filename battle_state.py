@@ -13,6 +13,7 @@ player = None
 battle_enemy = None
 battle_ui = None
 battle_map = None
+now_turn = None
 
 
 def enter():
@@ -20,8 +21,13 @@ def enter():
     global battle_map
     global battle_enemy
     global player
+    global now_turn
 
+    now_turn = 0
     player = battle_player.BattlePlayer(initium_state.player)
+
+    for p in range(len(initium_state.player)):
+        player.get_player(p).set_turn(player.get_player(p).get_max_turn())
 
     battle_map = room_data.Room(0, 0, 0, 0)
     battle_enemy = battle_enemy_controller.BattleEnemy()
@@ -34,6 +40,9 @@ def enter():
 
 
 def exit():
+    global now_turn
+
+    del now_turn
     game_world.clear()
 
 
@@ -61,6 +70,10 @@ def handle_events():
 
 
 def update():
+    if battle_ui.get_escape():
+        battle_ui.set_escape(False)
+        game_framework.pop_state()
+
     for game_object in game_world.all_objects():
         game_object.update()
 
