@@ -1,5 +1,10 @@
 from pico2d import *
 import status_data
+import game_framework
+
+TIME_PER_SHOW = 0.5
+SHOW_PER_TIME = 1.0 / TIME_PER_SHOW
+FRAMES_PER_SHOW = 1
 
 
 class Enemy:
@@ -8,6 +13,7 @@ class Enemy:
     name = None
     attribute = None
     down_fall = None
+    show_hit = None
 
     def __init__(self, type):
         if Enemy.target is None:
@@ -24,6 +30,9 @@ class Enemy:
 
         if Enemy.down_fall is None:
             Enemy.down_fall = load_image("resource/interface/enemyDownFall.png")
+
+        if Enemy.show_hit is None:
+            Enemy.show_hit = load_image("resource/interface/attackWeakness.png")
 
         self.type = type
 
@@ -117,6 +126,8 @@ class Enemy:
         self.down_level = 0
         self.card = status_data.Card(self.type)
         self.Md = 9999
+        self.hit_weakness = -1
+        self.time_to_show_hit = 0
 
     def get_Bd(self):
         return self.Bd
@@ -154,6 +165,9 @@ class Enemy:
     def get_card(self):
         return self.card
 
+    def set_hit_weakness(self, hit_weakness):
+        self.hit_weakness = hit_weakness
+
     def draw(self, position, slt):
         if self.type == 1:
             self.image.draw(200 + position * 200, 255)
@@ -169,6 +183,14 @@ class Enemy:
             if self.down_level != 0:
                 Enemy.down_fall.clip_draw((self.down_level - 1) * 100, 0, 100, 30, 230 + position * 200 + 155, 235)
 
+            if self.hit_weakness != -1:
+                Enemy.show_hit.clip_draw(self.hit_weakness * 200, 0, 200, 50, 230 + position * 200 + 180, 260)
+                self.time_to_show_hit += game_framework.frame_time * FRAMES_PER_SHOW * SHOW_PER_TIME
+
+                if self.time_to_show_hit > 1:
+                    self.hit_weakness = -1
+                    self.time_to_show_hit = 0
+
         elif self.type == 2 or self.type == 3 or self.type == 4 or self.type == 6:
             if slt == 0:
                 Enemy.target.draw(230 + position * 200 + 100, 310)
@@ -176,12 +198,28 @@ class Enemy:
             if self.down_level != 0:
                 Enemy.down_fall.clip_draw((self.down_level - 1) * 100, 0, 100, 30, 230 + position * 200 + 155, 305)
 
+            if self.hit_weakness != -1:
+                Enemy.show_hit.clip_draw(self.hit_weakness * 200, 0, 200, 50, 230 + position * 200 + 180, 330)
+                self.time_to_show_hit += game_framework.frame_time * FRAMES_PER_SHOW * SHOW_PER_TIME
+
+                if self.time_to_show_hit > 1:
+                    self.hit_weakness = -1
+                    self.time_to_show_hit = 0
+
         else:
             if slt == 0:
                 Enemy.target.draw(230 + position * 200 + 100, 340)
                 Enemy.BdBar.draw(241 + position * 200 - (1 - Bd_rate) * 30 + 100, 356, Bd_rate * 60, 10)
             if self.down_level != 0:
                 Enemy.down_fall.clip_draw((self.down_level - 1) * 100, 0, 100, 30, 230 + position * 200 + 155, 335)
+
+            if self.hit_weakness != -1:
+                Enemy.show_hit.clip_draw(self.hit_weakness * 200, 0, 200, 50, 230 + position * 200 + 180, 360)
+                self.time_to_show_hit += game_framework.frame_time * FRAMES_PER_SHOW * SHOW_PER_TIME
+
+                if self.time_to_show_hit > 1:
+                    self.hit_weakness = -1
+                    self.time_to_show_hit = 0
 
     def draw_attribute_data(self):
         Enemy.name.clip_draw(0, 400 - self.type * 30, 250, 30, 200, 235)

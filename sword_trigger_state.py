@@ -19,7 +19,7 @@ class SwordTriggerUi:
 
         if SwordTriggerUi.image is None:
             SwordTriggerUi.image = load_image("resource/interface/sdInBattle.png")
-        self.sword_trigger = [Skill(90), Skill(91)]
+        self.sword_trigger = [Skill(91), Skill(90)]
 
     def get_key(self):
         return self.key

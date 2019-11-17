@@ -72,7 +72,7 @@ def calculate_damage(user, target, skill):
 
     if skill_type < 5 or 9 <= skill_type < 10:
         weakness, damage = calculate_damage_for_normal_skill(user, target, skill)
-        # target.set_weakness(weakness)
+        target.set_hit_weakness(weakness)
         if target.get_Bd() - damage > 0:
             target.set_Bd(target.get_Bd() - damage)
         else:

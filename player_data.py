@@ -1,5 +1,10 @@
 from pico2d import *
 import status_data
+import game_framework
+
+TIME_PER_SHOW = 2
+SHOW_PER_TIME = 1.0 / TIME_PER_SHOW
+FRAMES_PER_SHOW = 8
 
 
 class Player:
@@ -10,6 +15,7 @@ class Player:
     item_number = None
     item_sign = None
     down_fall = None
+    show_hit = None
 
     def __init__(self, pattern, Bd, Md, stat):
 
@@ -28,6 +34,9 @@ class Player:
         if Player.down_fall is None:
             Player.down_fall = load_image("resource/interface/playerDownFall.png")
 
+        if Player.show_hit is None:
+            Player.show_hit = load_image("resource/interface/attackWeakness.png")
+
         self.pattern = pattern
         self.max_Bd = Bd
         self.max_Md = Md
@@ -45,6 +54,9 @@ class Player:
             if Player.item_sign is None:
                 Player.item_sign = load_image("resource/interface/itemSign.png")
             self.item = [3, 0, 0, 2, 0, 0, 0]
+
+        self.hit_weakness = -1
+        self.time_to_show_hit = 0
 
     def get_Bd(self):
         return self.Bd
@@ -73,6 +85,9 @@ class Player:
     def get_stat(self):
         return self.stat
 
+    def set_hit_weakness(self, hit_weakness):
+        self.hit_weakness = hit_weakness
+
     def get_down_level(self):
         return self.down_level
 
@@ -90,6 +105,14 @@ class Player:
 
         if self.down_level != 0:
             Player.down_fall.clip_draw((self.down_level - 1) * 100, 0, 100, 30, 815, 198 - sit * 50)
+
+        if self.hit_weakness != -1:
+            Player.show_hit.clip_draw(self.hit_weakness * 200, 0, 200, 50, 800, 198 - sit * 50)
+            self.time_to_show_hit += game_framework.frame_time * FRAMES_PER_SHOW * SHOW_PER_TIME
+
+            if self.time_to_show_hit > 1:
+                self.hit_weakness = -1
+                self.time_to_show_hit = 0
 
     def draw_item_number(self, number):
         if self.pattern == 0:
