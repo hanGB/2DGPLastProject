@@ -59,8 +59,8 @@ class Card:
             self.attribute = [3, 3, 3, 3, 3, 3, 3, 3]
             self.skill = [11, 12, 12, 31, 21]
 
-    def getAttribute(self):
+    def get_attribute(self):
         return self.attribute
 
-    def getSkill(self):
+    def get_skill(self):
         return self.skill

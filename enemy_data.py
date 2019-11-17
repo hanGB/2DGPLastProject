@@ -151,7 +151,7 @@ class Enemy:
         return self.type
 
     def get_attribute(self):
-        return self.card.getAttribute()
+        return self.card.get_attribute()
 
     def get_down_level(self):
         return self.down_level

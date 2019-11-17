@@ -85,6 +85,9 @@ class BattleEnemy:
     def get_selected_enemy(self):
         return self.enemy[self.selected_enemy]
 
+    def get_selected_enemy_number(self):
+        return self.selected_enemy
+
     def update_state(self):
         if len(self.event_que) > 0:
             event = self.event_que.pop()

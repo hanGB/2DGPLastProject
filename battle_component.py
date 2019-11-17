@@ -4,6 +4,7 @@ import battle_analyze_state
 import sword_trigger_state
 import contract_wait_escape_state
 import game_framework
+from damage_calculator import use_skill
 
 TIME_PER_SELECTING = 2
 SELECTING_PER_TIME = 1.0 / TIME_PER_SELECTING
@@ -112,7 +113,7 @@ class SkillState:
 
     @staticmethod
     def enter(battle_ui, event):
-        SkillState.number_of_skills = len(battle_state.player.get_player(battle_ui.player_now).get_card().getSkill())
+        SkillState.number_of_skills = len(battle_state.player.get_player(battle_ui.player_now).get_card().get_skill())
         if event == DOWN_DOWN:
             battle_ui.selecting = 1
             battle_ui.selected_skill = (battle_ui.selected_skill + battle_ui.selecting) % SkillState.number_of_skills
@@ -129,7 +130,10 @@ class SkillState:
             game_framework.push_state(battle_analyze_state)
 
         elif event == SPACE_KEY:
-            print("use skill")
+            use_skill(battle_state.player.get_player(battle_state.battle_ui.player_now),
+                      battle_state.battle_enemy.get_selected_enemy(),
+                      battle_state.player.get_player(battle_ui.player_now).
+                      get_card().get_skill()[battle_ui.selected_skill])
 
         elif event == X_KEY:
             battle_ui.player_target = (battle_ui.player_target + 1) % battle_state.player.number_of_players
@@ -145,7 +149,8 @@ class SkillState:
 
             if battle_ui.sub_counter > 1:
                 battle_ui.sub_counter = 0
-                battle_ui.selected_skill = (battle_ui.selected_skill + battle_ui.selecting) % SkillState.number_of_skills
+                battle_ui.selected_skill = (battle_ui.selected_skill + battle_ui.selecting) \
+                                           % SkillState.number_of_skills
 
     @staticmethod
     def draw(battle_ui):
@@ -154,11 +159,11 @@ class SkillState:
         battle_ui.skill_ui.draw(150, 170)
         battle_ui.player_sign.draw(1250, 200 - battle_ui.player_target * 50)
 
-        for i in range(len(battle_state.player.get_player(battle_ui.player_now).get_card().getSkill())):
+        for i in range(len(battle_state.player.get_player(battle_ui.player_now).get_card().get_skill())):
             if battle_ui.selected_skill == i:
-                battle_state.player.get_player(battle_ui.player_now).get_card().getSkill()[i].draw(i, 1)
+                battle_state.player.get_player(battle_ui.player_now).get_card().get_skill()[i].draw(i, 1)
             else:
-                battle_state.player.get_player(battle_ui.player_now).get_card().getSkill()[i].draw(i, 0)
+                battle_state.player.get_player(battle_ui.player_now).get_card().get_skill()[i].draw(i, 0)
         battle_ui.battle_explain.draw(645, 15)
 
 
