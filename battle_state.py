@@ -6,6 +6,7 @@ import battle_enemy_controller
 import battle_player
 import game_world
 import initium_state
+from skill_data import Skill
 
 name = "battle_state"
 
@@ -14,6 +15,7 @@ battle_enemy = None
 battle_ui = None
 battle_map = None
 now_turn = None
+sword_trigger = None
 
 
 def enter():
@@ -22,7 +24,9 @@ def enter():
     global battle_enemy
     global player
     global now_turn
+    global sword_trigger
 
+    sword_trigger = [Skill(91), Skill(90)]
     now_turn = 0
     player = battle_player.BattlePlayer(initium_state.player)
 
@@ -41,8 +45,11 @@ def enter():
 
 def exit():
     global now_turn
+    global sword_trigger
 
+    del sword_trigger
     del now_turn
+
     game_world.clear()
 
 
@@ -61,7 +68,7 @@ def handle_events():
         if event.type == SDL_QUIT:
             game_framework.quit()
 
-        # 임시 배틀 종료 키 - 이동시 랜덤 전투 발생 구현시 삭제
+        # 임시 배틀 종료 키
         elif event.type == SDL_KEYDOWN and event.key == SDLK_b:
             game_framework.pop_state()
         else:

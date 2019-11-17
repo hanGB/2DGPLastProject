@@ -5,6 +5,7 @@ import sword_trigger_state
 import contract_wait_escape_state
 import game_framework
 from damage_calculator import use_skill
+from auto_battle import auto_play
 
 TIME_PER_SELECTING = 2
 SELECTING_PER_TIME = 1.0 / TIME_PER_SELECTING
@@ -82,6 +83,8 @@ class MainState:
                 battle_ui.player_now = (battle_ui.player_now + 1) % battle_state.player.number_of_players
                 if battle_state.player.get_player(battle_ui.player_now).get_turn() != 0:
                     break
+        elif event == C_KEY:
+            auto_play(battle_state.player.get_player(battle_state.battle_ui.player_now), battle_state.battle_enemy)
 
     @staticmethod
     def exit(battle_ui, event):
@@ -89,6 +92,13 @@ class MainState:
 
     @staticmethod
     def do(battle_ui):
+        down_level = battle_state.player.get_player(battle_ui.get_player_now()).get_down_level()
+        if down_level != 0:
+            turn = battle_state.player.get_player(battle_ui.player_now).get_turn() - down_level
+            if turn < 0:
+                turn = 0
+            battle_state.player.get_player(battle_ui.player_now).set_turn(turn)
+
         if battle_state.now_turn == 0:
             player_now = battle_ui.get_player_now()
             check_player = player_now
@@ -100,6 +110,8 @@ class MainState:
                         break
                 if check_player == battle_ui.player_now:
                     battle_state.now_turn = 1
+                    for p in range(battle_state.player.get_number_of()):
+                        battle_state.player.get_player(p).set_turn(battle_state.player.get_player(p).get_max_turn())
 
         if battle_ui.selecting == 1:
             battle_ui.sub_counter += game_framework.frame_time * FRAMES_PER_SELECTING * SELECTING_PER_TIME
@@ -157,6 +169,9 @@ class SkillState:
     @staticmethod
     def do(battle_ui):
         if battle_state.player.get_player(battle_ui.player_now).get_turn() == 0:
+            battle_ui.add_event(SHIFT_KEY)
+
+        if battle_state.player.get_player(battle_ui.get_player_now()).get_down_level() != 0:
             battle_ui.add_event(SHIFT_KEY)
 
         if battle_ui.selecting == 1 or battle_ui.selecting == -1:

@@ -96,6 +96,10 @@ def update():
         battle_state.battle_ui.set_is_main(True)
         game_framework.pop_state()
 
+    if battle_state.player.get_player(battle_state.battle_ui.get_player_now()).get_down_level() != 0:
+        battle_state.battle_ui.set_is_main(True)
+        game_framework.pop_state()
+
     for game_object in game_world.all_objects():
         game_object.update()
 

@@ -7,6 +7,12 @@ class BattlePlayer:
     def get_player(self, selected_player):
         return self.player[selected_player]
 
+    def get_list(self):
+        return self.player
+
+    def get_number_of(self):
+        return self.number_of_players
+
     def update(self):
         pass
 

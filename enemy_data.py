@@ -117,11 +117,11 @@ class Enemy:
         elif type == 13:
             self.image = load_image("resource/enemy/13luciper.png")
             self.max_Bd = 9999
-            self.stat = [99, 99, 99, 99, 99, 90]
+            self.stat = [99, 99, 99, 99, 99, 99]
             self.max_turn = 9
 
         self.Bd = self.max_Bd
-        self.buf = [0, 0]
+        self.buff = [0, 0]
         self.turn = self.max_turn
         self.down_level = 0
         self.card = status_data.Card(self.type)
@@ -141,6 +141,9 @@ class Enemy:
     def set_Md(self, Md):
         self.Md = Md
 
+    def get_max_turn(self):
+        return self.max_turn
+
     def get_turn(self):
         return self.turn
 
@@ -158,6 +161,12 @@ class Enemy:
 
     def set_down_level(self, down_level):
         self.down_level = down_level
+
+    def get_buff(self):
+        return self.buff
+
+    def set_buff(self, buff):
+        self.buff = buff
 
     def get_stat(self):
         return self.stat

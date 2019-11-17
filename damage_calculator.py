@@ -9,6 +9,12 @@ def calculate_damage_for_normal_skill(user, target, skill):
     target_stat = target.get_stat()
     target_attribute = target.get_attribute()
     skill_pattern = skill.get_pattern()
+    user_buff = user.get_buff()
+    target_buff = target.get_buff()
+
+    buff = user_buff[0] - target_buff[1]
+
+    buff = 1 + buff / 10
 
     target_weakness = target_attribute[skill_pattern]
 
@@ -34,6 +40,8 @@ def calculate_damage_for_normal_skill(user, target, skill):
     additional_damage = additional__damage / 100
 
     damage = skill.get_damage() * (1 + additional__damage)
+
+    damage *= buff
 
     if target_weakness == HIT:
         return HIT, damage

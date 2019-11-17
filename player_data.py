@@ -98,6 +98,12 @@ class Player:
     def get_max_turn(self):
         return self.max_turn
 
+    def get_buff(self):
+        return self.buff
+
+    def set_buff(self, buff):
+        self.buff = buff
+
     def set_hit_weakness(self, hit_weakness):
         self.hit_weakness = hit_weakness
 
@@ -182,7 +188,7 @@ class Player:
             Player.down_fall.clip_draw((self.down_level - 1) * 100, 0, 100, 30, 815, 198 - sit * 50)
 
         if self.hit_weakness != -1:
-            Player.show_hit.clip_draw(self.hit_weakness * 200, 0, 200, 50, 800, 198 - sit * 50)
+            Player.show_hit.clip_draw(self.hit_weakness * 200, 0, 200, 50, 1000, 198 - sit * 50)
             self.time_to_show_hit += game_framework.frame_time * FRAMES_PER_SHOW * SHOW_PER_TIME
 
             if self.time_to_show_hit > 1:
