@@ -1,6 +1,7 @@
 import game_framework
-import player_data
 import map_state
+
+from player_data import Player
 
 name = "initium_state"
 
@@ -10,9 +11,9 @@ player = None
 def enter():
     global player
 
-    player = [player_data.Player(0, 100, 100, [10, 10, 10, 10, 10]),
-              player_data.Player(1, 100, 100, [10, 10, 10, 10, 10]),
-              player_data.Player(3, 100, 100, [10, 10, 10, 10, 10])]
+    player = [Player(0, 100, 100, [10, 10, 10, 10, 10]),
+              Player(1, 100, 100, [10, 10, 10, 10, 10]),
+              Player(3, 100, 100, [10, 10, 10, 10, 10])]
 
     game_framework.push_state(map_state)
 

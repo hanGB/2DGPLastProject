@@ -1,5 +1,4 @@
-from pico2d import *
-
+from skill_data import Skill
 
 class Card:
     def __init__(self, type):
@@ -65,69 +64,3 @@ class Card:
 
     def getSkill(self):
         return self.skill
-
-
-class Skill:
-    space_bar = None
-
-    def __init__(self, number):
-        # type에 따라 damage가 어디에 적용되는 지 달라진다.
-        if Skill.space_bar is None:
-            Skill.space_bar = load_image("resource/interface/space.png")
-        self.number = number
-
-        if (self.number / 10) < 1:
-            self.image = load_image("resource/skill/ig.png")
-            if (self.number % 10) == 3:
-                self.attribute = 4
-                self.turn = 1
-                self.damage = 50
-                self.rate = 95
-            elif (self.number % 10) == 2:
-                self.attribute = 4
-                self.turn = 2
-                self.damage = 200
-                self.rate = 95
-            elif (self.number % 10) == 1:
-                self.attribute = 4
-                self.turn = 3
-                self.damage = 350
-                self.rate = 95
-            elif (self.number % 10) == 0:
-                self.attribute = 4
-                self.turn = 4
-                self.damage = 499
-                self.rate = 95
-
-        elif (self.number / 10) < 2:
-            self.image = load_image("resource/skill/aq.png")
-
-        elif (self.number / 10) < 3:
-            self.image = load_image("resource/skill/ter.png")
-
-        elif (self.number / 10) < 4:
-            self.image = load_image("resource/skill/vent.png")
-
-        elif (self.number / 10) < 5:
-            self.image = load_image("resource/skill/per.png")
-
-        elif (self.number / 10) < 6:
-            self.image = load_image("resource/skill/fat.png")
-
-        elif (self.number / 10) < 7:
-            self.image = load_image("resource/skill/met.png")
-
-        elif (self.number / 10) < 8:
-            self.image = load_image("resource/skill/cura.png")
-
-        elif (self.number / 10) < 9:
-            self.image = load_image("resource/skill/sana.png")
-
-        self.type = type
-
-    def draw(self, locate, selected):
-        self.image.clip_draw(0, self.number % 10 * 50, 200, 50, 360 + selected * 70, 270 - locate * 50)
-        if selected == 1:
-            Skill.space_bar.draw(280, 270 - locate * 50)
-
-

@@ -83,7 +83,7 @@ class BattleEnemy:
         self.cur_state.enter(self, None)
 
     def get_selected_enemy(self):
-        return self.selected_enemy
+        return self.enemy[self.selected_enemy]
 
     def update_state(self):
         if len(self.event_que) > 0:

@@ -30,85 +30,85 @@ class Enemy:
         if type == 0:
             self.image = load_image("resource/enemy/0alice.png")
             self.max_Bd = 2000
-            self.status = [35, 35, 35, 35, 35]
+            self.stat = [35, 35, 35, 35, 35, 35]
             self.max_turn = 5
 
         elif type == 1:
             self.image = load_image("resource/enemy/1slame.png")
             self.max_Bd = 100
-            self.status = [10, 10, 10, 10, 10]
+            self.stat = [10, 10, 10, 10, 10, 10]
             self.max_turn = 1
 
         elif type == 2:
             self.image = load_image("resource/enemy/2jack_o_lantern.png")
             self.max_Bd = 100
-            self.status = [10, 10, 10, 10, 10]
+            self.stat = [10, 10, 10, 10, 10, 10]
             self.max_turn = 1
 
         elif type == 3:
             self.image = load_image("resource/enemy/3jack_frost.png")
             self.max_Bd = 100
-            self.status = [10, 10, 10, 10, 10]
+            self.stat = [10, 10, 10, 10, 10, 10]
             self.max_turn = 2
 
         elif type == 4:
             self.image = load_image("resource/enemy/4loa.png")
             self.max_Bd = 100
-            self.status = [10, 10, 10, 10, 10]
+            self.stat = [10, 10, 10, 10, 10, 10]
             self.max_turn = 2
 
         elif type == 5:
             self.image = load_image("resource/enemy/5high_pixie.png")
             self.max_Bd = 100
-            self.status = [10, 10, 10, 10, 10]
+            self.stat = [10, 10, 10, 10, 10, 10]
             self.max_turn = 2
 
         elif type == 6:
             self.image = load_image("resource/enemy/6kaiwan.png")
             self.max_Bd = 100
-            self.status = [10, 10, 10, 10, 10]
+            self.stat = [10, 10, 10, 10, 10, 10]
             self.max_turn = 3
 
         elif type == 7:
             self.image = load_image("resource/enemy/7legion.png")
             self.max_Bd = 100
-            self.status = [10, 10, 10, 10, 10]
+            self.stat = [10, 10, 10, 10, 10, 10]
             self.max_turn = 3
 
         elif type == 8:
             self.image = load_image("resource/enemy/8naga.png")
             self.max_Bd = 100
-            self.status = [10, 10, 10, 10, 10]
+            self.stat = [10, 10, 10, 10, 10, 10]
             self.max_turn = 3
 
         elif type == 9:
             self.image = load_image("resource/enemy/9dol.png")
             self.max_Bd = 100
-            self.status = [10, 10, 10, 10, 10]
+            self.stat = [10, 10, 10, 10, 10, 10]
             self.max_turn = 3
 
         elif type == 10:
             self.image = load_image("resource/enemy/10surt.png")
             self.max_Bd = 100
-            self.status = [10, 10, 10, 10, 10]
+            self.stat = [10, 10, 10, 10, 10, 10]
             self.max_turn = 4
 
         elif type == 11:
             self.image = load_image("resource/enemy/11norn.png")
             self.max_Bd = 100
-            self.status = [10, 10, 10, 10, 10]
+            self.stat = [10, 10, 10, 10, 10, 10]
             self.max_turn = 4
 
         elif type == 12:
             self.image = load_image("resource/enemy/12lucipel.png")
             self.max_Bd = 5000
-            self.status = [50, 50, 50, 50, 50]
+            self.stat = [50, 50, 50, 50, 50, 50]
             self.max_turn = 5
 
         elif type == 13:
             self.image = load_image("resource/enemy/13luciper.png")
             self.max_Bd = 9999
-            self.status = [99, 99, 19, 19, 19]
+            self.stat = [99, 99, 99, 99, 99, 90]
             self.max_turn = 9
 
         self.Bd = self.max_Bd
@@ -116,12 +116,25 @@ class Enemy:
         self.turn = self.max_turn
         self.down_level = 0
         self.card = status_data.Card(self.type)
+        self.Md = 9999
 
     def get_Bd(self):
         return self.Bd
 
     def set_Bd(self, Bd):
         self.Bd = Bd
+
+    def get_Md(self):
+        return self.Md
+
+    def set_Md(self, Md):
+        self.Md = Md
+
+    def get_turn(self):
+        return self.turn
+
+    def set_turn(self, turn):
+        self.turn = turn
 
     def get_type(self):
         return self.type
@@ -133,7 +146,13 @@ class Enemy:
         return self.down_level
 
     def set_down_level(self, down_level):
-        self.down_fall = down_level
+        self.down_level = down_level
+
+    def get_stat(self):
+        return self.stat
+
+    def get_card(self):
+        return self.card
 
     def draw(self, position, slt):
         if self.type == 1:

@@ -3,6 +3,8 @@ import game_framework
 import battle_state
 import battle_analyze_state
 import game_world
+from skill_data import Skill
+from damage_calculator import use_skill
 
 name = "sword_trigger_state"
 
@@ -17,9 +19,13 @@ class SwordTriggerUi:
 
         if SwordTriggerUi.image is None:
             SwordTriggerUi.image = load_image("resource/interface/sdInBattle.png")
+        self.sword_trigger = [Skill(90), Skill(91)]
 
-    def getKey(self):
+    def get_key(self):
         return self.key
+
+    def get_sword_trigger(self, number):
+        return self.sword_trigger[number]
 
     def update(self):
         pass
@@ -57,12 +63,14 @@ def handle_events():
             game_framework.quit()
 
         elif event.key == SDLK_s and event.type == SDL_KEYDOWN:
-            if sword_trigger_ui.getKey() == 0:
-                print("sword")
+            if sword_trigger_ui.get_key() == 0:
+                use_skill(battle_state.player.get_player(battle_state.battle_ui.player_now),
+                          battle_state.battle_enemy.get_selected_enemy(), sword_trigger_ui.get_sword_trigger(0))
 
         elif event.key == SDLK_d and event.type == SDL_KEYDOWN:
-            if sword_trigger_ui.getKey() == 1:
-                print("trigger")
+            if sword_trigger_ui.get_key() == 1:
+                use_skill(battle_state.player.get_player(battle_state.battle_ui.player_now),
+                          battle_state.battle_enemy.get_selected_enemy(), sword_trigger_ui.get_sword_trigger(1))
 
         elif event.key == (SDLK_a and event.type == SDL_KEYDOWN) \
                 or (event.key == SDLK_LSHIFT and event.type == SDL_KEYDOWN):
