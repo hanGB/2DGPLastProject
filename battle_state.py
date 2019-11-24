@@ -16,6 +16,7 @@ battle_ui = None
 battle_map = None
 now_turn = None
 sword_trigger = None
+skill_processing = False
 
 
 def enter():
@@ -72,8 +73,9 @@ def handle_events():
         # elif event.type == SDL_KEYDOWN and event.key == SDLK_b:
         #    game_framework.pop_state()
         else:
-            battle_ui.handle_events(event)
-            battle_enemy.handle_events(event)
+            if not skill_processing:
+                battle_ui.handle_events(event)
+                battle_enemy.handle_events(event)
 
 
 def update():

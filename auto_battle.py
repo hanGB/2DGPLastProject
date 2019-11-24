@@ -54,6 +54,7 @@ class Auto:
         self.build_behavior_tree()
 
     def select_skill(self):
+        battle_state.skill_processing = True
         skills = self.user.get_card().get_skill()
         usable_skills = []
 
@@ -64,11 +65,18 @@ class Auto:
         number_of_skills = len(usable_skills)
 
         if self.user.get_turn() >= 1:
-            skill_select_list = number_of_skills + 2
+            if self.user.get_Md() >= 1:
+                skill_select_list = number_of_skills + 2
+            else:
+                skill_select_list = number_of_skills + 1
         else:
-            skill_select_list = number_of_skills + 1
+            battle_state.skill_processing = False
+            return BehaviorTree.FAIL
 
-        index_of_selected_skill = random.randint(0, skill_select_list - 1)
+        if skill_select_list == 1:
+            index_of_selected_skill = 1
+        else:
+            index_of_selected_skill = random.randint(0, skill_select_list - 1)
 
         if index_of_selected_skill - number_of_skills == 0:
             self.selected_skill = self.sword_trigger[0]
@@ -92,6 +100,7 @@ class Auto:
         if number_of_targets == 1:
             self.selected_target = usable_targets[0]
         elif number_of_targets == 0:
+            battle_state.skill_processing = False
             return BehaviorTree.FAIL
         else:
             index_of_selected_target = random.randint(0, number_of_targets - 1)
@@ -124,6 +133,7 @@ class Auto:
         use_skill(self.user, self.selected_target, self.selected_skill)
 
         battle_state.battle_ui.set_process_end(True)
+        battle_state.skill_processing = False
         return BehaviorTree.SUCCESS
 
     def build_behavior_tree(self):
@@ -162,6 +172,7 @@ class Manual:
         self.build_behavior_tree()
 
     def skill_animation(self):
+        battle_state.skill_processing = True
         self.showing_skill_animation = True
         self.skill_frame += game_framework.frame_time * FRAMES_PER_SELECTING \
                             * SELECTING_PER_TIME * ANIMATION_ACCELERATION
@@ -175,6 +186,7 @@ class Manual:
     def use_skill(self):
         use_skill(self.user, self.target, self.skill)
         battle_state.battle_ui.set_process_end(True)
+        battle_state.skill_processing = False
         return BehaviorTree.SUCCESS
 
     def build_behavior_tree(self):

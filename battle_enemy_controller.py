@@ -58,8 +58,9 @@ class BattleEndState:
 class EnemyAttackState:
     @staticmethod
     def enter(battle_enemy, event):
-        battle_enemy.auto_skill_processor = Auto(battle_enemy.enemy[battle_enemy.enemy_now], battle_state.player)
-        game_world.add_object(battle_enemy.auto_skill_processor, 2)
+        if not battle_state.skill_processing:
+            battle_enemy.auto_skill_processor = Auto(battle_enemy.enemy[battle_enemy.enemy_now], battle_state.player)
+            game_world.add_object(battle_enemy.auto_skill_processor, 3)
 
     @staticmethod
     def exit(battle_enemy, event):
@@ -68,27 +69,28 @@ class EnemyAttackState:
     @staticmethod
     def do(battle_enemy):
         if battle_state.now_turn == 0:
+            game_world.remove_object_processor()
             battle_enemy.add_event(TURN_CHANGE)
 
         if battle_state.now_turn == 1:
             check_enemy = battle_enemy.enemy_now
-
-            if battle_enemy.enemy[battle_enemy.enemy_now].get_turn() == 0:
-                for e in range(battle_enemy.number_of_enemies):
-                    battle_enemy.enemy_now = (battle_enemy.enemy_now + 1) % battle_enemy.number_of_enemies
-                    if battle_enemy.enemy[battle_enemy.enemy_now].get_turn() != 0:
-                        game_world.remove_object(battle_enemy.auto_skill_processor)
-                        del battle_enemy.auto_skill_processor
-
-                        battle_enemy.auto_skill_processor = Auto(battle_enemy.enemy[battle_enemy.enemy_now],
-                                                                 battle_state.player)
-                        game_world.add_object(battle_enemy.auto_skill_processor, 2)
-                        break
-
-                if check_enemy == battle_enemy.enemy_now:
-                    battle_state.now_turn = 0
+            if not battle_state.skill_processing:
+                if battle_enemy.enemy[battle_enemy.enemy_now].get_turn() == 0:
                     for e in range(battle_enemy.number_of_enemies):
-                        battle_enemy.enemy[e].set_turn(battle_enemy.enemy[e].get_max_turn())
+                        battle_enemy.enemy_now = (battle_enemy.enemy_now + 1) % battle_enemy.number_of_enemies
+                        if battle_enemy.enemy[battle_enemy.enemy_now].get_turn() != 0:
+                            game_world.remove_object(battle_enemy.skill_processor)
+                            del battle_enemy.skill_processor
+
+                            battle_enemy.skill_processor = \
+                                Auto(battle_enemy.enemy[battle_enemy.enemy_now], battle_state.player)
+                            game_world.add_object(battle_enemy.skill_processor, 3)
+                            break
+
+                    if check_enemy == battle_enemy.enemy_now:
+                        battle_state.now_turn = 0
+                        for e in range(battle_enemy.number_of_enemies):
+                            battle_enemy.enemy[e].set_turn(battle_enemy.enemy[e].get_max_turn())
 
         for enemy in battle_enemy.enemy:
             if enemy.get_Bd() <= 0:
@@ -166,6 +168,7 @@ class EnemySelectState:
                     battle_enemy.enemy.remove(enemy)
                     battle_enemy.number_of_enemies -= 1
                     battle_enemy.enemy_now = 0
+                    battle_enemy.selected_enemy = 0
                 else:
                     battle_enemy.add_event(VICTORY)
 
@@ -224,7 +227,7 @@ class BattleEnemy:
         self.is_victory = False
         self.waiting_time = 0
         self.exp = 0
-        self.auto_skill_processor = None
+        self.skill_processor = None
 
         if BattleEnemy.battle_result_image is None:
             BattleEnemy.battle_result_image = load_image("resource/interface/battleResult.png")

@@ -2,12 +2,17 @@
 # layer 0: Background Objects
 # layer 1: Foreground Objects
 # layer 2: Ui Objects
+# layer 3: auto
 
-objects = [[], [], []]
+objects = [[], [], [], []]
 
 
 def add_object(o, layer):
-    objects[layer].append(o)
+    if layer != 3:
+        objects[layer].append(o)
+    else:
+        if len(objects[3]) == 0:
+            objects[3].append(o)
 
 
 def add_objects(l, layer):
@@ -20,6 +25,11 @@ def remove_object(o):
             objects[i].remove(o)
             del o
             break
+
+
+def remove_object_processor():
+    if len(objects[3]) != 0:
+        objects[3].clear()
 
 
 def clear():

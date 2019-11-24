@@ -89,7 +89,7 @@ class MainState:
         elif event == C_KEY:
             battle_ui.play_processor \
                 = Auto(battle_state.player.get_player(battle_state.battle_ui.player_now), battle_state.battle_enemy)
-            game_world.add_object(battle_ui.play_processor, 2)
+            game_world.add_object(battle_ui.play_processor, 3)
             battle_ui.process_end = False
 
     @staticmethod
@@ -176,7 +176,7 @@ class SkillState:
                              battle_state.player.get_player(battle_ui.player_now).
                              get_card().get_skill()[battle_ui.selected_skill])
 
-                game_world.add_object(battle_ui.play_processor, 2)
+                game_world.add_object(battle_ui.play_processor, 3)
                 battle_ui.process_end = False
 
         elif event == X_KEY:

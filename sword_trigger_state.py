@@ -62,46 +62,46 @@ def handle_events():
     for event in events:
         if event.type == SDL_QUIT:
             game_framework.quit()
+        if not battle_state.skill_processing:
+            if event.key == SDLK_s and event.type == SDL_KEYDOWN:
+                if sword_trigger_ui.get_key() == 0:
+                    if (can_use_skill(battle_state.player.get_player(battle_state.battle_ui.player_now),
+                                      sword_trigger_ui.get_sword_trigger(0))):
+                        battle_state.battle_ui.set_play_processor(
+                            Manual(battle_state.player.get_player(battle_state.battle_ui.player_now),
+                                   battle_state.battle_enemy.get_selected_enemy(), sword_trigger_ui.get_sword_trigger(0)))
 
-        elif event.key == SDLK_s and event.type == SDL_KEYDOWN:
-            if sword_trigger_ui.get_key() == 0:
-                if (can_use_skill(battle_state.player.get_player(battle_state.battle_ui.player_now),
-                                  sword_trigger_ui.get_sword_trigger(0))):
-                    battle_state.battle_ui.set_play_processor(
-                        Manual(battle_state.player.get_player(battle_state.battle_ui.player_now),
-                               battle_state.battle_enemy.get_selected_enemy(), sword_trigger_ui.get_sword_trigger(0)))
+                        game_world.add_object(battle_state.battle_ui.play_processor, 3)
+                        battle_state.battle_ui.process_end = False
 
-                    game_world.add_object(battle_state.battle_ui.play_processor, 2)
-                    battle_state.battle_ui.process_end = False
+            elif event.key == SDLK_d and event.type == SDL_KEYDOWN:
+                if sword_trigger_ui.get_key() == 1:
+                    if (can_use_skill(battle_state.player.get_player(battle_state.battle_ui.player_now),
+                                      sword_trigger_ui.get_sword_trigger(1))):
+                        battle_state.battle_ui.set_play_processor(
+                            Manual(battle_state.player.get_player(battle_state.battle_ui.player_now),
+                            battle_state.battle_enemy.get_selected_enemy(), sword_trigger_ui.get_sword_trigger(1)))
 
-        elif event.key == SDLK_d and event.type == SDL_KEYDOWN:
-            if sword_trigger_ui.get_key() == 1:
-                if (can_use_skill(battle_state.player.get_player(battle_state.battle_ui.player_now),
-                                  sword_trigger_ui.get_sword_trigger(1))):
-                    battle_state.battle_ui.set_play_processor(
-                        Manual(battle_state.player.get_player(battle_state.battle_ui.player_now),
-                        battle_state.battle_enemy.get_selected_enemy(), sword_trigger_ui.get_sword_trigger(1)))
+                        game_world.add_object(battle_state.battle_ui.play_processor, 3)
+                        battle_state.battle_ui.process_end = False
 
-                    game_world.add_object(battle_state.battle_ui.play_processor, 2)
-                    battle_state.battle_ui.process_end = False
+            elif event.key == (SDLK_a and event.type == SDL_KEYDOWN) \
+                    or (event.key == SDLK_LSHIFT and event.type == SDL_KEYDOWN):
+                battle_state.battle_ui.set_is_main(True)
+                game_framework.pop_state()
 
-        elif event.key == (SDLK_a and event.type == SDL_KEYDOWN) \
-                or (event.key == SDLK_LSHIFT and event.type == SDL_KEYDOWN):
-            battle_state.battle_ui.set_is_main(True)
-            game_framework.pop_state()
+            elif event.key == SDLK_x and event.type == SDL_KEYDOWN:
+                for p in range(battle_state.player.number_of_players):
+                    battle_state.battle_ui.player_now = (battle_state.battle_ui.player_now + 1) \
+                                                        % battle_state.player.number_of_players
+                    if battle_state.player.get_player(battle_state.battle_ui.player_now).get_turn() != 0:
+                        break
 
-        elif event.key == SDLK_x and event.type == SDL_KEYDOWN:
-            for p in range(battle_state.player.number_of_players):
-                battle_state.battle_ui.player_now = (battle_state.battle_ui.player_now + 1) \
-                                                    % battle_state.player.number_of_players
-                if battle_state.player.get_player(battle_state.battle_ui.player_now).get_turn() != 0:
-                    break
+            elif event.key == SDLK_TAB and event.type == SDL_KEYDOWN:
+                game_framework.push_state(battle_analyze_state)
 
-        elif event.key == SDLK_TAB and event.type == SDL_KEYDOWN:
-            game_framework.push_state(battle_analyze_state)
-
-        else:
-            battle_state.battle_enemy.handle_events(event)
+            else:
+                battle_state.battle_enemy.handle_events(event)
 
 
 def update():
