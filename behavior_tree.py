@@ -1,12 +1,16 @@
 
 level = 0
+
+
 def indent():
     global level
     level += 1
 
+
 def unindent():
     global level
     level -= 1
+
 
 def print_indent():
     for i in range(level):
@@ -29,6 +33,7 @@ class BehaviorTree:
 class Node:
     def add_child(self, child):
         self.children.append(child)
+
     def add_children(self, *children):
         for child in children:
             self.children.append(child)
@@ -59,6 +64,7 @@ class SelectorNode(Node):
         for child in self.children:
             child.print()
         unindent()
+
 
 class SequenceNode(Node):
     def __init__(self, name):

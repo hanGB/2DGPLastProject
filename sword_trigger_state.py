@@ -4,7 +4,8 @@ import battle_state
 import battle_analyze_state
 import game_world
 from skill_data import Skill
-from damage_calculator import use_skill
+from damage_calculator import can_use_skill
+from auto_battle import Manual
 
 name = "sword_trigger_state"
 
@@ -64,13 +65,25 @@ def handle_events():
 
         elif event.key == SDLK_s and event.type == SDL_KEYDOWN:
             if sword_trigger_ui.get_key() == 0:
-                use_skill(battle_state.player.get_player(battle_state.battle_ui.player_now),
-                          battle_state.battle_enemy.get_selected_enemy(), sword_trigger_ui.get_sword_trigger(0))
+                if (can_use_skill(battle_state.player.get_player(battle_state.battle_ui.player_now),
+                                  sword_trigger_ui.get_sword_trigger(0))):
+                    battle_state.battle_ui.set_play_processor(
+                        Manual(battle_state.player.get_player(battle_state.battle_ui.player_now),
+                               battle_state.battle_enemy.get_selected_enemy(), sword_trigger_ui.get_sword_trigger(0)))
+
+                    game_world.add_object(battle_state.battle_ui.play_processor, 2)
+                    battle_state.battle_ui.process_end = False
 
         elif event.key == SDLK_d and event.type == SDL_KEYDOWN:
             if sword_trigger_ui.get_key() == 1:
-                use_skill(battle_state.player.get_player(battle_state.battle_ui.player_now),
-                          battle_state.battle_enemy.get_selected_enemy(), sword_trigger_ui.get_sword_trigger(1))
+                if (can_use_skill(battle_state.player.get_player(battle_state.battle_ui.player_now),
+                                  sword_trigger_ui.get_sword_trigger(1))):
+                    battle_state.battle_ui.set_play_processor(
+                        Manual(battle_state.player.get_player(battle_state.battle_ui.player_now),
+                        battle_state.battle_enemy.get_selected_enemy(), sword_trigger_ui.get_sword_trigger(1)))
+
+                    game_world.add_object(battle_state.battle_ui.play_processor, 2)
+                    battle_state.battle_ui.process_end = False
 
         elif event.key == (SDLK_a and event.type == SDL_KEYDOWN) \
                 or (event.key == SDLK_LSHIFT and event.type == SDL_KEYDOWN):
@@ -92,6 +105,11 @@ def handle_events():
 
 
 def update():
+    if battle_state.battle_ui.get_process_end():
+        if battle_state.battle_ui.get_play_processor() is not None:
+            game_world.remove_object(battle_state.battle_ui.get_play_processor())
+            battle_state.battle_ui.set_play_processor(None)
+
     if battle_state.player.get_player(battle_state.battle_ui.get_player_now()).get_turn() == 0:
         battle_state.battle_ui.set_is_main(True)
         game_framework.pop_state()

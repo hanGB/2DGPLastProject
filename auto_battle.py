@@ -121,6 +121,8 @@ class Auto:
 
     def use_skill(self):
         use_skill(self.user, self.selected_target, self.selected_skill)
+
+        battle_state.battle_ui.set_process_end(True)
         return BehaviorTree.SUCCESS
 
     def build_behavior_tree(self):
@@ -145,3 +147,46 @@ class Auto:
 
         elif self.showing_skill_animation:
             self.selected_skill.draw_animation(self.skill_frame)
+
+
+class Manual:
+    def __init__(self, user, target, skill):
+        self.user = user
+        self.target = target
+        self.skill = skill
+
+        self.sword_trigger = battle_state.sword_trigger
+        self.showing_skill_animation = False
+        self.skill_frame = 0
+        self.build_behavior_tree()
+
+    def skill_animation(self):
+        self.showing_skill_animation = True
+        self.skill_frame += game_framework.frame_time * FRAMES_PER_SELECTING * SELECTING_PER_TIME
+
+        if self.skill_frame > SKILL_FRAMES:
+            self.skill_frame = 0
+            self.showing_skill_animation = False
+            return BehaviorTree.SUCCESS
+        return BehaviorTree.RUNNING
+
+    def use_skill(self):
+        use_skill(self.user, self.target, self.skill)
+        battle_state.battle_ui.set_process_end(True)
+        return BehaviorTree.SUCCESS
+
+    def build_behavior_tree(self):
+        skill_animation_node = LeafNode("Skill Animation", self.skill_animation)
+        use_skill_node = LeafNode("Use Skill", self.use_skill)
+
+        process_skill_node = SequenceNode("Skill Process")
+        process_skill_node.add_children(skill_animation_node, use_skill_node)
+
+        self.bt = BehaviorTree(process_skill_node)
+
+    def update(self):
+        self.bt.run()
+
+    def draw(self):
+        if self.showing_skill_animation:
+            self.skill.draw_animation(self.skill_frame)

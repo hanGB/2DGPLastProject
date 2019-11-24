@@ -72,8 +72,6 @@ def can_use_skill(user, skill):
     if user.get_turn() < skill.get_turn():
         return False
 
-    user.set_Md(user.get_Md() - skill.get_Md())
-    user.set_turn(user.get_turn() - skill.get_turn())
     return True
 
 
@@ -100,5 +98,6 @@ def calculate_damage(user, target, skill):
 
 
 def use_skill(user, target, skill):
-    if can_use_skill(user, skill):
-        calculate_damage(user, target, skill)
+    user.set_Md(user.get_Md() - skill.get_Md())
+    user.set_turn(user.get_turn() - skill.get_turn())
+    calculate_damage(user, target, skill)

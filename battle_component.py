@@ -4,8 +4,8 @@ import battle_analyze_state
 import sword_trigger_state
 import contract_wait_escape_state
 import game_framework
-from damage_calculator import use_skill
-from auto_battle import Auto
+from damage_calculator import can_use_skill
+from auto_battle import Auto, Manual
 import game_world
 
 TIME_PER_SELECTING = 2
@@ -87,9 +87,10 @@ class MainState:
                         break
 
         elif event == C_KEY:
-            battle_ui.auto_play_processor \
+            battle_ui.play_processor \
                 = Auto(battle_state.player.get_player(battle_state.battle_ui.player_now), battle_state.battle_enemy)
-            game_world.add_object(battle_ui.auto_play_processor, 2)
+            game_world.add_object(battle_ui.play_processor, 2)
+            battle_ui.process_end = False
 
     @staticmethod
     def exit(battle_ui, event):
@@ -104,15 +105,16 @@ class MainState:
                 turn = 0
             battle_state.player.get_player(battle_ui.player_now).set_turn(turn)
 
+        if battle_ui.process_end:
+            if battle_ui.play_processor is not None:
+                game_world.remove_object(battle_ui.play_processor)
+                battle_ui.play_processor = None
+
         if battle_state.now_turn == 0:
             player_now = battle_ui.get_player_now()
             check_player = player_now
 
             if battle_state.player.get_player(player_now).get_turn() == 0:
-                if battle_ui.auto_play_processor is not None:
-                    game_world.remove_object(battle_ui.auto_play_processor)
-                    battle_ui.auto_play_processor = None
-
                 for p in range(battle_state.player.number_of_players):
                     battle_ui.player_now = (battle_ui.player_now + 1) % battle_state.player.number_of_players
                     if battle_state.player.get_player(battle_ui.player_now).get_turn() != 0:
@@ -164,10 +166,18 @@ class SkillState:
             game_framework.push_state(battle_analyze_state)
 
         elif event == SPACE_KEY:
-            use_skill(battle_state.player.get_player(battle_state.battle_ui.player_now),
-                      battle_state.battle_enemy.get_selected_enemy(),
-                      battle_state.player.get_player(battle_ui.player_now).
-                      get_card().get_skill()[battle_ui.selected_skill])
+            if (can_use_skill(battle_state.player.get_player(battle_state.battle_ui.player_now),
+                              battle_state.player.get_player(battle_ui.player_now).
+                              get_card().get_skill()[battle_ui.selected_skill])):
+
+                battle_ui.play_processor \
+                    = Manual(battle_state.player.get_player(battle_state.battle_ui.player_now),
+                             battle_state.battle_enemy.get_selected_enemy(),
+                             battle_state.player.get_player(battle_ui.player_now).
+                             get_card().get_skill()[battle_ui.selected_skill])
+
+                game_world.add_object(battle_ui.play_processor, 2)
+                battle_ui.process_end = False
 
         elif event == X_KEY:
             battle_ui.player_target = (battle_ui.player_target + 1) % battle_state.player.number_of_players
@@ -178,6 +188,11 @@ class SkillState:
 
     @staticmethod
     def do(battle_ui):
+        if battle_ui.process_end:
+            if battle_ui.play_processor is not None:
+                game_world.remove_object(battle_ui.play_processor)
+                battle_ui.play_processor = None
+
         if battle_state.player.get_player(battle_ui.player_now).get_turn() == 0:
             battle_ui.add_event(SHIFT_KEY)
 
@@ -305,7 +320,9 @@ class BattleUi:
         self.cur_state = MainState
         self.cur_state.enter(self, None)
         self.escape = False
-        self.auto_play_processor = None
+        self.play_processor = None
+
+        self.process_end = False
 
     def update_state(self):
         if len(self.event_que) > 0:
@@ -331,6 +348,18 @@ class BattleUi:
 
     def get_player_now(self):
         return self.player_now
+
+    def set_process_end(self, t):
+        self.process_end = t
+
+    def get_process_end(self):
+        return self.process_end
+
+    def get_play_processor(self):
+        return self.play_processor
+
+    def set_play_processor(self, pp):
+        self.play_processor = pp
 
     def draw(self):
         self.cur_state.draw(self)
