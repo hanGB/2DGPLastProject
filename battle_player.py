@@ -7,6 +7,9 @@ class BattlePlayer:
     def get_player(self, selected_player):
         return self.player[selected_player]
 
+    def get_all_players(self):
+        return self.player
+
     def get_list(self):
         return self.player
 

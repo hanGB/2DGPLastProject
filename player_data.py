@@ -120,60 +120,70 @@ class Player:
                 self.exp = self.exp - self.level * 100
                 self.level += 1
 
-            if self.pattern == 8:
-                if self.level % 2 == 0:
-                    self.stat[MATTER_ATTACK] += 1
-                    self.stat[MATTER_DEFENCE] += 1
-                    self.stat[HIT_RATE] += 1
-                else:
-                    self.stat[MIND_ATTACK] += 1
-                    self.stat[MIND_DEFENCE] += 1
-                    self.stat[AVOID_RATE] += 1
+                if self.pattern == 8:
+                    self.max_Bd += 7
+                    self.max_Md += 7
+                    if self.level % 2 == 0:
+                        self.stat[MATTER_ATTACK] += 1
+                        self.stat[MATTER_DEFENCE] += 1
+                        self.stat[HIT_RATE] += 1
+                    else:
+                        self.stat[MIND_ATTACK] += 1
+                        self.stat[MIND_DEFENCE] += 1
+                        self.stat[AVOID_RATE] += 1
 
-            elif self.pattern == 0:
-                if self.level % 3 == 0:
-                    self.stat[MATTER_ATTACK] += 1
-                    self.stat[MATTER_DEFENCE] += 1
-                elif self.level % 3 == 1:
-                    self.stat[MATTER_ATTACK] += 1
-                    self.stat[MIND_ATTACK] += 1
-                    self.stat[MIND_DEFENCE] += 1
-                elif self.level % 3 == 2:
-                    self.stat[MATTER_ATTACK] += 1
-                    self.stat[AVOID_RATE] += 1
-                    self.stat[HIT_RATE] += 1
+                elif self.pattern == 0:
+                    self.max_Bd += 9
+                    self.max_Md += 5
+                    if self.level % 3 == 0:
+                        self.stat[MATTER_ATTACK] += 1
+                        self.stat[MATTER_DEFENCE] += 1
+                    elif self.level % 3 == 1:
+                        self.stat[MATTER_ATTACK] += 1
+                        self.stat[MIND_ATTACK] += 1
+                        self.stat[MIND_DEFENCE] += 1
+                    elif self.level % 3 == 2:
+                        self.stat[MATTER_ATTACK] += 1
+                        self.stat[AVOID_RATE] += 1
+                        self.stat[HIT_RATE] += 1
 
-            elif self.pattern == 3:
-                if self.level % 2 == 0:
-                    self.stat[MATTER_ATTACK] += 2
-                    self.stat[MATTER_DEFENCE] += 1
-                    self.stat[HIT_RATE] += 1
-                else:
-                    self.stat[MIND_DEFENCE] += 1
-                    self.stat[AVOID_RATE] += 1
+                elif self.pattern == 3:
+                    self.max_Bd += 8
+                    self.max_Md += 6
+                    if self.level % 2 == 0:
+                        self.stat[MATTER_ATTACK] += 2
+                        self.stat[MATTER_DEFENCE] += 1
+                        self.stat[HIT_RATE] += 1
+                    else:
+                        self.stat[MIND_DEFENCE] += 1
+                        self.stat[AVOID_RATE] += 1
 
-            elif self.pattern == 5:
-                if self.level % 2 == 0:
-                    self.stat[MATTER_ATTACK] += 2
-                    self.stat[MATTER_DEFENCE] += 1
-                    self.stat[HIT_RATE] += 1
-                else:
-                    self.stat[MIND_DEFENCE] += 1
-                    self.stat[AVOID_RATE] += 1
+                elif self.pattern == 5:
+                    self.max_Bd += 6
+                    self.max_Md += 9
+                    if self.level % 2 == 0:
+                        self.stat[MATTER_ATTACK] += 2
+                        self.stat[MATTER_DEFENCE] += 1
+                        self.stat[HIT_RATE] += 1
+                    else:
+                        self.stat[MIND_DEFENCE] += 1
+                        self.stat[AVOID_RATE] += 1
 
-            elif self.pattern == 6:
-                if self.level % 3 == 0:
-                    self.stat[MIND_ATTACK] += 1
-                    self.stat[MATTER_ATTACK] += 1
-                    self.stat[MATTER_DEFENCE] += 1
-                elif self.level % 3 == 1:
-                    self.stat[MIND_ATTACK] += 1
-                    self.stat[MIND_ATTACK] += 1
-                    self.stat[MIND_DEFENCE] += 1
-                elif self.level % 3 == 2:
-                    self.stat[MIND_ATTACK] += 1
-                    self.stat[AVOID_RATE] += 1
-                    self.stat[HIT_RATE] += 1
+                elif self.pattern == 6:
+                    self.max_Bd += 6
+                    self.max_Md += 8
+                    if self.level % 3 == 0:
+                        self.stat[MIND_ATTACK] += 1
+                        self.stat[MATTER_ATTACK] += 1
+                        self.stat[MATTER_DEFENCE] += 1
+                    elif self.level % 3 == 1:
+                        self.stat[MIND_ATTACK] += 1
+                        self.stat[MIND_ATTACK] += 1
+                        self.stat[MIND_DEFENCE] += 1
+                    elif self.level % 3 == 2:
+                        self.stat[MIND_ATTACK] += 1
+                        self.stat[AVOID_RATE] += 1
+                        self.stat[HIT_RATE] += 1
 
     def draw_bar(self, sit):
         Bd_rate = self.Bd / self.max_Bd
