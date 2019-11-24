@@ -82,7 +82,9 @@ class MainState:
             for p in range(battle_state.player.number_of_players):
                 battle_ui.player_now = (battle_ui.player_now + 1) % battle_state.player.number_of_players
                 if battle_state.player.get_player(battle_ui.player_now).get_turn() != 0:
-                    break
+                    if battle_state.player.get_player(battle_ui.player_now).get_Bd() > 0:
+                        break
+
         elif event == C_KEY:
             auto_play(battle_state.player.get_player(battle_state.battle_ui.player_now), battle_state.battle_enemy)
 
@@ -107,7 +109,8 @@ class MainState:
                 for p in range(battle_state.player.number_of_players):
                     battle_ui.player_now = (battle_ui.player_now + 1) % battle_state.player.number_of_players
                     if battle_state.player.get_player(battle_ui.player_now).get_turn() != 0:
-                        break
+                        if battle_state.player.get_player(battle_ui.player_now).get_Bd() > 0:
+                            break
                 if check_player == battle_ui.player_now:
                     battle_state.now_turn = 1
                     for p in range(battle_state.player.get_number_of()):

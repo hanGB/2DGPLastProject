@@ -102,4 +102,12 @@ class Skill:
         if selected == 1:
             Skill.space_bar.draw(280, 270 - locate * 50)
 
+    def draw_before_use(self):
+        if self.number == 90 or self.number == 91:
+            self.image.clip_draw(50, 50 + self.number % 10 * 50, 200, 50, 600, 500)
 
+        else:
+            self.image.clip_draw(0, self.number % 10 * 50, 200, 50, 600, 500)
+
+    def draw_animation(self, frame):
+        pass

@@ -90,10 +90,10 @@ def calculate_damage(user, target, skill):
             target.set_Bd(0)
 
         if weakness == REVEN:
-            if user.get_Bd() - damage:
+            if user.get_Bd() - damage > 0:
                 user.set_Bd(user.get_Bd() - damage)
             else:
-                user.set_Bd(0)
+                user.set_Bd(1)
 
         elif weakness == SHOCK:
             user.set_down_level(2)
