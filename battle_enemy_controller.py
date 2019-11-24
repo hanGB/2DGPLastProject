@@ -3,7 +3,7 @@ import random
 import enemy_data
 import game_framework
 import battle_state
-import title_state
+import death_end_state
 from auto_battle import auto_play
 
 TIME_PER_SELECTING = 2
@@ -44,8 +44,7 @@ class BattleEndState:
                     player.give_exp(battle_enemy.exp)
                 game_framework.pop_state()
             else:
-                # game_framework.change_state(game_over_state)
-                game_framework.change_state(title_state)
+                game_framework.change_state(death_end_state)
 
     @staticmethod
     def draw(battle_enemy):
@@ -157,7 +156,6 @@ class EnemySelectState:
         for enemy in battle_enemy.enemy:
             if enemy.get_Bd() <= 0:
                 battle_enemy.exp += (enemy.get_type() ** 2)
-                print(battle_enemy.exp)
                 if battle_enemy.number_of_enemies != 1:
                     battle_enemy.enemy.remove(enemy)
                     battle_enemy.number_of_enemies -= 1

@@ -54,8 +54,8 @@ class NormalMap:
                 elif now_direction == 6:
                     map.location_x -= 1
                 map.rooms[map.location_y][map.location_x].set_map_direction(now_direction)
-                battle_outbreak_rate = random.randint(0, 3)
-                if battle_outbreak_rate == 0:
+                battle_outbreak_rate = random.randint(1, 10)
+                if battle_outbreak_rate < 5:
                     game_framework.push_state(battle_state)
 
     @staticmethod

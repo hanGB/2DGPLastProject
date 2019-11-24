@@ -43,6 +43,9 @@ def calculate_damage_for_normal_skill(user, target, skill):
 
     damage *= buff
 
+    if damage < 2:
+        damage = 2
+
     if target_weakness == HIT:
         return HIT, damage
 

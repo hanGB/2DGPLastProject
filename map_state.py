@@ -11,7 +11,7 @@ def enter():
     global map
 
     # test
-    game_framework.push_state(battle_state)
+    # game_framework.push_state(battle_state)
     #
 
     map = map_component.Map(0)
@@ -20,7 +20,8 @@ def enter():
 def exit():
     global map
 
-    del (map)
+    if map is not None:
+        del map
 
 
 def pause():
@@ -38,8 +39,8 @@ def handle_events():
         if event.type == SDL_QUIT:
             game_framework.quit()
         # 배틀 진입 테스트
-        if event.type == SDL_KEYDOWN and event.key == SDLK_b:
-            game_framework.push_state(battle_state)
+        # if event.type == SDL_KEYDOWN and event.key == SDLK_b:
+        #    game_framework.push_state(battle_state)
         else:
             map.handle_events(event)
 
