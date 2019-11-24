@@ -19,9 +19,8 @@ def enter():
 
 def exit():
     global map
-
-    if map is not None:
-        del map
+    
+    # del map
 
 
 def pause():

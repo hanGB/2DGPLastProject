@@ -5,7 +5,8 @@ import sword_trigger_state
 import contract_wait_escape_state
 import game_framework
 from damage_calculator import use_skill
-from auto_battle import auto_play
+from auto_battle import Auto
+import game_world
 
 TIME_PER_SELECTING = 2
 SELECTING_PER_TIME = 1.0 / TIME_PER_SELECTING
@@ -86,7 +87,9 @@ class MainState:
                         break
 
         elif event == C_KEY:
-            auto_play(battle_state.player.get_player(battle_state.battle_ui.player_now), battle_state.battle_enemy)
+            battle_ui.auto_play_processor \
+                = Auto(battle_state.player.get_player(battle_state.battle_ui.player_now), battle_state.battle_enemy)
+            game_world.add_object(battle_ui.auto_play_processor, 2)
 
     @staticmethod
     def exit(battle_ui, event):
@@ -106,6 +109,10 @@ class MainState:
             check_player = player_now
 
             if battle_state.player.get_player(player_now).get_turn() == 0:
+                if battle_ui.auto_play_processor is not None:
+                    game_world.remove_object(battle_ui.auto_play_processor)
+                    battle_ui.auto_play_processor = None
+
                 for p in range(battle_state.player.number_of_players):
                     battle_ui.player_now = (battle_ui.player_now + 1) % battle_state.player.number_of_players
                     if battle_state.player.get_player(battle_ui.player_now).get_turn() != 0:
@@ -298,6 +305,7 @@ class BattleUi:
         self.cur_state = MainState
         self.cur_state.enter(self, None)
         self.escape = False
+        self.auto_play_processor = None
 
     def update_state(self):
         if len(self.event_que) > 0:

@@ -4,13 +4,14 @@ import enemy_data
 import game_framework
 import battle_state
 import death_end_state
-from auto_battle import auto_play
+import game_world
+from auto_battle import Auto
 
 TIME_PER_SELECTING = 2
 SELECTING_PER_TIME = 1.0 / TIME_PER_SELECTING
 FRAMES_PER_SELECTING = 8
 
-LEFT_DOWN, RIGHT_DOWN, LEFT_UP, RIGHT_UP, ENEMY_TURN, VICTORY, DEFEAT = range(7)
+LEFT_DOWN, RIGHT_DOWN, LEFT_UP, RIGHT_UP, TURN_CHANGE, VICTORY, DEFEAT = range(7)
 
 key_event_table = {
     (SDL_KEYDOWN, SDLK_LEFT): LEFT_DOWN,
@@ -57,7 +58,8 @@ class BattleEndState:
 class EnemyAttackState:
     @staticmethod
     def enter(battle_enemy, event):
-        pass
+        battle_enemy.auto_skill_processor = Auto(battle_enemy.enemy[battle_enemy.enemy_now], battle_state.player)
+        game_world.add_object(battle_enemy.auto_skill_processor, 2)
 
     @staticmethod
     def exit(battle_enemy, event):
@@ -66,7 +68,7 @@ class EnemyAttackState:
     @staticmethod
     def do(battle_enemy):
         if battle_state.now_turn == 0:
-            battle_enemy.add_event(ENEMY_TURN)
+            battle_enemy.add_event(TURN_CHANGE)
 
         if battle_state.now_turn == 1:
             check_enemy = battle_enemy.enemy_now
@@ -75,6 +77,12 @@ class EnemyAttackState:
                 for e in range(battle_enemy.number_of_enemies):
                     battle_enemy.enemy_now = (battle_enemy.enemy_now + 1) % battle_enemy.number_of_enemies
                     if battle_enemy.enemy[battle_enemy.enemy_now].get_turn() != 0:
+                        game_world.remove_object(battle_enemy.auto_skill_processor)
+                        del battle_enemy.auto_skill_processor
+
+                        battle_enemy.auto_skill_processor = Auto(battle_enemy.enemy[battle_enemy.enemy_now],
+                                                                 battle_state.player)
+                        game_world.add_object(battle_enemy.auto_skill_processor, 2)
                         break
 
                 if check_enemy == battle_enemy.enemy_now:
@@ -99,8 +107,6 @@ class EnemyAttackState:
 
             if counter == 0:
                 battle_enemy.add_event(DEFEAT)
-
-        auto_play(battle_enemy.enemy[battle_enemy.enemy_now], battle_state.player)
 
     @staticmethod
     def draw(battle_enemy):
@@ -143,7 +149,7 @@ class EnemySelectState:
     @staticmethod
     def do(battle_enemy):
         if battle_state.now_turn == 1:
-            battle_enemy.add_event(ENEMY_TURN)
+            battle_enemy.add_event(TURN_CHANGE)
 
         if battle_enemy.selecting == 1 or battle_enemy.selecting == -1:
             battle_enemy.sub_counter += game_framework.frame_time * FRAMES_PER_SELECTING * SELECTING_PER_TIME
@@ -191,13 +197,13 @@ class EnemySelectState:
 
 next_state_table = {
     EnemySelectState: {LEFT_DOWN: EnemySelectState, LEFT_UP: EnemySelectState,
-                       RIGHT_DOWN: EnemySelectState, RIGHT_UP: EnemySelectState, ENEMY_TURN: EnemyAttackState,
+                       RIGHT_DOWN: EnemySelectState, RIGHT_UP: EnemySelectState, TURN_CHANGE: EnemyAttackState,
                        VICTORY: BattleEndState, DEFEAT: BattleEndState},
     EnemyAttackState: {LEFT_DOWN: EnemyAttackState, LEFT_UP: EnemyAttackState,
-                       RIGHT_DOWN: EnemyAttackState, RIGHT_UP: EnemyAttackState, ENEMY_TURN: EnemyAttackState,
+                       RIGHT_DOWN: EnemyAttackState, RIGHT_UP: EnemyAttackState, TURN_CHANGE: EnemyAttackState,
                        VICTORY: BattleEndState, DEFEAT: BattleEndState},
     BattleEndState: {LEFT_DOWN: BattleEndState, LEFT_UP: BattleEndState,
-                     RIGHT_DOWN: BattleEndState, RIGHT_UP: BattleEndState, ENEMY_TURN: BattleEndState,
+                     RIGHT_DOWN: BattleEndState, RIGHT_UP: BattleEndState, TURN_CHANGE: BattleEndState,
                      VICTORY: BattleEndState, DEFEAT: BattleEndState}
 }
 
@@ -218,6 +224,7 @@ class BattleEnemy:
         self.is_victory = False
         self.waiting_time = 0
         self.exp = 0
+        self.auto_skill_processor = None
 
         if BattleEnemy.battle_result_image is None:
             BattleEnemy.battle_result_image = load_image("resource/interface/battleResult.png")

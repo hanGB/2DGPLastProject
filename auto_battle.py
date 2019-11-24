@@ -47,8 +47,11 @@ class Auto:
         self.selected_skill = None
         self.selected_target = None
         self.sword_trigger = battle_state.sword_trigger
+        self.showing_skill_name = False
         self.time_of_showing_skill = 0
+        self.showing_skill_animation = False
         self.skill_frame = 0
+        self.build_behavior_tree()
 
     def select_skill(self):
         skills = self.user.get_card().get_skill()
@@ -86,25 +89,33 @@ class Auto:
                 usable_targets.append(target)
 
         number_of_targets = len(usable_targets)
+        if number_of_targets == 1:
+            self.selected_target = usable_targets[0]
+        elif number_of_targets == 0:
+            return BehaviorTree.FAIL
+        else:
+            index_of_selected_target = random.randint(0, number_of_targets - 1)
+            self.selected_target = usable_targets[index_of_selected_target]
 
-        index_of_selected_target = random.randint(0, number_of_targets - 1)
-        self.selected_target = usable_targets[index_of_selected_target]
+        return BehaviorTree.SUCCESS
 
     def show_skill_name(self):
-        self.selected_skill.draw_before_use()
+        self.showing_skill_name = True
         self.time_of_showing_skill += game_framework.frame_time * FRAMES_PER_SELECTING * SELECTING_PER_TIME
 
         if self.time_of_showing_skill > 2:
             self.time_of_showing_skill = 0
+            self.showing_skill_name = False
             return BehaviorTree.SUCCESS
         return BehaviorTree.RUNNING
 
     def skill_animation(self):
-        self.selected_skill.draw_animation(self.skill_frame)
+        self.showing_skill_animation = True
         self.skill_frame += game_framework.frame_time * FRAMES_PER_SELECTING * SELECTING_PER_TIME
 
         if self.skill_frame > SKILL_FRAMES:
             self.skill_frame = 0
+            self.showing_skill_animation = False
             return BehaviorTree.SUCCESS
         return BehaviorTree.RUNNING
 
@@ -119,11 +130,18 @@ class Auto:
         skill_animation_node = LeafNode("Skill Animation", self.skill_animation)
         use_skill_node = LeafNode("Use Skill", self.use_skill)
 
-        skill_process_node = SequenceNode("Skill Process")
-        skill_process_node.add_children(select_skill_node, select_target_node, show_skill_name_node,
+        process_skill_node = SequenceNode("Skill Process")
+        process_skill_node.add_children(select_skill_node, select_target_node, show_skill_name_node,
                                         skill_animation_node, use_skill_node)
 
-        self.bt = BehaviorTree(skill_process_node)
+        self.bt = BehaviorTree(process_skill_node)
 
     def update(self):
         self.bt.run()
+
+    def draw(self):
+        if self.showing_skill_name:
+            self.selected_skill.draw_before_use()
+
+        elif self.showing_skill_animation:
+            self.selected_skill.draw_animation(self.skill_frame)
