@@ -216,7 +216,7 @@ class BattleEnemy:
         self.sub_counter = 0
         self.number_of_enemies = random.randint(1, 4)
         self.selected_enemy = 0
-        self.enemy = [enemy_data.Enemy(random.randint(1, 11)) for n in range(self.number_of_enemies)]
+        self.enemy = [enemy_data.Enemy(random.randint(1, 5)) for n in range(self.number_of_enemies)]
         self.event_que = []
         self.cur_state = EnemySelectState
         self.cur_state.enter(self, None)

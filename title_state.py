@@ -28,7 +28,7 @@ def enter():
     global menu
     global selecting_menu
     # test
-    game_framework.change_state(initium_state)
+    # game_framework.change_state(initium_state)
     #
 
     title = Title()

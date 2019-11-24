@@ -56,55 +56,55 @@ class Enemy:
 
         elif type == 3:
             self.image = load_image("resource/enemy/3jack_frost.png")
-            self.max_Bd = 600
+            self.max_Bd = 500
             self.stat = [10, 10, 10, 10, 10, 10]
             self.max_turn = 2
 
         elif type == 4:
             self.image = load_image("resource/enemy/4loa.png")
-            self.max_Bd = 800
+            self.max_Bd = 600
             self.stat = [5, 10, 20, 10, 5, 10]
             self.max_turn = 2
 
         elif type == 5:
             self.image = load_image("resource/enemy/5high_pixie.png")
-            self.max_Bd = 1000
+            self.max_Bd = 700
             self.stat = [20, 10, 20, 10, 10, 20]
             self.max_turn = 2
 
         elif type == 6:
             self.image = load_image("resource/enemy/6kaiwan.png")
-            self.max_Bd = 1500
+            self.max_Bd = 1000
             self.stat = [20, 15, 25, 15, 15, 10]
             self.max_turn = 3
 
         elif type == 7:
             self.image = load_image("resource/enemy/7legion.png")
-            self.max_Bd = 1800
+            self.max_Bd = 1300
             self.stat = [20, 20, 30, 20, 10, 10]
             self.max_turn = 3
 
         elif type == 8:
             self.image = load_image("resource/enemy/8naga.png")
-            self.max_Bd = 2000
+            self.max_Bd = 1500
             self.stat = [30, 30, 20, 40, 20, 40]
             self.max_turn = 3
 
         elif type == 9:
             self.image = load_image("resource/enemy/9dol.png")
-            self.max_Bd = 2200
+            self.max_Bd = 1700
             self.stat = [20, 50, 20, 50, 20, 20]
             self.max_turn = 3
 
         elif type == 10:
             self.image = load_image("resource/enemy/10surt.png")
-            self.max_Bd = 2500
+            self.max_Bd = 2000
             self.stat = [50, 30, 10, 10, 20, 20]
             self.max_turn = 4
 
         elif type == 11:
             self.image = load_image("resource/enemy/11norn.png")
-            self.max_Bd = 2800
+            self.max_Bd = 2200
             self.stat = [40, 30, 20, 40, 30, 30]
             self.max_turn = 4
 

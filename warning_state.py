@@ -5,7 +5,7 @@ import title_state
 name = "warning_state"
 
 warning = None
-warning_time = 3.1  # test 시 3.1 끝나면 0.0으로 변경
+warning_time = 0.0  # test 시 3.1 끝나면 0.0으로 변경
 
 
 class Warning:

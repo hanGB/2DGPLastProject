@@ -21,7 +21,7 @@ def enter():
 def exit():
     global player
 
-    del (player)
+    del player
 
 
 def pause():

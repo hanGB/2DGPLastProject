@@ -11,7 +11,7 @@ def enter():
     global map
 
     # test
-    game_framework.push_state(battle_state)
+    # game_framework.push_state(battle_state)
     #
 
     map = map_component.Map(0)

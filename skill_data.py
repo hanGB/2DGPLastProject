@@ -79,6 +79,8 @@ class Skill:
                 self.rate = 95
                 self.Md = 1
 
+        self.animation = load_image("resource/animation/swordAni.png")
+
     def get_number(self):
         return self.number
 
@@ -110,4 +112,4 @@ class Skill:
             self.image.clip_draw(0, self.number % 10 * 50, 200, 50, 600, 500)
 
     def draw_animation(self, frame):
-        pass
+        self.animation.clip_draw(500 * int(frame), 0, 500, 500, 640, 360)

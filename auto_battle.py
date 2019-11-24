@@ -8,10 +8,10 @@ TIME_PER_SELECTING = 2
 SELECTING_PER_TIME = 1.0 / TIME_PER_SELECTING
 FRAMES_PER_SELECTING = 8
 SKILL_FRAMES = 8
+ANIMATION_ACCELERATION = 2.5
 
 
 def auto_play(user, targets):
-
     sword_trigger = battle_state.sword_trigger
 
     skills = user.get_card().get_skill()
@@ -111,7 +111,8 @@ class Auto:
 
     def skill_animation(self):
         self.showing_skill_animation = True
-        self.skill_frame += game_framework.frame_time * FRAMES_PER_SELECTING * SELECTING_PER_TIME
+        self.skill_frame += game_framework.frame_time * FRAMES_PER_SELECTING \
+                            * SELECTING_PER_TIME * ANIMATION_ACCELERATION
 
         if self.skill_frame > SKILL_FRAMES:
             self.skill_frame = 0
@@ -162,7 +163,8 @@ class Manual:
 
     def skill_animation(self):
         self.showing_skill_animation = True
-        self.skill_frame += game_framework.frame_time * FRAMES_PER_SELECTING * SELECTING_PER_TIME
+        self.skill_frame += game_framework.frame_time * FRAMES_PER_SELECTING \
+                            * SELECTING_PER_TIME * ANIMATION_ACCELERATION
 
         if self.skill_frame > SKILL_FRAMES:
             self.skill_frame = 0
