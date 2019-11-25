@@ -3,6 +3,7 @@ import game_framework
 import battle_state
 import battle_analyze_state
 import game_world
+from contract_data import contract_enemy
 
 name = "contract_wait_escape_state"
 
@@ -73,7 +74,10 @@ def handle_events():
 
         elif event.key == SDLK_SPACE and event.type == SDL_KEYDOWN:
             if cwe_ui.get_key() == 2:
-                print("contract")
+                player = battle_state.player.get_list()[battle_state.battle_ui.player_now]
+                target = battle_state.battle_enemy.get_selected_enemy()
+                contract_enemy(player, target)
+                player.set_turn(player.get_turn() - 1)
 
             elif cwe_ui.get_key() == 1:
                 battle_state.player.get_player(battle_state.battle_ui.player_now).set_turn(0)

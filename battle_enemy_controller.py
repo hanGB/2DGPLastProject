@@ -74,6 +74,21 @@ class EnemyAttackState:
             battle_enemy.add_event(TURN_CHANGE)
 
         if battle_state.now_turn == 1:
+            enemy = battle_enemy.enemy[battle_enemy.enemy_now]
+            down_level = enemy.get_down_level()
+            if down_level > 0:
+                if down_level == 3:
+                    if enemy.get_turn() > 4:
+                        enemy.set_turn(enemy.get_turn() - 4)
+                    else:
+                        enemy.set_turn(0)
+                else:
+                    if enemy.get_turn() > down_level:
+                        enemy.set_turn(enemy.get_turn() - down_level)
+                    else:
+                        enemy.set_turn(0)
+                enemy.set_down_level(0)
+
             check_enemy = battle_enemy.enemy_now
             if not battle_state.skill_processing:
                 if battle_enemy.enemy[battle_enemy.enemy_now].get_turn() == 0:

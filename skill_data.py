@@ -14,21 +14,21 @@ class Skill:
             if (self.number % 10) == 3:
                 self.pattern = 3
                 self.turn = 1
-                self.damage = 50
+                self.damage = 45
                 self.rate = 95
                 self.Md = 4
 
             elif (self.number % 10) == 2:
                 self.pattern = 3
                 self.turn = 2
-                self.damage = 200
+                self.damage = 125
                 self.rate = 95
                 self.Md = 8
 
             elif (self.number % 10) == 1:
                 self.pattern = 3
                 self.turn = 3
-                self.damage = 350
+                self.damage = 325
                 self.rate = 95
                 self.Md = 16
 
@@ -47,6 +47,33 @@ class Skill:
 
         elif (self.number / 10) < 4:
             self.image = load_image("resource/skill/vent.png")
+            if (self.number % 10) == 3:
+                self.pattern = 2
+                self.turn = 1
+                self.damage = 50
+                self.rate = 90
+                self.Md = 3
+
+            elif (self.number % 10) == 2:
+                self.pattern = 2
+                self.turn = 2
+                self.damage = 125
+                self.rate = 90
+                self.Md = 6
+
+            elif (self.number % 10) == 1:
+                self.pattern = 2
+                self.turn = 3
+                self.damage = 350
+                self.rate = 90
+                self.Md = 12
+
+            elif (self.number % 10) == 0:
+                self.pattern = 2
+                self.turn = 4
+                self.damage = 450
+                self.rate = 90
+                self.Md = 24
 
         elif (self.number / 10) < 5:
             self.image = load_image("resource/skill/per.png")

@@ -106,6 +106,21 @@ class MainState:
             battle_state.player.get_player(battle_ui.player_now).set_turn(turn)
 
         if battle_state.now_turn == 0:
+            player = battle_state.player.get_player(battle_ui.player_now)
+            down_level = player.get_down_level()
+            if down_level > 0:
+                if down_level == 3:
+                    if player.get_turn() > 4:
+                        player.set_turn(player.get_turn() - 4)
+                    else:
+                        player.set_turn(0)
+                else:
+                    if player.get_turn() > down_level:
+                        player.set_turn(player.get_turn() - down_level)
+                    else:
+                        player.set_turn(0)
+                player.set_down_level(0)
+
             check_player = battle_ui.player_now
 
             if battle_state.now_turn == 0:

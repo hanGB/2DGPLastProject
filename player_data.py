@@ -49,7 +49,7 @@ class Player:
         self.buff = [0, 0]
         self.Bd = self.max_Bd
         self.Md = self.max_Md
-        self.card = status_data.Card(1)
+        self.card = status_data.Card(0)
         self.down_level = 0
         self.turn = self.max_turn
         if self.pattern == 8:
@@ -112,6 +112,9 @@ class Player:
 
     def set_down_level(self, down_level):
         self.down_level = down_level
+
+    def set_card(self, card):
+        self.card = card
 
     def get_item(self):
         return self.item
