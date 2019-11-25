@@ -4,8 +4,12 @@ import enemy_data
 import game_framework
 import battle_state
 import death_end_state
-import game_world
-from auto_battle import Auto
+from damage_calculator import use_skill
+from behavior_tree import BehaviorTree, SequenceNode, LeafNode
+
+
+SKILL_FRAMES = 8
+ANIMATION_ACCELERATION = 2.5
 
 TIME_PER_SELECTING = 2
 SELECTING_PER_TIME = 1.0 / TIME_PER_SELECTING
@@ -58,9 +62,7 @@ class BattleEndState:
 class EnemyAttackState:
     @staticmethod
     def enter(battle_enemy, event):
-        if not battle_state.skill_processing:
-            battle_enemy.auto_skill_processor = Auto(battle_enemy.enemy[battle_enemy.enemy_now], battle_state.player)
-            game_world.add_object(battle_enemy.auto_skill_processor, 3)
+        battle_enemy.auto_play = True
 
     @staticmethod
     def exit(battle_enemy, event):
@@ -69,7 +71,6 @@ class EnemyAttackState:
     @staticmethod
     def do(battle_enemy):
         if battle_state.now_turn == 0:
-            game_world.remove_object_processor()
             battle_enemy.add_event(TURN_CHANGE)
 
         if battle_state.now_turn == 1:
@@ -79,12 +80,8 @@ class EnemyAttackState:
                     for e in range(battle_enemy.number_of_enemies):
                         battle_enemy.enemy_now = (battle_enemy.enemy_now + 1) % battle_enemy.number_of_enemies
                         if battle_enemy.enemy[battle_enemy.enemy_now].get_turn() != 0:
-                            game_world.remove_object(battle_enemy.skill_processor)
-                            del battle_enemy.skill_processor
-
-                            battle_enemy.skill_processor = \
-                                Auto(battle_enemy.enemy[battle_enemy.enemy_now], battle_state.player)
-                            game_world.add_object(battle_enemy.skill_processor, 3)
+                            if not battle_enemy.auto_play:
+                                battle_enemy.auto_play = True
                             break
 
                     if check_enemy == battle_enemy.enemy_now:
@@ -227,10 +224,136 @@ class BattleEnemy:
         self.is_victory = False
         self.waiting_time = 0
         self.exp = 0
-        self.skill_processor = None
 
         if BattleEnemy.battle_result_image is None:
             BattleEnemy.battle_result_image = load_image("resource/interface/battleResult.png")
+
+        self.user = self.enemy[self.enemy_now]
+        self.targets = battle_state.player.get_list()
+
+        self.selected_skill_data = None
+        self.selected_target = None
+
+        self.sword_trigger = battle_state.sword_trigger
+
+        self.showing_skill_name = False
+        self.time_of_showing_skill = 0
+        self.showing_skill_animation = False
+        self.skill_frame = 0
+
+        self.auto_play = False
+
+        self.build_behavior_tree()
+
+    def check_auto_play(self):
+        if self.auto_play:
+            battle_state.skill_processing = True
+            return BehaviorTree.SUCCESS
+
+        else:
+            return BehaviorTree.FAIL
+
+    def select_skill(self):
+        self.user = self.enemy[self.enemy_now]
+
+        skills = self.user.get_card().get_skill()
+        usable_skills = []
+
+        for skill in skills:
+            if skill.get_Md() <= self.user.get_Md() and skill.get_turn() <= self.user.get_turn():
+                usable_skills.append(skill)
+
+        number_of_skills = len(usable_skills)
+
+        if self.user.get_turn() >= 1:
+            if self.user.get_Md() >= 1:
+                skill_select_list = number_of_skills + 2
+            else:
+                skill_select_list = number_of_skills + 1
+        else:
+            battle_state.skill_processing = False
+            return BehaviorTree.FAIL
+
+        if skill_select_list == 1:
+            index_of_selected_skill = 1
+        else:
+            index_of_selected_skill = random.randint(0, skill_select_list - 1)
+
+        if index_of_selected_skill - number_of_skills == 0:
+            self.selected_skill_data = self.sword_trigger[0]
+
+        elif index_of_selected_skill - number_of_skills == 1:
+            self.selected_skill_data = self.sword_trigger[1]
+
+        else:
+            self.selected_skill_data = usable_skills[index_of_selected_skill]
+
+        return BehaviorTree.SUCCESS
+
+    def select_target(self):
+        self.targets = battle_state.player.get_list()
+
+        usable_targets = []
+
+        for target in self.targets:
+            if target.get_Bd() > 0:
+                usable_targets.append(target)
+
+        number_of_targets = len(usable_targets)
+        if number_of_targets == 1:
+            self.selected_target = usable_targets[0]
+        elif number_of_targets == 0:
+            battle_state.skill_processing = False
+            return BehaviorTree.FAIL
+        else:
+            index_of_selected_target = random.randint(0, number_of_targets - 1)
+            self.selected_target = usable_targets[index_of_selected_target]
+
+        return BehaviorTree.SUCCESS
+
+    def show_skill_name(self):
+        self.showing_skill_name = True
+        self.time_of_showing_skill += game_framework.frame_time * FRAMES_PER_SELECTING * SELECTING_PER_TIME
+
+        if self.time_of_showing_skill > 2:
+            self.time_of_showing_skill = 0
+            self.showing_skill_name = False
+            return BehaviorTree.SUCCESS
+        return BehaviorTree.RUNNING
+
+    def skill_animation(self):
+        self.showing_skill_animation = True
+        self.skill_frame += game_framework.frame_time * FRAMES_PER_SELECTING \
+                            * SELECTING_PER_TIME * ANIMATION_ACCELERATION
+
+        if self.skill_frame > SKILL_FRAMES:
+            self.skill_frame = 0
+            self.showing_skill_animation = False
+            return BehaviorTree.SUCCESS
+        return BehaviorTree.RUNNING
+
+    def use_skill(self):
+        use_skill(self.user, self.selected_target, self.selected_skill_data)
+
+        battle_state.skill_processing = False
+        self.auto_play = False
+        return BehaviorTree.SUCCESS
+
+    def build_behavior_tree(self):
+        check_auto_play_node = LeafNode("Check Auto Play", self.check_auto_play)
+
+        select_skill_node = LeafNode("Select Skill", self.select_skill)
+        select_target_node = LeafNode("Select Target", self.select_target)
+        show_skill_name_node = LeafNode("Show Skill Name", self.show_skill_name)
+        skill_animation_node = LeafNode("Skill Animation", self.skill_animation)
+        use_skill_node = LeafNode("Use Skill", self.use_skill)
+
+        auto_node = SequenceNode("Auto")
+
+        auto_node.add_children(check_auto_play_node, select_skill_node, select_target_node,
+                               show_skill_name_node, skill_animation_node, use_skill_node)
+
+        self.bt = BehaviorTree(auto_node)
 
     def get_selected_enemy(self):
         return self.enemy[self.selected_enemy]
@@ -253,6 +376,11 @@ class BattleEnemy:
 
     def draw(self):
         self.cur_state.draw(self)
+        if self.showing_skill_name:
+            self.selected_skill_data.draw_before_use()
+
+        elif self.showing_skill_animation:
+            self.selected_skill_data.draw_animation(self.skill_frame)
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -264,6 +392,8 @@ class BattleEnemy:
             self.cur_state.exit(self, event)
             self.cur_state = next_state_table[self.cur_state][event]
             self.cur_state.enter(self, event)
+
+        self.bt.run()
 
     def handle_events(self, event):
         if (event.type, event.key) in key_event_table:

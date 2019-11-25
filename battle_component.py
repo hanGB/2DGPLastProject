@@ -4,10 +4,7 @@ import battle_analyze_state
 import sword_trigger_state
 import contract_wait_escape_state
 import game_framework
-from damage_calculator import can_use_skill
-from auto_battle import Auto, Manual
-import game_world
-from damage_calculator import use_skill
+from damage_calculator import can_use_skill, use_skill
 from behavior_tree import BehaviorTree, SelectorNode, SequenceNode, LeafNode
 import random
 
@@ -21,6 +18,7 @@ FRAMES_PER_SELECTING = 8
 
 W_KEY, A_KEY, S_KEY, D_KEY, F_KEY, X_KEY, C_KEY, TAB_KEY, SHIFT_KEY, SPACE_KEY, \
 UP_DOWN, DOWN_DOWN, UP_UP, DOWN_UP = range(14)
+
 
 key_event_table = {
     (SDL_KEYDOWN, SDLK_w): W_KEY,
