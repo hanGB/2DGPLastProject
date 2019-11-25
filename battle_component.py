@@ -85,11 +85,7 @@ class MainState:
             game_framework.push_state(battle_analyze_state)
 
         elif event == X_KEY:
-            for p in range(battle_state.player.number_of_players):
-                battle_ui.player_now = (battle_ui.player_now + 1) % battle_state.player.number_of_players
-                if battle_state.player.get_player(battle_ui.player_now).get_turn() != 0:
-                    if battle_state.player.get_player(battle_ui.player_now).get_Bd() > 0:
-                        break
+            battle_ui.player_target = (battle_ui.player_target + 1) % battle_state.player.number_of_players
 
         elif event == C_KEY:
             battle_ui.auto_play = True
@@ -149,7 +145,8 @@ class MainState:
                 battle_ui.main_ui.clip_draw(battle_ui.act * 300, 0, 300, 300, 270, 180)
             battle_ui.turn_number.clip_draw((battle_state.player.get_player(battle_ui.player_now).get_turn()) * 100, 0
                                             , 100, 150, 105, 175)
-            battle_ui.player_sign.draw(1250, 200 - battle_ui.player_now * 50)
+            battle_ui.now_player_mark.draw(880, 200 - battle_ui.player_now * 50)
+            battle_ui.player_sign.draw(1250, 200 - battle_ui.player_target * 50)
             battle_ui.battle_explain.draw(645, 15)
 
 
@@ -215,6 +212,7 @@ class SkillState:
         battle_ui.turn_number.clip_draw((battle_state.player.get_player(battle_ui.player_now).get_turn()) * 100, 0
                                         , 100, 150, 105, 175)
         battle_ui.skill_ui.draw(150, 170)
+        battle_ui.now_player_mark.draw(880, 200 - battle_ui.player_now * 50)
         battle_ui.player_sign.draw(1250, 200 - battle_ui.player_target * 50)
 
         for i in range(len(battle_state.player.get_player(battle_ui.player_now).get_card().get_skill())):
@@ -266,6 +264,7 @@ class ItemState:
     def draw(battle_ui):
         battle_ui.item_ui.draw(360, 220)
         battle_state.player.get_player(0).draw_item_number(battle_ui.selected_item)
+        battle_ui.now_player_mark.draw(880, 200 - battle_ui.player_now * 50)
         battle_ui.player_sign.draw(1250, 200 - battle_ui.player_target * 50)
         battle_ui.battle_explain.draw(645, 15)
 
@@ -289,6 +288,7 @@ class BattleUi:
     skill_ui = None
     item_ui = None
     player_sign = None
+    now_player_mark = None
     battle_explain = None
 
     def __init__(self):
@@ -308,6 +308,9 @@ class BattleUi:
 
         if BattleUi.battle_explain is None:
             BattleUi.battle_explain = load_image("resource/interface/battleExplain.png")
+
+        if BattleUi.now_player_mark is None:
+            BattleUi.now_player_mark = load_image("resource/interface/playerNow.png")
 
         self.act = 0
         self.sd_key = -1
