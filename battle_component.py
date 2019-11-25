@@ -7,6 +7,7 @@ import game_framework
 from damage_calculator import can_use_skill, use_skill
 from behavior_tree import BehaviorTree, SelectorNode, SequenceNode, LeafNode
 import random
+from item_data import use_item
 
 
 SKILL_FRAMES = 8
@@ -239,7 +240,8 @@ class ItemState:
             battle_ui.sub_counter = 0
 
         elif event == SPACE_KEY:
-            print("use item")
+            players = battle_state.player.get_list()
+            use_item(players[battle_ui.player_target], battle_ui.selected_item)
 
         elif event == X_KEY:
             battle_ui.player_target = (battle_ui.player_target + 1) % battle_state.player.number_of_players

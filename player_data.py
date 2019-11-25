@@ -113,6 +113,12 @@ class Player:
     def set_down_level(self, down_level):
         self.down_level = down_level
 
+    def get_item(self):
+        return self.item
+
+    def set_item(self, type, number):
+        self.item[type] += number
+
     def give_exp(self, exp):
         if self.level != 99:
             self.exp += exp
