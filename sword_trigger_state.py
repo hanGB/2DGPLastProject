@@ -5,7 +5,14 @@ import battle_analyze_state
 import game_world
 from skill_data import Skill
 from damage_calculator import can_use_skill
-from auto_battle import Manual
+from damage_calculator import use_skill
+from behavior_tree import BehaviorTree, SequenceNode, LeafNode
+
+TIME_PER_SELECTING = 2
+SELECTING_PER_TIME = 1.0 / TIME_PER_SELECTING
+FRAMES_PER_SELECTING = 8
+SKILL_FRAMES = 8
+ANIMATION_ACCELERATION = 2.5
 
 name = "sword_trigger_state"
 
@@ -22,6 +29,64 @@ class SwordTriggerUi:
             SwordTriggerUi.image = load_image("resource/interface/sdInBattle.png")
         self.sword_trigger = [Skill(91), Skill(90)]
 
+        self.selected_skill_data = None
+        self.selected_target = None
+
+        self.sword_trigger = battle_state.sword_trigger
+
+        self.showing_skill_animation = False
+        self.skill_frame = 0
+
+        self.manual_play = False
+
+        self.build_behavior_tree()
+
+    def set_manual_play(self, true):
+        self.manual_play = true
+
+    def set_skill_target(self, skill, target):
+        self.selected_skill_data = skill
+        self.selected_target = target
+
+    def check_manual_play(self):
+        if self.manual_play:
+            battle_state.skill_processing = True
+            return BehaviorTree.SUCCESS
+
+        else:
+            return BehaviorTree.FAIL
+
+    def skill_animation(self):
+        self.showing_skill_animation = True
+        self.skill_frame += game_framework.frame_time * FRAMES_PER_SELECTING \
+                            * SELECTING_PER_TIME * ANIMATION_ACCELERATION
+
+        if self.skill_frame > SKILL_FRAMES:
+            self.skill_frame = 0
+            self.showing_skill_animation = False
+            return BehaviorTree.SUCCESS
+        return BehaviorTree.RUNNING
+
+    def use_skill(self):
+        use_skill(battle_state.player.get_player(battle_state.battle_ui.player_now),
+                  self.selected_target, self.selected_skill_data)
+
+        battle_state.skill_processing = False
+
+        self.manual_play = False
+        return BehaviorTree.SUCCESS
+
+    def build_behavior_tree(self):
+        check_manual_play_node = LeafNode("Check Manual Play", self.check_manual_play)
+
+        skill_animation_node = LeafNode("Skill Animation", self.skill_animation)
+        use_skill_node = LeafNode("Use Skill", self.use_skill)
+
+        process_skill_node = SequenceNode("Skill Process")
+        process_skill_node.add_children(check_manual_play_node, skill_animation_node, use_skill_node)
+
+        self.bt = BehaviorTree(process_skill_node)
+
     def get_key(self):
         return self.key
 
@@ -29,11 +94,13 @@ class SwordTriggerUi:
         return self.sword_trigger[number]
 
     def update(self):
-        pass
+        self.bt.run()
 
     def draw(self):
         SwordTriggerUi.image.clip_draw(0,  (2 - self.key) * 50, 250, 50, 300, 170)
-        # SwordTriggerUi.image.clip_draw(0, 0 * 50, 250, 50, 170, 80)
+
+        if self.showing_skill_animation:
+            self.selected_skill_data.draw_animation(self.skill_frame)
 
 
 def enter():
@@ -67,23 +134,19 @@ def handle_events():
                 if sword_trigger_ui.get_key() == 0:
                     if (can_use_skill(battle_state.player.get_player(battle_state.battle_ui.player_now),
                                       sword_trigger_ui.get_sword_trigger(0))):
-                        battle_state.battle_ui.set_play_processor(
-                            Manual(battle_state.player.get_player(battle_state.battle_ui.player_now),
-                                   battle_state.battle_enemy.get_selected_enemy(), sword_trigger_ui.get_sword_trigger(0)))
 
-                        game_world.add_object(battle_state.battle_ui.play_processor, 3)
-                        battle_state.battle_ui.process_end = False
+                        sword_trigger_ui.set_manual_play(True)
+                        sword_trigger_ui.set_skill_target(sword_trigger_ui.get_sword_trigger(0),
+                                                          battle_state.battle_enemy.get_selected_enemy())
 
             elif event.key == SDLK_d and event.type == SDL_KEYDOWN:
                 if sword_trigger_ui.get_key() == 1:
                     if (can_use_skill(battle_state.player.get_player(battle_state.battle_ui.player_now),
                                       sword_trigger_ui.get_sword_trigger(1))):
-                        battle_state.battle_ui.set_play_processor(
-                            Manual(battle_state.player.get_player(battle_state.battle_ui.player_now),
-                            battle_state.battle_enemy.get_selected_enemy(), sword_trigger_ui.get_sword_trigger(1)))
 
-                        game_world.add_object(battle_state.battle_ui.play_processor, 3)
-                        battle_state.battle_ui.process_end = False
+                        sword_trigger_ui.set_manual_play(True)
+                        sword_trigger_ui.set_skill_target(sword_trigger_ui.get_sword_trigger(1),
+                                                          battle_state.battle_enemy.get_selected_enemy())
 
             elif event.key == (SDLK_a and event.type == SDL_KEYDOWN) \
                     or (event.key == SDLK_LSHIFT and event.type == SDL_KEYDOWN):
@@ -105,11 +168,6 @@ def handle_events():
 
 
 def update():
-    if battle_state.battle_ui.get_process_end():
-        if battle_state.battle_ui.get_play_processor() is not None:
-            game_world.remove_object(battle_state.battle_ui.get_play_processor())
-            battle_state.battle_ui.set_play_processor(None)
-
     if battle_state.player.get_player(battle_state.battle_ui.get_player_now()).get_turn() == 0:
         battle_state.battle_ui.set_is_main(True)
         game_framework.pop_state()
