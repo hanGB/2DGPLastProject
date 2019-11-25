@@ -109,19 +109,29 @@ class MainState:
             battle_state.player.get_player(battle_ui.player_now).set_turn(turn)
 
         if battle_state.now_turn == 0:
-            player_now = battle_ui.get_player_now()
-            check_player = player_now
+            check_player = battle_ui.player_now
 
-            if battle_state.player.get_player(player_now).get_turn() == 0:
+            if battle_state.now_turn == 0:
+                if battle_state.player.get_player(battle_ui.player_now).get_Bd() <= 0:
+                    for p in range(battle_state.player.number_of_players):
+                        battle_ui.player_now = (battle_ui.player_now + 1) % battle_state.player.number_of_players
+                        if battle_state.player.get_player(battle_ui.player_now).get_Bd() > 0:
+                            break
+
+            if battle_state.player.get_player(battle_ui.player_now).get_turn() == 0:
                 for p in range(battle_state.player.number_of_players):
                     battle_ui.player_now = (battle_ui.player_now + 1) % battle_state.player.number_of_players
                     if battle_state.player.get_player(battle_ui.player_now).get_turn() != 0:
                         if battle_state.player.get_player(battle_ui.player_now).get_Bd() > 0:
                             break
+
                 if check_player == battle_ui.player_now:
                     battle_state.now_turn = 1
+
                     for p in range(battle_state.player.get_number_of()):
                         battle_state.player.get_player(p).set_turn(battle_state.player.get_player(p).get_max_turn())
+
+                    battle_ui.player_now = (battle_ui.player_now + 1) % battle_state.player.number_of_players
 
         if battle_ui.selecting == 1:
             battle_ui.sub_counter += game_framework.frame_time * FRAMES_PER_SELECTING * SELECTING_PER_TIME
@@ -134,12 +144,13 @@ class MainState:
 
     @staticmethod
     def draw(battle_ui):
-        if battle_ui.is_main is True:
-            battle_ui.main_ui.clip_draw(battle_ui.act * 300, 0, 300, 300, 270, 180)
-        battle_ui.turn_number.clip_draw((battle_state.player.get_player(battle_ui.player_now).get_turn()) * 100, 0
-                                        , 100, 150, 105, 175)
-        battle_ui.player_sign.draw(1250, 200 - battle_ui.player_now * 50)
-        battle_ui.battle_explain.draw(645, 15)
+        if battle_state.now_turn == 0:
+            if battle_ui.is_main is True:
+                battle_ui.main_ui.clip_draw(battle_ui.act * 300, 0, 300, 300, 270, 180)
+            battle_ui.turn_number.clip_draw((battle_state.player.get_player(battle_ui.player_now).get_turn()) * 100, 0
+                                            , 100, 150, 105, 175)
+            battle_ui.player_sign.draw(1250, 200 - battle_ui.player_now * 50)
+            battle_ui.battle_explain.draw(645, 15)
 
 
 class SkillState:

@@ -80,14 +80,15 @@ class EnemyAttackState:
                     for e in range(battle_enemy.number_of_enemies):
                         battle_enemy.enemy_now = (battle_enemy.enemy_now + 1) % battle_enemy.number_of_enemies
                         if battle_enemy.enemy[battle_enemy.enemy_now].get_turn() != 0:
-                            if not battle_enemy.auto_play:
-                                battle_enemy.auto_play = True
                             break
 
                     if check_enemy == battle_enemy.enemy_now:
                         battle_state.now_turn = 0
                         for e in range(battle_enemy.number_of_enemies):
                             battle_enemy.enemy[e].set_turn(battle_enemy.enemy[e].get_max_turn())
+                else:
+                    if not battle_enemy.auto_play:
+                        battle_enemy.auto_play = True
 
         for enemy in battle_enemy.enemy:
             if enemy.get_Bd() <= 0:
@@ -200,7 +201,7 @@ next_state_table = {
                        RIGHT_DOWN: EnemySelectState, RIGHT_UP: EnemySelectState, TURN_CHANGE: EnemyAttackState,
                        VICTORY: BattleEndState, DEFEAT: BattleEndState},
     EnemyAttackState: {LEFT_DOWN: EnemyAttackState, LEFT_UP: EnemyAttackState,
-                       RIGHT_DOWN: EnemyAttackState, RIGHT_UP: EnemyAttackState, TURN_CHANGE: EnemyAttackState,
+                       RIGHT_DOWN: EnemyAttackState, RIGHT_UP: EnemyAttackState, TURN_CHANGE: EnemySelectState,
                        VICTORY: BattleEndState, DEFEAT: BattleEndState},
     BattleEndState: {LEFT_DOWN: BattleEndState, LEFT_UP: BattleEndState,
                      RIGHT_DOWN: BattleEndState, RIGHT_UP: BattleEndState, TURN_CHANGE: BattleEndState,
