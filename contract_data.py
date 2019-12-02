@@ -6,4 +6,4 @@ def contract_enemy(user, target):
 
     if down_level >= DOWN2:
         user.set_card(target.get_card())
-        target.set_Bd(0)
+        target.set_Bd(-1)

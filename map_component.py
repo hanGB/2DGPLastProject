@@ -8,7 +8,11 @@ TIME_PER_CAMERA_MOVE = 2
 CAMERA_MOVE_PER_TIME = 1.0 / TIME_PER_CAMERA_MOVE
 FRAMES_PER_CAMERA_MOVE = 8
 
-LEFT_DOWN, RIGHT_DOWN, LEFT_UP, RIGHT_UP, UP_KEY, DOWN_KEY = range(6)
+TIME_PER_MOVE = 0.5
+MOVE_PER_TIME = 1.0 / TIME_PER_MOVE
+FRAMES_PER_MOVE = 4
+
+LEFT_DOWN, RIGHT_DOWN, LEFT_UP, RIGHT_UP, UP_KEY, DOWN_KEY, MOVE = range(7)
 
 key_event_table = {
     (SDL_KEYDOWN, SDLK_LEFT): LEFT_DOWN,
@@ -44,19 +48,22 @@ class NormalMap:
 
         elif event == UP_KEY:
             if map.rooms[map.location_y][map.location_x].is_door_in_front_player() is True:
-                now_direction = map.rooms[map.location_y][map.location_x].get_map_direction()
-                if now_direction == 0:
-                    map.location_y += 1
-                elif now_direction == 2:
-                    map.location_x += 1
-                elif now_direction == 4:
-                    map.location_y -= 1
-                elif now_direction == 6:
-                    map.location_x -= 1
-                map.rooms[map.location_y][map.location_x].set_map_direction(now_direction)
-                battle_outbreak_rate = random.randint(1, 10)
-                if battle_outbreak_rate < 5:
-                    game_framework.push_state(battle_state)
+                map.moving = True
+
+        elif event == MOVE:
+            now_direction = map.rooms[map.location_y][map.location_x].get_map_direction()
+            if now_direction == 0:
+                map.location_y += 1
+            elif now_direction == 2:
+                map.location_x += 1
+            elif now_direction == 4:
+                map.location_y -= 1
+            elif now_direction == 6:
+                map.location_x -= 1
+            map.rooms[map.location_y][map.location_x].set_map_direction(now_direction)
+            battle_outbreak_rate = random.randint(1, 10)
+            if battle_outbreak_rate < 5:
+                game_framework.push_state(battle_state)
 
     @staticmethod
     def exit(battle_ui, event):
@@ -75,9 +82,24 @@ class NormalMap:
                 elif map.direction == -1:
                     map.rooms[map.location_y][map.location_x].turn_sight('q')
 
+        if map.moving:
+            map.animation_counter += game_framework.frame_time * FRAMES_PER_MOVE * MOVE_PER_TIME
+            if map.animation_counter > 1:
+                map.animation_counter = 0
+                map.animation_frame += 1
+
+            if map.animation_frame == 4:
+                map.moving = False
+                map.animation_frame = 0
+                map.add_event(MOVE)
+
     @staticmethod
     def draw(map):
         map.rooms[map.location_y][map.location_x].draw()
+
+        if map.moving:
+            map.move_animation.clip_draw(map.animation_frame * 1280, 0, 1280, 720, 640, 360)
+
         map.compass.clip_draw(map.rooms[map.location_y][map.location_x].get_map_direction() * 200, 0,
                               200, 150, 1150, 100)
         map.room_number.clip_draw(20 * map.location_y, 0, 20, 30, 1210, 140)
@@ -87,22 +109,29 @@ class NormalMap:
 next_state_table = {
     NormalMap: {LEFT_DOWN: NormalMap, RIGHT_DOWN: NormalMap,
                 LEFT_UP: NormalMap, RIGHT_UP: NormalMap,
-                UP_KEY: NormalMap, DOWN_KEY: NormalMap}
+                UP_KEY: NormalMap, DOWN_KEY: NormalMap,
+                MOVE: NormalMap}
 }
 
 
 class Map:
     compass = None
     room_number = None
+    move_animation = None
 
     def __init__(self, type):
         if Map.compass is None:
             Map.compass = load_image("resource/interface/compass.png")
         if Map.room_number is None:
             Map.room_number = load_image("resource/interface/roomNum.png")
+        if Map.move_animation is None:
+            Map.move_animation = load_image("resource/animation/moveAni.png")
 
         self.direction = 0
         self.sub_counter = 0
+        self.animation_counter = 0
+        self.animation_frame = 0
+        self.moving = False
         if type == 0:
             # 0번 던전의 맵 데이터
             # 0, 4 S에서 출발해서 6, 2 N으로 나가는 던전

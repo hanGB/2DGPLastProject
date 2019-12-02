@@ -176,7 +176,8 @@ class EnemySelectState:
 
         for enemy in battle_enemy.enemy:
             if enemy.get_Bd() <= 0:
-                battle_enemy.exp += (enemy.get_type() ** 2)
+                if enemy.get_Bd() != -1:
+                    battle_enemy.exp += (enemy.get_type() ** 2)
                 if battle_enemy.number_of_enemies != 1:
                     battle_enemy.enemy.remove(enemy)
                     battle_enemy.number_of_enemies -= 1
