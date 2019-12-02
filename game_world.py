@@ -1,3 +1,4 @@
+import pickle
 
 # layer 0: Background Objects
 # layer 1: Foreground Objects
@@ -42,3 +43,13 @@ def all_objects():
         for o in objects[i]:
             yield o
 
+
+def save():
+    with open('save.sav', 'wb') as f:
+        pickle.dump(objects, f)
+
+
+def load():
+    global objects
+    with open('save.sav', 'rb') as f:
+        objects = pickle.load(f)

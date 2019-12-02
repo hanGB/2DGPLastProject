@@ -53,7 +53,8 @@ class Player:
         self.buff = [0, 0]
         self.Bd = self.max_Bd
         self.Md = self.max_Md
-        self.card = status_data.Card(0)
+        self.card_type = 0
+        self.card = status_data.Card(self.card_type)
         self.down_level = 0
         self.turn = self.max_turn
         if self.pattern == 8:
@@ -67,6 +68,16 @@ class Player:
         self.time_to_show_hit = 0
         self.level_up = False
         self.level_up_counter = 0
+
+    def __getstate__(self):
+        state = {'pattern': self.pattern, 'max_Bd': self.max_Bd, 'max_Md': self.max_Md,
+                 'Bd': self.Bd, 'Md': self.Md, "max_turn": self.max_turn, 'level': self.level,
+                 'exp': self.exp, "stat": self.stat, "card_type ": self.card_type}
+        return state
+
+    def __setstate__(self, state):
+        self.__init__(state['pattern'], state['max_Bd'], state['max_Md'], state["stat"])
+        self.__dict__.update(state)
 
     def get_Bd(self):
         return self.Bd
@@ -246,3 +257,9 @@ class Player:
                 Player.item_number.clip_draw(20 * self.item[i], 0, 20, 30, 375, 275 - 30 * i)
                 if i == number:
                     Player.item_sign.draw(315, 278 - 30 * i)
+
+    def draw(self):
+        pass
+
+    def update(self):
+        pass
