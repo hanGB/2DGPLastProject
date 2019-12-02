@@ -214,6 +214,18 @@ class Player:
                 self.hit_weakness = -1
                 self.time_to_show_hit = 0
 
+    def draw_bar_in_map(self, sit):
+        Bd_rate = self.Bd / self.max_Bd
+        Md_rate = self.Md / self.max_Md
+
+        Player.bar.clip_draw(0, 0, 180, 50, 130, 550 - sit * 80)
+        Player.bar.clip_draw(0, 0, 180, 50, 160, 520 - sit * 80)
+
+        Player.Bd_bar.draw(127 - (1 - Bd_rate) * 72, 550 - sit * 80, 150 * Bd_rate, 20)
+        Player.Md_bar.draw(157 - (1 - Md_rate) * 72, 520 - sit * 80, 150 * Md_rate, 20)
+
+        Player.pattern_image.clip_draw(self.pattern * 30, 0, 30, 30, 30, 550 - sit * 80)
+
     def draw_item_number(self, number):
         if self.pattern == 8:
             for i in range(7):

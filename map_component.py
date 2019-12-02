@@ -3,6 +3,7 @@ import room_data
 import random
 import battle_state
 import game_framework
+import initium_state
 
 TIME_PER_CAMERA_MOVE = 2
 CAMERA_MOVE_PER_TIME = 1.0 / TIME_PER_CAMERA_MOVE
@@ -104,6 +105,11 @@ class NormalMap:
                               200, 150, 1150, 100)
         map.room_number.clip_draw(20 * map.location_y, 0, 20, 30, 1210, 140)
         map.room_number.clip_draw(20 * map.location_x, 0, 20, 30, 1100, 55)
+
+        sit = 0
+        for player in initium_state.player:
+            player.draw_bar_in_map(sit)
+            sit += 1
 
 
 next_state_table = {
