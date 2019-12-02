@@ -1,6 +1,7 @@
 from pico2d import *
 import game_framework
 import map_component
+import initium_state
 import battle_state
 name = "map_state"
 
@@ -40,6 +41,9 @@ def handle_events():
         # 배틀 진입 테스트
         # if event.type == SDL_KEYDOWN and event.key == SDLK_b:
         #    game_framework.push_state(battle_state)
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_KP_PLUS:
+            for player in initium_state.player:
+                player.give_exp(1000)
         else:
             map.handle_events(event)
 

@@ -18,6 +18,7 @@ class Player:
     item_sign = None
     down_fall = None
     show_hit = None
+    level_up_image = None
 
     def __init__(self, pattern, Bd, Md, stat):
 
@@ -38,6 +39,9 @@ class Player:
 
         if Player.show_hit is None:
             Player.show_hit = load_image("resource/interface/attackWeakness.png")
+
+        if Player.level_up_image is None:
+            Player.level_up_image = load_image("resource/interface/levelUp.png")
 
         self.pattern = pattern
         self.max_Bd = Bd
@@ -61,6 +65,8 @@ class Player:
 
         self.hit_weakness = -1
         self.time_to_show_hit = 0
+        self.level_up = False
+        self.level_up_counter = 0
 
     def get_Bd(self):
         return self.Bd
@@ -125,9 +131,10 @@ class Player:
     def give_exp(self, exp):
         if self.level != 99:
             self.exp += exp
-            if self.exp > self.level * 100:
-                self.exp = self.exp - self.level * 100
+            if self.exp > self.level * 30:
+                self.exp = self.exp - self.level * 30
                 self.level += 1
+                self.level_up = True
 
                 if self.pattern == 8:
                     self.max_Bd += 7
@@ -225,6 +232,13 @@ class Player:
         Player.Md_bar.draw(157 - (1 - Md_rate) * 72, 520 - sit * 80, 150 * Md_rate, 20)
 
         Player.pattern_image.clip_draw(self.pattern * 30, 0, 30, 30, 30, 550 - sit * 80)
+
+        if self.level_up:
+            Player.level_up_image.draw(130, 550 - sit * 80)
+            self.level_up_counter += game_framework.frame_time * FRAMES_PER_SHOW * SHOW_PER_TIME
+            if self.level_up_counter > 10:
+                self.level_up = False
+                self.level_up_counter = 0
 
     def draw_item_number(self, number):
         if self.pattern == 8:
