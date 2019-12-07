@@ -17,6 +17,7 @@ class Skill:
                 self.damage = 45
                 self.rate = 95
                 self.Md = 4
+                self.all_targets = False
 
             elif (self.number % 10) == 2:
                 self.pattern = 3
@@ -24,6 +25,7 @@ class Skill:
                 self.damage = 125
                 self.rate = 95
                 self.Md = 8
+                self.all_targets = False
 
             elif (self.number % 10) == 1:
                 self.pattern = 3
@@ -31,6 +33,7 @@ class Skill:
                 self.damage = 325
                 self.rate = 95
                 self.Md = 16
+                self.all_targets = False
 
             elif (self.number % 10) == 0:
                 self.pattern = 3
@@ -38,9 +41,41 @@ class Skill:
                 self.damage = 499
                 self.rate = 95
                 self.Md = 32
+                self.all_targets = False
 
         elif (self.number / 10) < 2:
             self.image = load_image("resource/skill/aq.png")
+            if (self.number % 10) == 3:
+                self.pattern = 3
+                self.turn = 1
+                self.damage = 50
+                self.rate = 93
+                self.Md = 8
+                self.all_targets = True
+
+            elif (self.number % 10) == 2:
+                self.pattern = 3
+                self.turn = 2
+                self.damage = 140
+                self.rate = 93
+                self.Md = 16
+                self.all_targets = True
+
+            elif (self.number % 10) == 1:
+                self.pattern = 3
+                self.turn = 3
+                self.damage = 305
+                self.rate = 93
+                self.Md = 32
+                self.all_targets = True
+
+            elif (self.number % 10) == 0:
+                self.pattern = 3
+                self.turn = 4
+                self.damage = 500
+                self.rate = 93
+                self.Md = 64
+                self.all_targets = True
 
         elif (self.number / 10) < 3:
             self.image = load_image("resource/skill/ter.png")
@@ -53,6 +88,7 @@ class Skill:
                 self.damage = 50
                 self.rate = 90
                 self.Md = 3
+                self.all_targets = False
 
             elif (self.number % 10) == 2:
                 self.pattern = 2
@@ -60,6 +96,7 @@ class Skill:
                 self.damage = 125
                 self.rate = 90
                 self.Md = 6
+                self.all_targets = False
 
             elif (self.number % 10) == 1:
                 self.pattern = 2
@@ -67,6 +104,7 @@ class Skill:
                 self.damage = 350
                 self.rate = 90
                 self.Md = 12
+                self.all_targets = False
 
             elif (self.number % 10) == 0:
                 self.pattern = 2
@@ -74,6 +112,7 @@ class Skill:
                 self.damage = 450
                 self.rate = 90
                 self.Md = 24
+                self.all_targets = False
 
         elif (self.number / 10) < 5:
             self.image = load_image("resource/skill/per.png")
@@ -98,6 +137,7 @@ class Skill:
                 self.damage = 25
                 self.rate = 95
                 self.Md = 0
+                self.all_targets = False
 
             elif (self.number % 10) == 0:
                 self.pattern = 7
@@ -105,6 +145,7 @@ class Skill:
                 self.damage = 25
                 self.rate = 95
                 self.Md = 1
+                self.all_targets = False
 
         self.animation = load_image("resource/animation/swordAni.png")
 
@@ -125,6 +166,9 @@ class Skill:
 
     def get_Md(self):
         return self.Md
+
+    def get_all_targets(self):
+        return self.all_targets
 
     def draw(self, locate, selected):
         self.image.clip_draw(0, self.number % 10 * 50, 200, 50, 360 + selected * 70, 270 - locate * 50)

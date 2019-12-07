@@ -1,4 +1,7 @@
 import random
+from player_data import Player
+from enemy_data import Enemy
+import battle_state
 
 HIT, AWFUL, WEAK, HALF, NON, REVEN, SHOCK, MISS = range(8)
 MATTER_ATTACK, MIND_ATTACK, MATTER_DEFENCE, MIND_DEFENCE, HIT_RATE, AVOID_RATE = range(6)
@@ -65,6 +68,44 @@ def calculate_damage_for_normal_skill(user, target, skill):
         return SHOCK, damage * 0.5
 
 
+def calculate_down_level_for_normal_skill(user, target, weakness, damage):
+    target.set_hit_weakness(weakness)
+    target_down_level = target.get_down_level()
+
+    if target_down_level == 0:
+        if weakness == AWFUL:
+            target.set_down_level(3)
+        elif weakness == WEAK:
+            target.set_down_level(1)
+
+    elif target_down_level == 1:
+        if weakness == AWFUL:
+            target.set_down_level(3)
+        elif weakness == WEAK:
+            target.set_down_level(2)
+
+    elif target_down_level == 2:
+        if weakness == AWFUL:
+            target.set_down_level(3)
+        elif weakness == WEAK:
+            target.set_down_level(1)
+
+    if target.get_Bd() - damage > 0:
+        target.set_Bd(target.get_Bd() - damage)
+    else:
+        target.set_Bd(0)
+        target.set_down_level(0)
+
+    if weakness == REVEN:
+        if user.get_Bd() - damage > 0:
+            user.set_Bd(user.get_Bd() - damage)
+        else:
+            user.set_Bd(1)
+
+    elif weakness == SHOCK:
+        user.set_down_level(2)
+
+
 def can_use_skill(user, skill):
     if user.get_Md() < skill.get_Md():
         return False
@@ -78,43 +119,20 @@ def can_use_skill(user, skill):
 def calculate_damage(user, target, skill):
 
     skill_type = skill.get_number() / 10
-
+    all_targets = skill.get_all_targets()
     if skill_type < 5 or 9 <= skill_type < 10:
-        weakness, damage = calculate_damage_for_normal_skill(user, target, skill)
-        target.set_hit_weakness(weakness)
-        target_down_level = target.get_down_level()
-
-        if target_down_level == 0:
-            if weakness == AWFUL:
-                target.set_down_level(3)
-            elif weakness == WEAK:
-                target.set_down_level(1)
-
-        elif target_down_level == 1:
-            if weakness == AWFUL:
-                target.set_down_level(3)
-            elif weakness == WEAK:
-                target.set_down_level(2)
-
-        elif target_down_level == 2:
-            if weakness == AWFUL:
-                target.set_down_level(3)
-            elif weakness == WEAK:
-                target.set_down_level(1)
-
-        if target.get_Bd() - damage > 0:
-            target.set_Bd(target.get_Bd() - damage)
+        if all_targets:
+            if isinstance(target, Enemy):
+                for enemy in battle_state.battle_enemy.get_list():
+                    weakness, damage = calculate_damage_for_normal_skill(user, enemy, skill)
+                    calculate_down_level_for_normal_skill(user, enemy, weakness, damage)
+            elif isinstance(target, Player):
+                for player in battle_state.player.get_list():
+                    weakness, damage = calculate_damage_for_normal_skill(user, player, skill)
+                    calculate_down_level_for_normal_skill(user, player, weakness, damage)
         else:
-            target.set_Bd(0)
-
-        if weakness == REVEN:
-            if user.get_Bd() - damage > 0:
-                user.set_Bd(user.get_Bd() - damage)
-            else:
-                user.set_Bd(1)
-
-        elif weakness == SHOCK:
-            user.set_down_level(2)
+            weakness, damage = calculate_damage_for_normal_skill(user, target, skill)
+            calculate_down_level_for_normal_skill(user, target, weakness, damage)
 
 
 def use_skill(user, target, skill):
