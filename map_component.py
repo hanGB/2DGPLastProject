@@ -107,6 +107,7 @@ class NormalMap:
         map.room_number.clip_draw(20 * map.location_x, 0, 20, 30, 1100, 55)
 
         map.key_information.draw(1150, 300)
+        map.save_load_key.draw(1150, 400)
 
         sit = 0
         for player in initium_state.player:
@@ -127,8 +128,11 @@ class Map:
     room_number = None
     move_animation = None
     key_information = None
+    save_load_key = None
 
     def __init__(self, type):
+        if Map.save_load_key is None:
+            Map.save_load_key = load_image("resource/interface/keyInformSave.png")
         if Map.key_information is None:
             Map.key_information = load_image("resource/interface/keyInformMap.png")
         if Map.compass is None:

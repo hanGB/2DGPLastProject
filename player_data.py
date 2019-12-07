@@ -20,8 +20,12 @@ class Player:
     show_hit = None
     level_up_image = None
     level_number = None
+    buff_coin = None
 
     def __init__(self, pattern, Bd, Md, stat):
+
+        if Player.buff_coin is None:
+            Player.buff_coin = load_image("resource/interface/buffCoin.png")
 
         if Player.bar is None:
             Player.bar = load_image("resource/interface/BdMdBar.png")
@@ -230,6 +234,22 @@ class Player:
         Player.Bd_bar.draw(972 - (1 - Bd_rate) * 72, 200 - sit * 50, 150 * Bd_rate, 20)
         Player.Md_bar.draw(1143 - (1 - Md_rate) * 72, 200 - sit * 50, 150 * Md_rate, 20)
         Player.pattern_image.clip_draw(self.pattern * 30, 0, 30, 30, 880, 200 - sit * 50)
+
+        if self.buff[0] < 0:
+            buff_count = self.buff[0] * -1
+            for i in range(buff_count):
+                Player.buff_coin.clip_draw(5, 0, 5, 5, 897 + i * 5, 214 - sit * 50)
+        elif self.buff[0] > 0:
+            for i in range(self.buff[0]):
+                Player.buff_coin.clip_draw(0, 0, 5, 5, 897 + i * 5, 214 - sit * 50)
+
+        if self.buff[1] < 0:
+            buff_count = self.buff[1] * -1
+            for i in range(buff_count):
+                Player.buff_coin.clip_draw(5, 0, 5, 5, 897 + i * 5, 184 - sit * 50)
+        elif self.buff[1] > 0:
+            for i in range(self.buff[1]):
+                Player.buff_coin.clip_draw(0, 0, 5, 5, 897 + i * 5, 184 - sit * 50)
 
         if self.down_level != 0:
             Player.down_fall.clip_draw((self.down_level - 1) * 100, 0, 100, 30, 815, 198 - sit * 50)

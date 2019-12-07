@@ -16,8 +16,12 @@ class Enemy:
     show_hit = None
     number_image = None
     level_image = None
+    buff_coin = None
 
     def __init__(self, type):
+        if Enemy.buff_coin is None:
+            Enemy.buff_coin = load_image("resource/interface/buffCoin.png")
+
         if Enemy.level_image is None:
             Enemy.level_image = load_image("resource/interface/lv.png")
 
@@ -220,6 +224,21 @@ class Enemy:
                 Enemy.level_image.draw(180 + position * 200 + 100, 283)
                 Enemy.number_image.clip_draw(20 * int(level_tens), 0, 20, 30, 200 + position * 200 + 100, 283)
                 Enemy.number_image.clip_draw(20 * int(level_units), 0, 20, 30, 217 + position * 200 + 100, 283)
+                if self.buff[0] < 0:
+                    buff_count = self.buff[0] * -1
+                    for i in range(buff_count):
+                        Enemy.buff_coin.clip_draw(5, 0, 5, 5, 213 + i * 5 + position * 200 + 100, 264)
+                elif self.buff[0] > 0:
+                    for i in range(self.buff[0]):
+                        Enemy.buff_coin.clip_draw(0, 0, 5, 5, 213 + i * 5 + position * 200 + 100, 264)
+
+                if self.buff[1] < 0:
+                    buff_count = self.buff[1] * -1
+                    for i in range(buff_count):
+                        Enemy.buff_coin.clip_draw(5, 0, 5, 5, 213 + i * 5 + position * 200 + 100, 247)
+                elif self.buff[1] > 0:
+                    for i in range(self.buff[1]):
+                        Enemy.buff_coin.clip_draw(0, 0, 5, 5, 213 + i * 5 + position * 200 + 100, 247)
 
             if self.down_level != 0:
                 Enemy.down_fall.clip_draw((self.down_level - 1) * 100, 0, 100, 30, 230 + position * 200 + 155, 235)
@@ -239,6 +258,21 @@ class Enemy:
                 Enemy.level_image.draw(180 + position * 200 + 100, 353)
                 Enemy.number_image.clip_draw(20 * int(level_tens), 0, 20, 30, 200 + position * 200 + 100, 353)
                 Enemy.number_image.clip_draw(20 * int(level_units), 0, 20, 30, 217 + position * 200 + 100, 353)
+                if self.buff[0] < 0:
+                    buff_count = self.buff[0] * -1
+                    for i in range(buff_count):
+                        Enemy.buff_coin.clip_draw(5, 0, 5, 5, 213 + i * 5 + position * 200 + 100, 334)
+                elif self.buff[0] > 0:
+                    for i in range(self.buff[0]):
+                        Enemy.buff_coin.clip_draw(0, 0, 5, 5, 213 + i * 5 + position * 200 + 100, 334)
+
+                if self.buff[1] < 0:
+                    buff_count = self.buff[1] * -1
+                    for i in range(buff_count):
+                        Enemy.buff_coin.clip_draw(5, 0, 5, 5, 213 + i * 5 + position * 200 + 100, 317)
+                elif self.buff[1] > 0:
+                    for i in range(self.buff[1]):
+                        Enemy.buff_coin.clip_draw(0, 0, 5, 5, 213 + i * 5 + position * 200 + 100, 317)
 
             if self.down_level != 0:
                 Enemy.down_fall.clip_draw((self.down_level - 1) * 100, 0, 100, 30, 230 + position * 200 + 155, 305)
@@ -258,6 +292,21 @@ class Enemy:
                 Enemy.level_image.draw(180 + position * 200 + 100, 383)
                 Enemy.number_image.clip_draw(20 * int(level_tens), 0, 20, 30, 200 + position * 200 + 100, 383)
                 Enemy.number_image.clip_draw(20 * int(level_units), 0, 20, 30, 217 + position * 200 + 100, 383)
+                if self.buff[0] < 0:
+                    buff_count = self.buff[0] * -1
+                    for i in range(buff_count):
+                        Enemy.buff_coin.clip_draw(5, 0, 5, 5, 213 + i * 5 + position * 200 + 100, 364)
+                elif self.buff[0] > 0:
+                    for i in range(self.buff[0]):
+                        Enemy.buff_coin.clip_draw(0, 0, 5, 5, 213 + i * 5+ position * 200 + 100, 364)
+
+                if self.buff[1] < 0:
+                    buff_count = self.buff[1] * -1
+                    for i in range(buff_count):
+                        Enemy.buff_coin.clip_draw(5, 0, 5, 5, 213 + i * 5 + position * 200 + 100, 347)
+                elif self.buff[1] > 0:
+                    for i in range(self.buff[1]):
+                        Enemy.buff_coin.clip_draw(0, 0, 5, 5, 213 + i * 5 + position * 200 + 100, 347)
 
             if self.down_level != 0:
                 Enemy.down_fall.clip_draw((self.down_level - 1) * 100, 0, 100, 30, 230 + position * 200 + 155, 335)
