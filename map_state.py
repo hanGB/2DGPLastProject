@@ -15,7 +15,7 @@ def enter():
 
     # test
     # game_framework.push_state(battle_state)
-    game_framework.change_state(city_state)
+    # game_framework.change_state(city_state)
     #
 
     map = map_component.Map(0)

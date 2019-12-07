@@ -14,8 +14,16 @@ class Enemy:
     attribute = None
     down_fall = None
     show_hit = None
+    number_image = None
+    level_image = None
 
     def __init__(self, type):
+        if Enemy.level_image is None:
+            Enemy.level_image = load_image("resource/interface/lv.png")
+
+        if Enemy.number_image is None:
+            Enemy.number_image = load_image("resource/interface/itemNum.png")
+
         if Enemy.target is None:
             Enemy.target = load_image("resource/interface/target.png")
 
@@ -41,84 +49,98 @@ class Enemy:
             self.max_Bd = 2000
             self.stat = [35, 35, 35, 35, 35, 35]
             self.max_turn = 5
+            self.level = 0
 
         elif type == 1:
             self.image = load_image("resource/enemy/1slame.png")
             self.max_Bd = 300
             self.stat = [5, 5, 5, 5, 5, 5]
             self.max_turn = 1
+            self.level = 5
 
         elif type == 2:
             self.image = load_image("resource/enemy/2jack_o_lantern.png")
             self.max_Bd = 400
             self.stat = [10, 5, 5, 5, 10, 5]
             self.max_turn = 1
+            self.level = 8
 
         elif type == 3:
             self.image = load_image("resource/enemy/3jack_frost.png")
             self.max_Bd = 500
             self.stat = [10, 10, 10, 10, 10, 10]
             self.max_turn = 2
+            self.level = 12
 
         elif type == 4:
             self.image = load_image("resource/enemy/4loa.png")
             self.max_Bd = 600
             self.stat = [5, 10, 20, 10, 5, 10]
             self.max_turn = 2
+            self.level = 17
 
         elif type == 5:
             self.image = load_image("resource/enemy/5high_pixie.png")
             self.max_Bd = 700
             self.stat = [20, 10, 20, 10, 10, 20]
             self.max_turn = 2
+            self.level = 22
 
         elif type == 6:
             self.image = load_image("resource/enemy/6kaiwan.png")
             self.max_Bd = 1000
             self.stat = [20, 15, 25, 15, 15, 10]
             self.max_turn = 3
+            self.level = 27
 
         elif type == 7:
             self.image = load_image("resource/enemy/7legion.png")
             self.max_Bd = 1300
             self.stat = [20, 20, 30, 20, 10, 10]
             self.max_turn = 3
+            self.level = 35
 
         elif type == 8:
             self.image = load_image("resource/enemy/8naga.png")
             self.max_Bd = 1500
             self.stat = [30, 30, 20, 40, 20, 40]
             self.max_turn = 3
+            self.level = 41
 
         elif type == 9:
             self.image = load_image("resource/enemy/9dol.png")
             self.max_Bd = 1700
             self.stat = [20, 50, 20, 50, 20, 20]
             self.max_turn = 3
+            self.level = 47
 
         elif type == 10:
             self.image = load_image("resource/enemy/10surt.png")
             self.max_Bd = 2000
             self.stat = [50, 30, 10, 10, 20, 20]
             self.max_turn = 4
+            self.level = 56
 
         elif type == 11:
             self.image = load_image("resource/enemy/11norn.png")
             self.max_Bd = 2200
             self.stat = [40, 30, 20, 40, 30, 30]
             self.max_turn = 4
+            self.level = 63
 
         elif type == 12:
             self.image = load_image("resource/enemy/12lucipel.png")
             self.max_Bd = 5000
             self.stat = [50, 50, 50, 50, 50, 50]
             self.max_turn = 5
+            self.level = 77
 
         elif type == 13:
             self.image = load_image("resource/enemy/13luciper.png")
             self.max_Bd = 9999
             self.stat = [99, 99, 99, 99, 99, 99]
             self.max_turn = 9
+            self.level = 99
 
         self.Bd = self.max_Bd
         self.buff = [0, 0]
@@ -178,6 +200,9 @@ class Enemy:
         self.hit_weakness = hit_weakness
 
     def draw(self, position, slt):
+        level_units = self.level % 10
+        level_tens = self.level / 10
+
         if self.type == 1:
             self.image.draw(200 + position * 200, 255)
         else:
@@ -189,6 +214,10 @@ class Enemy:
             if slt == 0:
                 Enemy.target.draw(230 + position * 200 + 100, 240)
                 Enemy.BdBar.draw(241 + position * 200 - (1 - Bd_rate) * 30 + 100, 256, Bd_rate * 60, 10)
+                Enemy.level_image.draw(180 + position * 200 + 100, 283)
+                Enemy.number_image.clip_draw(20 * int(level_tens), 0, 20, 30, 200 + position * 200 + 100, 283)
+                Enemy.number_image.clip_draw(20 * int(level_units), 0, 20, 30, 217 + position * 200 + 100, 283)
+
             if self.down_level != 0:
                 Enemy.down_fall.clip_draw((self.down_level - 1) * 100, 0, 100, 30, 230 + position * 200 + 155, 235)
 
@@ -204,6 +233,10 @@ class Enemy:
             if slt == 0:
                 Enemy.target.draw(230 + position * 200 + 100, 310)
                 Enemy.BdBar.draw(241 + position * 200 - (1 - Bd_rate) * 30 + 100, 326, Bd_rate * 60, 10)
+                Enemy.level_image.draw(180 + position * 200 + 100, 353)
+                Enemy.number_image.clip_draw(20 * int(level_tens), 0, 20, 30, 200 + position * 200 + 100, 353)
+                Enemy.number_image.clip_draw(20 * int(level_units), 0, 20, 30, 217 + position * 200 + 100, 353)
+
             if self.down_level != 0:
                 Enemy.down_fall.clip_draw((self.down_level - 1) * 100, 0, 100, 30, 230 + position * 200 + 155, 305)
 
@@ -219,6 +252,10 @@ class Enemy:
             if slt == 0:
                 Enemy.target.draw(230 + position * 200 + 100, 340)
                 Enemy.BdBar.draw(241 + position * 200 - (1 - Bd_rate) * 30 + 100, 356, Bd_rate * 60, 10)
+                Enemy.level_image.draw(180 + position * 200 + 100, 383)
+                Enemy.number_image.clip_draw(20 * int(level_tens), 0, 20, 30, 200 + position * 200 + 100, 383)
+                Enemy.number_image.clip_draw(20 * int(level_units), 0, 20, 30, 217 + position * 200 + 100, 383)
+
             if self.down_level != 0:
                 Enemy.down_fall.clip_draw((self.down_level - 1) * 100, 0, 100, 30, 230 + position * 200 + 155, 335)
 

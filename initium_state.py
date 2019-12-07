@@ -59,6 +59,11 @@ def draw():
 def load_saved_world():
     global player
     player = []
+    player.clear()
+
+    for o in game_world.all_objects():
+        if isinstance(o, Player):
+            game_world.remove_object(o)
 
     game_world.load()
     for o in game_world.all_objects():

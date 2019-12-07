@@ -43,6 +43,9 @@ class Player:
         if Player.level_up_image is None:
             Player.level_up_image = load_image("resource/interface/levelUp.png")
 
+        if Player.item_number is None:
+                Player.item_number = load_image("resource/interface/itemNum.png")
+
         self.pattern = pattern
         self.max_Bd = Bd
         self.max_Md = Md
@@ -57,9 +60,8 @@ class Player:
         self.card = status_data.Card(self.card_type)
         self.down_level = 0
         self.turn = self.max_turn
+
         if self.pattern == 8:
-            if Player.item_number is None:
-                Player.item_number = load_image("resource/interface/itemNum.png")
             if Player.item_sign is None:
                 Player.item_sign = load_image("resource/interface/itemSign.png")
             self.item = [3, 0, 0, 2, 0, 0, 0]
@@ -243,6 +245,11 @@ class Player:
         Player.Md_bar.draw(157 - (1 - Md_rate) * 72, 520 - sit * 80, 150 * Md_rate, 20)
 
         Player.pattern_image.clip_draw(self.pattern * 30, 0, 30, 30, 30, 550 - sit * 80)
+
+        level_units = self.level % 10
+        level_tens = self.level / 10
+        Player.item_number.clip_draw(20 * int(level_tens), 0, 20, 30, 20, 520 - sit * 80)
+        Player.item_number.clip_draw(20 * int(level_units), 0, 20, 30, 37, 520 - sit * 80)
 
         if self.level_up:
             Player.level_up_image.draw(130, 550 - sit * 80)
