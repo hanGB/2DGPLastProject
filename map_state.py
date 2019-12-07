@@ -4,6 +4,7 @@ import map_component
 import initium_state
 import game_world
 import battle_state
+import city_state
 name = "map_state"
 
 map = None
@@ -14,6 +15,7 @@ def enter():
 
     # test
     # game_framework.push_state(battle_state)
+    game_framework.change_state(city_state)
     #
 
     map = map_component.Map(0)

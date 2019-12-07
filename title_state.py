@@ -41,9 +41,9 @@ def exit():
     global menu
     global selecting_menu
 
-    del (title)
-    del (menu)
-    del (selecting_menu)
+    del title
+    del menu
+    del selecting_menu
 
 
 def pause():
