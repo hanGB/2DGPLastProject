@@ -8,7 +8,7 @@ name = "MainState"
 
 location_bar = None
 background = None
-
+key_information = None
 
 def collide(a, b):
     left_a, bottom_a, right_a, top_a = a.get_bb()
@@ -31,6 +31,11 @@ def enter():
     background = Background()
     game_world.add_object(background, 0)
 
+    global key_information
+
+    if key_information is None:
+        key_information = load_image("resource/interface/keyInformCity.png")
+
     background.set_center_object(location_bar)
     location_bar.set_background(background)
 
@@ -38,11 +43,14 @@ def enter():
 def exit():
     global location_bar
     global background
+    global key_information
 
     game_world.remove_object(location_bar)
     game_world.remove_object(background)
+
     del location_bar
     del background
+    del key_information
 
 
 def pause():
@@ -71,6 +79,7 @@ def draw():
     clear_canvas()
     for game_object in game_world.all_objects():
         game_object.draw()
+    key_information.draw(1150, 300)
     update_canvas()
 
 

@@ -106,6 +106,8 @@ class NormalMap:
         map.room_number.clip_draw(20 * map.location_y, 0, 20, 30, 1210, 140)
         map.room_number.clip_draw(20 * map.location_x, 0, 20, 30, 1100, 55)
 
+        map.key_information.draw(1150, 300)
+
         sit = 0
         for player in initium_state.player:
             player.draw_bar_in_map(sit)
@@ -124,8 +126,11 @@ class Map:
     compass = None
     room_number = None
     move_animation = None
+    key_information = None
 
     def __init__(self, type):
+        if Map.key_information is None:
+            Map.key_information = load_image("resource/interface/keyInformMap.png")
         if Map.compass is None:
             Map.compass = load_image("resource/interface/compass.png")
         if Map.room_number is None:
