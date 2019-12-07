@@ -6,15 +6,15 @@ class Card:
         self.attribute = [0, 0, 0, 0, 0, 0, 0, 0]
         if type == 0:
             self.attribute = [0, 0, 0, 1, 0, 0, 0, 0]
-            self.skill = [Skill(3), Skill(2), Skill(13), Skill(0), Skill(3)]
+            self.skill = [Skill(51), Skill(52), Skill(13), Skill(62), Skill(3)]
 
         elif type == 1:
             self.attribute = [1, 0, 0, 2, 0, 0, 0, 0]
-            self.skill = [Skill(33), Skill(2), Skill(1), Skill(0), Skill(3)]
+            self.skill = [Skill(33), Skill(2), Skill(31), Skill(0), Skill(3)]
 
         elif type == 2:
             self.attribute = [2, 0, 2, 3, 0, 0, 0, 0]
-            self.skill = [Skill(3), Skill(2), Skill(31), Skill(0), Skill(3)]
+            self.skill = [Skill(13), Skill(12), Skill(11), Skill(10), Skill(13)]
 
         elif type == 3:
             self.attribute = [3, 0, 2, 2, 0, 0, 0, 0]

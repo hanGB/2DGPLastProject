@@ -11,7 +11,7 @@ from behavior_tree import BehaviorTree, SequenceNode, LeafNode
 TIME_PER_SELECTING = 2
 SELECTING_PER_TIME = 1.0 / TIME_PER_SELECTING
 FRAMES_PER_SELECTING = 8
-SKILL_FRAMES = 8
+SKILL_FRAMES = 4
 ANIMATION_ACCELERATION = 2.5
 
 name = "sword_trigger_state"

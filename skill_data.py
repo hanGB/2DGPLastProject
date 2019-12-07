@@ -17,6 +17,7 @@ class Skill:
                 self.damage = 45
                 self.rate = 95
                 self.Md = 4
+                self.ally_target = False
                 self.all_targets = False
 
             elif (self.number % 10) == 2:
@@ -25,6 +26,7 @@ class Skill:
                 self.damage = 125
                 self.rate = 95
                 self.Md = 8
+                self.ally_target = False
                 self.all_targets = False
 
             elif (self.number % 10) == 1:
@@ -33,6 +35,7 @@ class Skill:
                 self.damage = 325
                 self.rate = 95
                 self.Md = 16
+                self.ally_target = False
                 self.all_targets = False
 
             elif (self.number % 10) == 0:
@@ -41,6 +44,7 @@ class Skill:
                 self.damage = 499
                 self.rate = 95
                 self.Md = 32
+                self.ally_target = False
                 self.all_targets = False
 
         elif (self.number / 10) < 2:
@@ -51,6 +55,7 @@ class Skill:
                 self.damage = 50
                 self.rate = 93
                 self.Md = 8
+                self.ally_target = False
                 self.all_targets = True
 
             elif (self.number % 10) == 2:
@@ -59,6 +64,7 @@ class Skill:
                 self.damage = 140
                 self.rate = 93
                 self.Md = 16
+                self.ally_target = False
                 self.all_targets = True
 
             elif (self.number % 10) == 1:
@@ -67,6 +73,7 @@ class Skill:
                 self.damage = 305
                 self.rate = 93
                 self.Md = 32
+                self.ally_target = False
                 self.all_targets = True
 
             elif (self.number % 10) == 0:
@@ -75,6 +82,7 @@ class Skill:
                 self.damage = 500
                 self.rate = 93
                 self.Md = 64
+                self.ally_target = False
                 self.all_targets = True
 
         elif (self.number / 10) < 3:
@@ -88,6 +96,7 @@ class Skill:
                 self.damage = 50
                 self.rate = 90
                 self.Md = 3
+                self.ally_target = False
                 self.all_targets = False
 
             elif (self.number % 10) == 2:
@@ -96,6 +105,7 @@ class Skill:
                 self.damage = 125
                 self.rate = 90
                 self.Md = 6
+                self.ally_target = False
                 self.all_targets = False
 
             elif (self.number % 10) == 1:
@@ -104,6 +114,7 @@ class Skill:
                 self.damage = 350
                 self.rate = 90
                 self.Md = 12
+                self.ally_target = False
                 self.all_targets = False
 
             elif (self.number % 10) == 0:
@@ -112,6 +123,7 @@ class Skill:
                 self.damage = 450
                 self.rate = 90
                 self.Md = 24
+                self.ally_target = False
                 self.all_targets = False
 
         elif (self.number / 10) < 5:
@@ -119,9 +131,97 @@ class Skill:
 
         elif (self.number / 10) < 6:
             self.image = load_image("resource/skill/fat.png")
+            if (self.number % 10) == 4:
+                self.pattern = 4
+                self.turn = 1
+                self.Md = 5
+                self.damage = 2
+                self.buff_type = 0
+                self.ally_target = True
+                self.all_targets = False
+
+            elif (self.number % 10) == 3:
+                self.pattern = 4
+                self.turn = 1
+                self.Md = 5
+                self.damage = 2
+                self.buff_type = 1
+                self.ally_target = True
+                self.all_targets = False
+
+            elif (self.number % 10) == 2:
+                self.pattern = 4
+                self.turn = 2
+                self.Md = 10
+                self.damage = 2
+                self.buff_type = 0
+                self.ally_target = True
+                self.all_targets = True
+
+            elif (self.number % 10) == 1:
+                self.pattern = 4
+                self.turn = 2
+                self.Md = 10
+                self.damage = 2
+                self.buff_type = 1
+                self.ally_target = True
+                self.all_targets = True
+
+            elif (self.number % 10) == 0:
+                self.pattern = 4
+                self.turn = 4
+                self.Md = 30
+                self.damage = 3
+                self.buff_type = 2
+                self.ally_target = True
+                self.all_targets = True
 
         elif (self.number / 10) < 7:
             self.image = load_image("resource/skill/met.png")
+            if (self.number % 10) == 4:
+                self.pattern = 4
+                self.turn = 1
+                self.Md = 5
+                self.damage = -2
+                self.buff_type = 0
+                self.ally_target = False
+                self.all_targets = False
+
+            elif (self.number % 10) == 3:
+                self.pattern = 4
+                self.turn = 1
+                self.Md = 5
+                self.damage = -2
+                self.buff_type = 1
+                self.ally_target = False
+                self.all_targets = False
+
+            elif (self.number % 10) == 2:
+                self.pattern = 4
+                self.turn = 2
+                self.Md = 10
+                self.damage = -2
+                self.buff_type = 0
+                self.ally_target = False
+                self.all_targets = True
+
+            elif (self.number % 10) == 1:
+                self.pattern = 4
+                self.turn = 2
+                self.Md = 10
+                self.damage = -2
+                self.buff_type = 1
+                self.ally_target = False
+                self.all_targets = True
+
+            elif (self.number % 10) == 0:
+                self.pattern = 4
+                self.turn = 4
+                self.Md = 30
+                self.damage = -3
+                self.buff_type = 2
+                self.ally_target = False
+                self.all_targets = True
 
         elif (self.number / 10) < 8:
             self.image = load_image("resource/skill/cura.png")
@@ -137,6 +237,7 @@ class Skill:
                 self.damage = 25
                 self.rate = 95
                 self.Md = 0
+                self.ally_target = False
                 self.all_targets = False
 
             elif (self.number % 10) == 0:
@@ -145,6 +246,7 @@ class Skill:
                 self.damage = 25
                 self.rate = 95
                 self.Md = 1
+                self.ally_target = False
                 self.all_targets = False
 
         self.animation = load_image("resource/animation/swordAni.png")
@@ -166,6 +268,12 @@ class Skill:
 
     def get_Md(self):
         return self.Md
+
+    def get_buff_type(self):
+        return self.buff_type
+
+    def get_ally_target(self):
+        return self.ally_target
 
     def get_all_targets(self):
         return self.all_targets

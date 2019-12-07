@@ -199,6 +199,9 @@ class Enemy:
     def set_hit_weakness(self, hit_weakness):
         self.hit_weakness = hit_weakness
 
+    def set_time_to_show_hit(self):
+        self.time_to_show_hit = 0
+
     def draw(self, position, slt):
         level_units = self.level % 10
         level_tens = self.level / 10

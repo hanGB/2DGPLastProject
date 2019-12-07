@@ -8,7 +8,7 @@ from damage_calculator import use_skill
 from behavior_tree import BehaviorTree, SequenceNode, LeafNode
 
 
-SKILL_FRAMES = 8
+SKILL_FRAMES = 4
 ANIMATION_ACCELERATION = 2.5
 
 TIME_PER_SELECTING = 2
@@ -308,7 +308,11 @@ class BattleEnemy:
         return BehaviorTree.SUCCESS
 
     def select_target(self):
-        self.targets = battle_state.player.get_list()
+        ally_target = self.selected_skill_data.get_ally_target()
+        if ally_target:
+            self.targets = battle_state.player.get_list()
+        else:
+            self.targets = battle_state.battle_enemy.get_list()
 
         usable_targets = []
 

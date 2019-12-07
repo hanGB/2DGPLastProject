@@ -130,6 +130,9 @@ class Player:
     def set_hit_weakness(self, hit_weakness):
         self.hit_weakness = hit_weakness
 
+    def set_time_to_show_hit(self):
+        self.time_to_show_hit = 0
+
     def get_down_level(self):
         return self.down_level
 

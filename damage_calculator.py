@@ -5,6 +5,7 @@ import battle_state
 
 HIT, AWFUL, WEAK, HALF, NON, REVEN, SHOCK, MISS = range(8)
 MATTER_ATTACK, MIND_ATTACK, MATTER_DEFENCE, MIND_DEFENCE, HIT_RATE, AVOID_RATE = range(6)
+ATTACK_BUFF, DEFENCE_BUFF = range(2)
 
 
 def calculate_damage_for_normal_skill(user, target, skill):
@@ -15,7 +16,7 @@ def calculate_damage_for_normal_skill(user, target, skill):
     user_buff = user.get_buff()
     target_buff = target.get_buff()
 
-    buff = user_buff[0] - target_buff[1]
+    buff = user_buff[ATTACK_BUFF] - target_buff[DEFENCE_BUFF]
 
     buff = 1 + buff / 10
 
@@ -36,13 +37,13 @@ def calculate_damage_for_normal_skill(user, target, skill):
         return MISS, 0
 
     if skill_pattern < 4:
-        additional__damage = user_stat[MATTER_ATTACK] - target_stat[MATTER_DEFENCE]
+        additional_damage = user_stat[MATTER_ATTACK] - target_stat[MATTER_DEFENCE]
     else:
-        additional__damage = user_stat[MIND_ATTACK] - target_stat[MIND_DEFENCE]
+        additional_damage = user_stat[MIND_ATTACK] - target_stat[MIND_DEFENCE]
 
-    additional_damage = additional__damage / 100
+    additional_damage = additional_damage / 100
 
-    damage = skill.get_damage() * (1 + additional__damage)
+    damage = skill.get_damage() * (1 + additional_damage)
 
     damage *= buff
 
@@ -106,6 +107,63 @@ def calculate_down_level_for_normal_skill(user, target, weakness, damage):
         user.set_down_level(2)
 
 
+def calculate_buff_for_buff_skill(target, skill):
+    target_buff = target.get_buff()
+    buff_type = skill.get_buff_type()
+    effect = skill.get_damage()
+
+    is_hit = [False, False]
+
+    if buff_type == 2:
+        if effect > 0:
+            if target_buff[ATTACK_BUFF] < 9:
+                is_hit[ATTACK_BUFF] = True
+                target_buff[ATTACK_BUFF] += effect
+                if target_buff[ATTACK_BUFF] > 9:
+                    target_buff[ATTACK_BUFF] = 9
+
+            if target_buff[DEFENCE_BUFF] < 9:
+                is_hit[DEFENCE_BUFF] = True
+                target_buff[DEFENCE_BUFF] += effect
+                if target_buff[DEFENCE_BUFF] > 9:
+                    target_buff[DEFENCE_BUFF] = 9
+
+        if effect < 0:
+            if target_buff[ATTACK_BUFF] > -9:
+                is_hit[ATTACK_BUFF] = True
+                target_buff[ATTACK_BUFF] += effect
+                if target_buff[ATTACK_BUFF] < -9:
+                    target_buff[ATTACK_BUFF] = -9
+
+            if target_buff[DEFENCE_BUFF] > -9:
+                is_hit[DEFENCE_BUFF] = True
+                target_buff[DEFENCE_BUFF] += effect
+                if target_buff[DEFENCE_BUFF] < -9:
+                    target_buff[DEFENCE_BUFF] = -9
+    else:
+        if effect > 0:
+            if target_buff[buff_type] < 9:
+                is_hit[buff_type] = True
+                target_buff[buff_type] += effect
+                if target_buff[buff_type] > 9:
+                    target_buff[buff_type] = 9
+
+        if effect < 0:
+            if target_buff[buff_type] > -9:
+                is_hit[buff_type] = True
+                target_buff[buff_type] += effect
+                if target_buff[buff_type] < -9:
+                    target_buff[buff_type] = -9
+
+    target.set_buff(target_buff)
+
+    if is_hit[ATTACK_BUFF] or is_hit[DEFENCE_BUFF]:
+        target.set_hit_weakness(HIT)
+
+    else:
+        target.set_hit_weakness(MISS)
+
+
 def can_use_skill(user, skill):
     if user.get_Md() < skill.get_Md():
         return False
@@ -126,13 +184,30 @@ def calculate_damage(user, target, skill):
                 for enemy in battle_state.battle_enemy.get_list():
                     weakness, damage = calculate_damage_for_normal_skill(user, enemy, skill)
                     calculate_down_level_for_normal_skill(user, enemy, weakness, damage)
+                    enemy.set_time_to_show_hit()
             elif isinstance(target, Player):
                 for player in battle_state.player.get_list():
                     weakness, damage = calculate_damage_for_normal_skill(user, player, skill)
                     calculate_down_level_for_normal_skill(user, player, weakness, damage)
+                    player.set_time_to_show_hit()
         else:
             weakness, damage = calculate_damage_for_normal_skill(user, target, skill)
             calculate_down_level_for_normal_skill(user, target, weakness, damage)
+            target.set_time_to_show_hit()
+
+    elif 5 <= skill_type < 7:
+        if all_targets:
+            if isinstance(target, Enemy):
+                for enemy in battle_state.battle_enemy.get_list():
+                    calculate_buff_for_buff_skill(enemy, skill)
+                    enemy.set_time_to_show_hit()
+            elif isinstance(target, Player):
+                for player in battle_state.player.get_list():
+                    calculate_buff_for_buff_skill(player, skill)
+                    player.set_time_to_show_hit()
+        else:
+            calculate_buff_for_buff_skill(target, skill)
+            target.set_time_to_show_hit()
 
 
 def use_skill(user, target, skill):

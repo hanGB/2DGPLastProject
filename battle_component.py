@@ -10,7 +10,7 @@ import random
 from item_data import use_item
 
 
-SKILL_FRAMES = 8
+SKILL_FRAMES = 4
 ANIMATION_ACCELERATION = 2.5
 
 TIME_PER_SELECTING = 2
@@ -193,10 +193,16 @@ class SkillState:
                               get_card().get_skill()[battle_ui.selected_skill])):
 
                 battle_ui.user = battle_state.player.get_player(battle_ui.player_now)
-                battle_ui.selected_target = battle_state.battle_enemy.get_selected_enemy()
                 battle_ui.selected_skill_data = \
                     battle_state.player.get_player(battle_ui.player_now) \
                     .get_card().get_skill()[battle_ui.selected_skill]
+
+                if battle_ui.selected_skill_data.get_ally_target():
+                    players = battle_state.player.get_list()
+                    battle_ui.selected_target = players[battle_ui.player_target]
+                else:
+                    battle_ui.selected_target = battle_state.battle_enemy.get_selected_enemy()
+
                 battle_ui.manual_play = True
                 battle_ui.process_end = False
 
@@ -416,7 +422,11 @@ class BattleUi:
         return BehaviorTree.SUCCESS
 
     def select_target(self):
-        self.targets = battle_state.battle_enemy.get_list()
+        ally_target = self.selected_skill_data.get_ally_target()
+        if ally_target:
+            self.targets = battle_state.player.get_list()
+        else:
+            self.targets = battle_state.battle_enemy.get_list()
 
         usable_targets = []
 
