@@ -164,6 +164,24 @@ def calculate_buff_for_buff_skill(target, skill):
         target.set_hit_weakness(MISS)
 
 
+def calculate_recovery_for_recovery_skill(target, skill):
+    now_Bd = target.get_Bd()
+
+    if now_Bd <= 0:
+        target.set_hit_weakness(MISS)
+    else:
+        max_Bd = target.get_max_Bd()
+        recovery = skill.get_damage()
+
+        if now_Bd + recovery > max_Bd:
+            recovery_Bd = max_Bd
+        else:
+            recovery_Bd = now_Bd + recovery
+
+        target.set_Bd(recovery_Bd)
+        target.set_hit_weakness(HIT)
+
+
 def can_use_skill(user, skill):
     if user.get_Md() < skill.get_Md():
         return False
@@ -207,6 +225,20 @@ def calculate_damage(user, target, skill):
                     player.set_time_to_show_hit()
         else:
             calculate_buff_for_buff_skill(target, skill)
+            target.set_time_to_show_hit()
+
+    elif 7 <= skill_type < 9:
+        if all_targets:
+            if isinstance(target, Enemy):
+                for enemy in battle_state.battle_enemy.get_list():
+                    calculate_recovery_for_recovery_skill(enemy, skill)
+                    enemy.set_time_to_show_hit()
+            elif isinstance(target, Player):
+                for player in battle_state.player.get_list():
+                    calculate_recovery_for_recovery_skill(player, skill)
+                    player.set_time_to_show_hit()
+        else:
+            calculate_recovery_for_recovery_skill(target, skill)
             target.set_time_to_show_hit()
 
 

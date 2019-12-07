@@ -6,7 +6,7 @@ class Card:
         self.attribute = [0, 0, 0, 0, 0, 0, 0, 0]
         if type == 0:
             self.attribute = [0, 0, 0, 1, 0, 0, 0, 0]
-            self.skill = [Skill(51), Skill(52), Skill(13), Skill(62), Skill(61)]
+            self.skill = [Skill(51), Skill(52), Skill(13), Skill(72), Skill(81)]
 
         elif type == 1:
             self.attribute = [1, 0, 0, 2, 0, 0, 0, 0]
