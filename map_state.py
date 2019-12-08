@@ -14,7 +14,7 @@ def enter():
     global map
 
     # test
-    # game_framework.push_state(battle_state)
+    game_framework.push_state(battle_state)
     # game_framework.change_state(city_state)
     #
 
