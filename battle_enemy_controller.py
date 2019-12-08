@@ -47,8 +47,10 @@ class BattleEndState:
             if battle_enemy.is_victory:
                 for player in battle_state.player.get_all_players():
                     player.give_exp(battle_enemy.exp)
+                battle_state.battle_ui.stop_bgm()
                 game_framework.pop_state()
             else:
+                battle_state.battle_ui.stop_bgm()
                 game_framework.change_state(death_end_state)
 
     @staticmethod

@@ -85,6 +85,7 @@ def handle_events():
             elif cwe_ui.get_key() == 0:
                 battle_state.battle_ui.set_is_main(True)
                 battle_state.battle_ui.set_escape(True)
+                battle_state.battle_ui.stop_bgm()
                 game_framework.pop_state()
 
         elif event.key == SDLK_x and event.type == SDL_KEYDOWN:

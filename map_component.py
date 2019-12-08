@@ -64,6 +64,7 @@ class NormalMap:
             map.rooms[map.location_y][map.location_x].set_map_direction(now_direction)
             battle_outbreak_rate = random.randint(1, 10)
             if battle_outbreak_rate < 5:
+                map.bgm.stop()
                 game_framework.push_state(battle_state)
 
     @staticmethod
@@ -84,12 +85,18 @@ class NormalMap:
                     map.rooms[map.location_y][map.location_x].turn_sight('q')
 
         if map.moving:
+            if map.animation_frame < 1:
+                if not map.playing_step_sound:
+                    map.step_sound.play()
+                    map.playing_step_sound = True
+
             map.animation_counter += game_framework.frame_time * FRAMES_PER_MOVE * MOVE_PER_TIME
             if map.animation_counter > 1:
                 map.animation_counter = 0
                 map.animation_frame += 1
 
             if map.animation_frame == 4:
+                map.playing_step_sound = False
                 map.moving = False
                 map.animation_frame = 0
                 map.add_event(MOVE)
@@ -129,6 +136,7 @@ class Map:
     move_animation = None
     key_information = None
     save_load_key = None
+    step_sound = None
 
     def __init__(self, type):
         if Map.save_load_key is None:
@@ -141,13 +149,19 @@ class Map:
             Map.room_number = load_image("resource/interface/roomNum.png")
         if Map.move_animation is None:
             Map.move_animation = load_image("resource/animation/moveAni.png")
+        if Map.step_sound is None:
+            Map.step_sound = load_wav("resource/sound/stepSound.wav")
+            Map.step_sound.set_volume(120)
 
         self.direction = 0
         self.sub_counter = 0
         self.animation_counter = 0
         self.animation_frame = 0
         self.moving = False
+        self.playing_step_sound = False
         if type == 0:
+            self.bgm = load_music("resource/sound/firstDungeonBGM.mp3")
+            self.bgm.set_volume(60)
             # 0번 던전의 맵 데이터
             # 0, 4 S에서 출발해서 6, 2 N으로 나가는 던전
             self.rooms = [[room_data.Room(1, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0),
@@ -211,6 +225,9 @@ class Map:
         self.event_que = []
         self.cur_state = NormalMap
         self.cur_state.enter(self, None)
+
+    def start_bgm(self):
+        self.bgm.repeat_play()
 
     def update_state(self):
         if len(self.event_que) > 0:

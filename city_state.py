@@ -36,8 +36,8 @@ def enter():
     if key_information is None:
         key_information = load_image("resource/interface/keyInformCity.png")
 
-    background.set_center_object(location_bar)
     location_bar.set_background(background)
+    background.set_center_object(location_bar)
 
 
 def exit():

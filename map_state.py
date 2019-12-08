@@ -19,12 +19,13 @@ def enter():
     #
 
     map = map_component.Map(0)
+    map.start_bgm()
 
 
 def exit():
     global map
 
-    # del map
+    del map
 
 
 def pause():
@@ -32,7 +33,7 @@ def pause():
 
 
 def resume():
-    pass
+    map.start_bgm()
 
 
 def handle_events():

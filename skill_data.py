@@ -98,7 +98,7 @@ class Skill:
             self.image = load_image("resource/skill/ter.png")
             self.animation = load_image("resource/animation/terAni.png")
             self.sound = load_wav("resource/sound/terSound.wav")
-            self.sound.set_volume(2000)
+            self.sound.set_volume(120)
 
             if (self.number % 10) == 3:
                 self.pattern = 2
@@ -140,7 +140,7 @@ class Skill:
             self.image = load_image("resource/skill/vent.png")
             self.animation = load_image("resource/animation/ventAni.png")
             self.sound = load_wav("resource/sound/ventSound.wav")
-            self.sound.set_volume(240)
+            self.sound.set_volume(120)
 
             if (self.number % 10) == 3:
                 self.pattern = 2

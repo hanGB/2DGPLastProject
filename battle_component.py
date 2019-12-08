@@ -313,8 +313,13 @@ class BattleUi:
     player_sign = None
     now_player_mark = None
     battle_explain = None
+    bgm = None
 
     def __init__(self):
+        if BattleUi.bgm is None:
+            BattleUi.bgm = load_music("resource/sound/battleBGM.mp3")
+            BattleUi.bgm.set_volume(40)
+
         if BattleUi.main_ui is None:
             BattleUi.main_ui = load_image("resource/interface/newUi.png")
         if BattleUi.turn_number is None:
@@ -365,6 +370,8 @@ class BattleUi:
 
         self.auto_play = False
         self.manual_play = False
+
+        BattleUi.bgm.repeat_play()
 
         self.build_behavior_tree()
 
@@ -531,6 +538,9 @@ class BattleUi:
 
         elif self.showing_skill_animation:
             self.selected_skill_data.draw_animation(self.skill_frame)
+
+    def stop_bgm(self):
+        BattleUi.bgm.stop()
 
     def add_event(self, event):
         self.event_que.insert(0, event)
