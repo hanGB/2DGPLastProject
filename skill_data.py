@@ -89,7 +89,7 @@ class Skill:
 
         elif (self.number / 10) < 3:
             self.image = load_image("resource/skill/ter.png")
-            self.animation = load_image("resource/animation/swordAni.png")
+            self.animation = load_image("resource/animation/terAni.png")
             if (self.number % 10) == 3:
                 self.pattern = 2
                 self.turn = 1
@@ -128,7 +128,7 @@ class Skill:
 
         elif (self.number / 10) < 4:
             self.image = load_image("resource/skill/vent.png")
-            self.animation = load_image("resource/animation/swordAni.png")
+            self.animation = load_image("resource/animation/ventAni.png")
             if (self.number % 10) == 3:
                 self.pattern = 2
                 self.turn = 1
@@ -167,7 +167,7 @@ class Skill:
 
         elif (self.number / 10) < 5:
             self.image = load_image("resource/skill/per.png")
-            self.animation = load_image("resource/animation/swordAni.png")
+            self.animation = load_image("resource/animation/perAni.png")
             if (self.number % 10) == 3:
                 self.pattern = 5
                 self.turn = 1
