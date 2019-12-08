@@ -206,7 +206,7 @@ class Skill:
 
         elif (self.number / 10) < 6:
             self.image = load_image("resource/skill/fat.png")
-            self.animation = load_image("resource/animation/swordAni.png")
+            self.animation = load_image("resource/animation/fatAni.png")
             if (self.number % 10) == 4:
                 self.pattern = 4
                 self.turn = 1
@@ -254,7 +254,7 @@ class Skill:
 
         elif (self.number / 10) < 7:
             self.image = load_image("resource/skill/met.png")
-            self.animation = load_image("resource/animation/swordAni.png")
+            self.animation = load_image("resource/animation/metAni.png")
             if (self.number % 10) == 4:
                 self.pattern = 4
                 self.turn = 1
@@ -302,7 +302,7 @@ class Skill:
 
         elif (self.number / 10) < 8:
             self.image = load_image("resource/skill/cura.png")
-            self.animation = load_image("resource/animation/swordAni.png")
+            self.animation = load_image("resource/animation/curaAni.png")
             if (self.number % 10) == 2:
                 self.pattern = 8
                 self.turn = 1
@@ -329,7 +329,7 @@ class Skill:
 
         elif (self.number / 10) < 9:
             self.image = load_image("resource/skill/sana.png")
-            self.animation = load_image("resource/animation/swordAni.png")
+            self.animation = load_image("resource/animation/sanaAni.png")
             if (self.number % 10) == 2:
                 self.pattern = 8
                 self.turn = 1

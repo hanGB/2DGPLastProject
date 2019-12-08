@@ -14,7 +14,7 @@ def enter():
     global map
 
     # test
-    game_framework.push_state(battle_state)
+    # game_framework.push_state(battle_state)
     # game_framework.change_state(city_state)
     #
 
@@ -41,9 +41,6 @@ def handle_events():
     for event in events:
         if event.type == SDL_QUIT:
             game_framework.quit()
-        # 배틀 진입 테스트
-        # if event.type == SDL_KEYDOWN and event.key == SDLK_b:
-        #    game_framework.push_state(battle_state)
         elif event.type == SDL_KEYDOWN and event.key == SDLK_KP_PLUS:
             for player in initium_state.player:
                 player.give_exp(1000)
