@@ -8,10 +8,14 @@ class Skill:
         if Skill.space_bar is None:
             Skill.space_bar = load_image("resource/interface/space.png")
         self.number = number
+        self.sound_played = False
 
         if (self.number / 10) < 1:
             self.image = load_image("resource/skill/ig.png")
             self.animation = load_image("resource/animation/igAni.png")
+            self.sound = load_wav("resource/sound/igSound.wav")
+            self.sound.set_volume(60)
+
             if (self.number % 10) == 3:
                 self.pattern = 3
                 self.turn = 1
@@ -51,6 +55,9 @@ class Skill:
         elif (self.number / 10) < 2:
             self.image = load_image("resource/skill/aq.png")
             self.animation = load_image("resource/animation/aqAni.png")
+            self.sound = load_wav("resource/sound/aqSound.wav")
+            self.sound.set_volume(120)
+
             if (self.number % 10) == 3:
                 self.pattern = 3
                 self.turn = 1
@@ -90,6 +97,9 @@ class Skill:
         elif (self.number / 10) < 3:
             self.image = load_image("resource/skill/ter.png")
             self.animation = load_image("resource/animation/terAni.png")
+            self.sound = load_wav("resource/sound/terSound.wav")
+            self.sound.set_volume(2000)
+
             if (self.number % 10) == 3:
                 self.pattern = 2
                 self.turn = 1
@@ -129,6 +139,9 @@ class Skill:
         elif (self.number / 10) < 4:
             self.image = load_image("resource/skill/vent.png")
             self.animation = load_image("resource/animation/ventAni.png")
+            self.sound = load_wav("resource/sound/ventSound.wav")
+            self.sound.set_volume(240)
+
             if (self.number % 10) == 3:
                 self.pattern = 2
                 self.turn = 1
@@ -168,6 +181,8 @@ class Skill:
         elif (self.number / 10) < 5:
             self.image = load_image("resource/skill/per.png")
             self.animation = load_image("resource/animation/perAni.png")
+            self.sound = load_wav("resource/sound/perSound.wav")
+            self.sound.set_volume(40)
             if (self.number % 10) == 3:
                 self.pattern = 5
                 self.turn = 1
@@ -207,6 +222,8 @@ class Skill:
         elif (self.number / 10) < 6:
             self.image = load_image("resource/skill/fat.png")
             self.animation = load_image("resource/animation/fatAni.png")
+            self.sound = load_wav("resource/sound/fatSound.wav")
+            self.sound.set_volume(55)
             if (self.number % 10) == 4:
                 self.pattern = 4
                 self.turn = 1
@@ -255,6 +272,9 @@ class Skill:
         elif (self.number / 10) < 7:
             self.image = load_image("resource/skill/met.png")
             self.animation = load_image("resource/animation/metAni.png")
+            self.sound = load_wav("resource/sound/fatSound.wav")
+            self.sound.set_volume(55)
+
             if (self.number % 10) == 4:
                 self.pattern = 4
                 self.turn = 1
@@ -303,6 +323,9 @@ class Skill:
         elif (self.number / 10) < 8:
             self.image = load_image("resource/skill/cura.png")
             self.animation = load_image("resource/animation/curaAni.png")
+            self.sound = load_wav("resource/sound/sanaSound.wav")
+            self.sound.set_volume(55)
+
             if (self.number % 10) == 2:
                 self.pattern = 8
                 self.turn = 1
@@ -330,6 +353,9 @@ class Skill:
         elif (self.number / 10) < 9:
             self.image = load_image("resource/skill/sana.png")
             self.animation = load_image("resource/animation/sanaAni.png")
+            self.sound = load_wav("resource/sound/sanaSound.wav")
+            self.sound.set_volume(55)
+
             if (self.number % 10) == 2:
                 self.pattern = 8
                 self.turn = 1
@@ -365,6 +391,8 @@ class Skill:
                 self.ally_target = False
                 self.all_targets = False
                 self.animation = load_image("resource/animation/swordAni.png")
+                self.sound = load_wav("resource/sound/swordSound.wav")
+                self.sound.set_volume(75)
 
             elif (self.number % 10) == 0:
                 self.pattern = 7
@@ -375,6 +403,8 @@ class Skill:
                 self.ally_target = False
                 self.all_targets = False
                 self.animation = load_image("resource/animation/triggerAni.png")
+                self.sound = load_wav("resource/sound/triggerSound.wav")
+                self.sound.set_volume(55)
 
     def get_number(self):
         return self.number
@@ -417,3 +447,9 @@ class Skill:
 
     def draw_animation(self, frame):
         self.animation.clip_draw(500 * int(frame), 0, 500, 500, 640, 460)
+        if int(frame) == 0:
+            if not self.sound_played:
+                self.sound.play()
+                self.sound_played = True
+        else:
+            self.sound_played = False

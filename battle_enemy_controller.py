@@ -310,9 +310,9 @@ class BattleEnemy:
     def select_target(self):
         ally_target = self.selected_skill_data.get_ally_target()
         if ally_target:
-            self.targets = battle_state.player.get_list()
-        else:
             self.targets = battle_state.battle_enemy.get_list()
+        else:
+            self.targets = battle_state.player.get_list()
 
         usable_targets = []
 
