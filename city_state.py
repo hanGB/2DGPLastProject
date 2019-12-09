@@ -15,6 +15,7 @@ key_information = None
 dungeon_number = 0
 
 dungeon_location = None
+destination = -1
 
 
 def collide(a, b):
@@ -63,7 +64,7 @@ def exit():
 
     del location_bar
     del background
-    del key_information
+    # del key_information
 
 
 def pause():
@@ -84,15 +85,19 @@ def handle_events():
 
 
 def update():
+    global destination
     colliding = False
 
     for dl in dungeon_location:
         if collide(dl, location_bar):
             location_bar.set_colliding(True)
             colliding = True
+            destination = dl.get_type()
+            break
 
     if not colliding:
         location_bar.set_colliding(False)
+        destination = -1
 
     for game_object in game_world.all_objects():
         game_object.update()

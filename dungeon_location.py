@@ -5,6 +5,8 @@ FIRST, APARTMENT_ONE, APARTMENT_TWO, TOWER, PYRAMID = range(5)
 
 class DungeonLocation:
     def __init__(self, type):
+        self.type = type
+
         if type == FIRST:
             self.x1 = 160
             self.y1 = 1230
@@ -63,3 +65,9 @@ class DungeonLocation:
             y_bottom = 2160 - temp
 
         return x_left, y_bottom, x_right, y_top
+
+    def get_type(self):
+        if self.type == APARTMENT_TWO:
+            return APARTMENT_ONE
+        else:
+            return self.type

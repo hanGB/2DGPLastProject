@@ -5,6 +5,7 @@ import battle_state
 import game_framework
 import initium_state
 import city_state
+import map_state
 
 TIME_PER_CAMERA_MOVE = 2
 CAMERA_MOVE_PER_TIME = 1.0 / TIME_PER_CAMERA_MOVE
@@ -80,6 +81,7 @@ class NormalMap:
                 if now_direction == map.map_event[map.location_y][map.location_x][1]:
                     map.rain_sound.set_volume(0)
                     city_state.dungeon_number = 0
+                    map_state.clear_data[map.type] = True
                     game_framework.change_state(city_state)
 
             if not (map.map_event[map.location_y][map.location_x][0] == WAY_OUT and
@@ -224,6 +226,7 @@ class Map:
         self.playing_step_sound = False
         self.sound_playing = False
         self.rain_sound_playing = False
+        self.type = type
 
         if type == 0:
             self.bgm = load_music("resource/sound/firstDungeonBGM.mp3")
@@ -257,8 +260,14 @@ class Map:
                           [room_data.Room(0, 0, 0, 0), room_data.Room(1, 0, 1, 0), room_data.Room(0, 0, 0, 0),
                            room_data.Room(0, 0, 0, 0), room_data.Room(0, 1, 1, 0), room_data.Room(0, 1, 0, 1),
                            room_data.Room(0, 1, 0, 1), room_data.Room(0, 1, 1, 1), room_data.Room(0, 0, 0, 1)]]
-            self.location_y = 0
-            self.location_x = 4
+
+            if map_state.clear_data[type]:
+                self.location_y = 6
+                self.location_x = 1
+                self.direction = 4
+            else:
+                self.location_y = 0
+                self.location_x = 4
 
             self.map_event = [[(RECOVERY, 4), (NON, 0), (NON, 0),
                                (NON, 0), (NON, 0), (NON, 0),

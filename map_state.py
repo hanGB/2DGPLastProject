@@ -8,6 +8,8 @@ import city_state
 name = "map_state"
 
 map = None
+destination = 0
+clear_data = [False, False, False, False, False]
 
 
 def enter():
@@ -15,10 +17,10 @@ def enter():
 
     # test
     # game_framework.push_state(battle_state)
-    game_framework.change_state(city_state)
+    # game_framework.change_state(city_state)
     #
 
-    map = map_component.Map(0)
+    map = map_component.Map(destination)
 
 
 def exit():

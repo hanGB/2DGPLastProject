@@ -28,7 +28,8 @@ class Background:
 
         if Background.rain_sound is None:
             Background.rain_sound = load_wav("resource/sound/moreRainSound.wav")
-            Background.rain_sound.set_volume(80)
+
+        Background.rain_sound.set_volume(80)
 
         Background.bgm.repeat_play()
         Background.rain_sound.repeat_play()
@@ -114,6 +115,10 @@ class Background:
         self.q1br = 0
         self.q1wr = self.q4wr
         self.q1hr = self.q2hr
+
+    def stop_music(self):
+        self.bgm.stop()
+        self.rain_sound.set_volume(0)
 
     def handle_event(self, event):
         pass

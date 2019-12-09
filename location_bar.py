@@ -1,6 +1,7 @@
 import game_framework
 from pico2d import *
 import city_state
+import map_state
 
 PIXEL_PER_METER = (10.0 / 0.3)
 RUN_SPEED_KMPH = 20.0  # Km / Hour
@@ -46,6 +47,11 @@ class MovingState:
             location_bar.y_velocity -= RUN_SPEED_PPS
         elif event == DOWN_UP:
             location_bar.y_velocity += RUN_SPEED_PPS
+
+        if event == SPACE:
+            map_state.destination = city_state.destination
+            game_framework.change_state(map_state)
+
 
     @staticmethod
     def exit(location_bar, event):
