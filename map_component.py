@@ -38,9 +38,8 @@ class NormalMap:
     @staticmethod
     def enter(map, event):
         if map.map_event[map.location_y][map.location_x][0] == WAY_OUT:
-            if not map.rain_sound_playing:
-                map.rain_sound.repeat_play()
-                map.rain_sound_playing = True
+            if map.rain_sound.get_volume() == 0:
+                map.rain_sound.set_volume(100)
 
         if event == LEFT_DOWN:
             map.direction = -1
@@ -65,31 +64,42 @@ class NormalMap:
             now_direction = map.rooms[map.location_y][map.location_x].get_map_direction()
             if now_direction == map.map_event[map.location_y][map.location_x][1]:
                 if map.map_event[map.location_y][map.location_x][0] == RECOVERY:
-                    pass
+                    for p in initium_state.player:
+                        p.set_Bd(p.get_max_Bd())
+                        p.set_Md(p.get_max_Md())
 
                 elif map.map_event[map.location_y][map.location_x][0] == CLOSED_BOX:
-                    pass
+                    item_type = random.randint(0, 6)
+                    number_of_item = random.randint(1, 5)
+                    initium_state.player[0].set_item(item_type, number_of_item)
+                    map.map_event[map.location_y][map.location_x] = (OPENED_BOX, now_direction)
 
         elif event == MOVE:
-            if map.map_event[map.location_y][map.location_x][0] == WAY_OUT:
-                # map.rain_sound.stop()
-                city_state.dungeon_number = 0
-                game_framework.change_state(city_state)
-
             now_direction = map.rooms[map.location_y][map.location_x].get_map_direction()
-            if now_direction == 0:
-                map.location_y += 1
-            elif now_direction == 2:
-                map.location_x += 1
-            elif now_direction == 4:
-                map.location_y -= 1
-            elif now_direction == 6:
-                map.location_x -= 1
-            map.rooms[map.location_y][map.location_x].set_map_direction(now_direction)
-            battle_outbreak_rate = random.randint(1, 10)
-            if battle_outbreak_rate < 4:
-                map.bgm.stop()
-                game_framework.push_state(battle_state)
+            if map.map_event[map.location_y][map.location_x][0] == WAY_OUT:
+                if now_direction == map.map_event[map.location_y][map.location_x][1]:
+                    map.rain_sound.set_volume(0)
+                    city_state.dungeon_number = 0
+                    game_framework.change_state(city_state)
+
+            if not (map.map_event[map.location_y][map.location_x][0] == WAY_OUT and
+                    now_direction == map.map_event[map.location_y][map.location_x][1]):
+                if map.rain_sound.get_volume() != 0:
+                    map.rain_sound.set_volume(0)
+
+                if now_direction == 0:
+                    map.location_y += 1
+                elif now_direction == 2:
+                    map.location_x += 1
+                elif now_direction == 4:
+                    map.location_y -= 1
+                elif now_direction == 6:
+                    map.location_x -= 1
+                map.rooms[map.location_y][map.location_x].set_map_direction(now_direction)
+                battle_outbreak_rate = random.randint(1, 20)
+                if battle_outbreak_rate < 6:
+                    map.bgm.stop()
+                    game_framework.push_state(battle_state)
 
     @staticmethod
     def exit(battle_ui, event):
@@ -132,8 +142,10 @@ class NormalMap:
         if now_direction == map.map_event[map.location_y][map.location_x][1]:
             if map.map_event[map.location_y][map.location_x][0] == RECOVERY:
                 map.recovery_stone.draw(640, 200)
+                map.space_bar.draw(640, 200)
             elif map.map_event[map.location_y][map.location_x][0] == CLOSED_BOX:
                 map.box.clip_draw(0, 0, 350, 400, 640, 200)
+                map.space_bar.draw(640, 200)
             elif map.map_event[map.location_y][map.location_x][0] == OPENED_BOX:
                 map.box.clip_draw(350, 0, 350, 400, 640, 200)
 
@@ -172,11 +184,17 @@ class Map:
     box = None
     recovery_stone = None
     rain_sound = None
+    space_bar = None
 
     def __init__(self, type):
         if Map.rain_sound is None:
             Map.rain_sound = load_wav("resource/sound/moreRainSound.wav")
-            Map.rain_sound.set_volume(80)
+            Map.rain_sound.set_volume(0)
+
+        Map.rain_sound.repeat_play()
+
+        if Map.space_bar is None:
+            Map.space_bar = load_image("resource/interface/spaceBig.png")
 
         if Map.box is None:
             Map.box = load_image('resource/map/box.png')

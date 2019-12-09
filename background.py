@@ -2,6 +2,12 @@ import random
 
 from pico2d import *
 import city_state
+import game_framework
+PIXEL_PER_METER = (10.0 / 0.5)
+FALL_SPEED_KMPH = 20.0  # Km / Hour
+FALL_SPEED_MPM = (FALL_SPEED_KMPH * 5000.0 / 60.0)
+FALL_SPEED_MPS = (FALL_SPEED_MPM / 60.0)
+FALL_SPEED_PPS = (FALL_SPEED_MPS * PIXEL_PER_METER)
 
 
 class Background:
@@ -76,17 +82,17 @@ class Background:
         location = city_state.location_bar.get_location()
 
         if location == 0:
-            self.rain_x += 10
-            self.rain_y += 20
+            self.rain_x += FALL_SPEED_PPS * game_framework.frame_time
+            self.rain_y += 2 * FALL_SPEED_PPS * game_framework.frame_time
         elif location == 1:
-            self.rain_x -= 10
-            self.rain_y += 20
+            self.rain_x -= FALL_SPEED_PPS * game_framework.frame_time
+            self.rain_y += 2 * FALL_SPEED_PPS * game_framework.frame_time
         elif location == 2:
-            self.rain_x += 10
-            self.rain_y -= 20
+            self.rain_x += FALL_SPEED_PPS * game_framework.frame_time
+            self.rain_y -= 2 * FALL_SPEED_PPS * game_framework.frame_time
         elif location == 3:
-            self.rain_x -= 10
-            self.rain_y -= 20
+            self.rain_x -= FALL_SPEED_PPS * game_framework.frame_time
+            self.rain_y -= 2 * FALL_SPEED_PPS * game_framework.frame_time
 
         # quadrant 3
         self.q3lr = (int(self.rain_x) - self.canvas_width // 2) % self.w

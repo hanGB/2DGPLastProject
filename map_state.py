@@ -43,7 +43,7 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_KP_PLUS:
             for player in initium_state.player:
-                player.give_exp(1000)
+                player.give_exp(10000)
         elif event.type == SDL_KEYDOWN and event.key == SDLK_p:
             game_world.save()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_l:

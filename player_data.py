@@ -151,6 +151,8 @@ class Player:
 
     def set_item(self, type, number):
         self.item[type] += number
+        if self.item[type] > 9:
+            self.item[type] = 9
 
     def give_exp(self, exp):
         if self.level != 99:

@@ -39,6 +39,7 @@ def enter():
 
     location_bar.set_background(background)
     background.set_center_object(location_bar)
+    background.update()
 
 
 def exit():
