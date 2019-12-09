@@ -19,7 +19,6 @@ def enter():
     #
 
     map = map_component.Map(0)
-    map.start_bgm()
 
 
 def exit():
@@ -54,6 +53,10 @@ def handle_events():
 
 
 def update():
+    if not map.is_playing():
+        map.start_bgm()
+        map.set_sound_playing_true()
+
     map.update()
 
 

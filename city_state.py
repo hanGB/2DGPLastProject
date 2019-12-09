@@ -9,6 +9,7 @@ name = "MainState"
 location_bar = None
 background = None
 key_information = None
+dungeon_number = 0
 
 def collide(a, b):
     left_a, bottom_a, right_a, top_a = a.get_bb()

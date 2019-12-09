@@ -318,7 +318,7 @@ class BattleUi:
     def __init__(self):
         if BattleUi.bgm is None:
             BattleUi.bgm = load_music("resource/sound/battleBGM.mp3")
-            BattleUi.bgm.set_volume(40)
+            BattleUi.bgm.set_volume(25)
 
         if BattleUi.main_ui is None:
             BattleUi.main_ui = load_image("resource/interface/newUi.png")

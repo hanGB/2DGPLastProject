@@ -18,13 +18,13 @@ class Background:
 
         if Background.bgm is None:
             Background.bgm = load_music("resource/sound/cityBGM.mp3")
+            Background.bgm.set_volume(40)
 
         if Background.rain_sound is None:
             Background.rain_sound = load_wav("resource/sound/moreRainSound.wav")
+            Background.rain_sound.set_volume(80)
 
-        Background.bgm.set_volume(60)
         Background.bgm.repeat_play()
-        Background.rain_sound.set_volume(120)
         Background.rain_sound.repeat_play()
 
         self.canvas_width = get_canvas_width()

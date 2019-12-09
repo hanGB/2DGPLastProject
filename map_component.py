@@ -4,6 +4,7 @@ import random
 import battle_state
 import game_framework
 import initium_state
+import city_state
 
 TIME_PER_CAMERA_MOVE = 2
 CAMERA_MOVE_PER_TIME = 1.0 / TIME_PER_CAMERA_MOVE
@@ -13,7 +14,10 @@ TIME_PER_MOVE = 0.5
 MOVE_PER_TIME = 1.0 / TIME_PER_MOVE
 FRAMES_PER_MOVE = 4
 
-LEFT_DOWN, RIGHT_DOWN, LEFT_UP, RIGHT_UP, UP_KEY, DOWN_KEY, MOVE = range(7)
+LEFT_DOWN, RIGHT_DOWN, LEFT_UP, RIGHT_UP, UP_KEY, DOWN_KEY, MOVE, SPACE_KEY = range(8)
+
+NON, CLOSED_BOX, OPENED_BOX, RECOVERY, WAY_OUT = range(5)
+N, E, S, W = range(4)
 
 key_event_table = {
     (SDL_KEYDOWN, SDLK_LEFT): LEFT_DOWN,
@@ -26,12 +30,18 @@ key_event_table = {
     (SDL_KEYUP, SDLK_e): RIGHT_UP,
     (SDL_KEYUP, SDLK_UP): UP_KEY,
     (SDL_KEYDOWN, SDLK_DOWN): DOWN_KEY,
+    (SDL_KEYDOWN, SDLK_SPACE): SPACE_KEY
 }
 
 
 class NormalMap:
     @staticmethod
     def enter(map, event):
+        if map.map_event[map.location_y][map.location_x][0] == WAY_OUT:
+            if not map.rain_sound_playing:
+                map.rain_sound.repeat_play()
+                map.rain_sound_playing = True
+
         if event == LEFT_DOWN:
             map.direction = -1
             map.rooms[map.location_y][map.location_x].turn_sight('q')
@@ -51,7 +61,21 @@ class NormalMap:
             if map.rooms[map.location_y][map.location_x].is_door_in_front_player() is True:
                 map.moving = True
 
+        elif event == SPACE_KEY:
+            now_direction = map.rooms[map.location_y][map.location_x].get_map_direction()
+            if now_direction == map.map_event[map.location_y][map.location_x][1]:
+                if map.map_event[map.location_y][map.location_x][0] == RECOVERY:
+                    pass
+
+                elif map.map_event[map.location_y][map.location_x][0] == CLOSED_BOX:
+                    pass
+
         elif event == MOVE:
+            if map.map_event[map.location_y][map.location_x][0] == WAY_OUT:
+                # map.rain_sound.stop()
+                city_state.dungeon_number = 0
+                game_framework.change_state(city_state)
+
             now_direction = map.rooms[map.location_y][map.location_x].get_map_direction()
             if now_direction == 0:
                 map.location_y += 1
@@ -63,7 +87,7 @@ class NormalMap:
                 map.location_x -= 1
             map.rooms[map.location_y][map.location_x].set_map_direction(now_direction)
             battle_outbreak_rate = random.randint(1, 10)
-            if battle_outbreak_rate < 5:
+            if battle_outbreak_rate < 4:
                 map.bgm.stop()
                 game_framework.push_state(battle_state)
 
@@ -104,6 +128,14 @@ class NormalMap:
     @staticmethod
     def draw(map):
         map.rooms[map.location_y][map.location_x].draw()
+        now_direction = map.rooms[map.location_y][map.location_x].get_map_direction()
+        if now_direction == map.map_event[map.location_y][map.location_x][1]:
+            if map.map_event[map.location_y][map.location_x][0] == RECOVERY:
+                map.recovery_stone.draw(640, 200)
+            elif map.map_event[map.location_y][map.location_x][0] == CLOSED_BOX:
+                map.box.clip_draw(0, 0, 350, 400, 640, 200)
+            elif map.map_event[map.location_y][map.location_x][0] == OPENED_BOX:
+                map.box.clip_draw(350, 0, 350, 400, 640, 200)
 
         if map.moving:
             map.move_animation.clip_draw(map.animation_frame * 1280, 0, 1280, 720, 640, 360)
@@ -126,7 +158,7 @@ next_state_table = {
     NormalMap: {LEFT_DOWN: NormalMap, RIGHT_DOWN: NormalMap,
                 LEFT_UP: NormalMap, RIGHT_UP: NormalMap,
                 UP_KEY: NormalMap, DOWN_KEY: NormalMap,
-                MOVE: NormalMap}
+                MOVE: NormalMap, SPACE_KEY: NormalMap}
 }
 
 
@@ -137,8 +169,21 @@ class Map:
     key_information = None
     save_load_key = None
     step_sound = None
+    box = None
+    recovery_stone = None
+    rain_sound = None
 
     def __init__(self, type):
+        if Map.rain_sound is None:
+            Map.rain_sound = load_wav("resource/sound/moreRainSound.wav")
+            Map.rain_sound.set_volume(80)
+
+        if Map.box is None:
+            Map.box = load_image('resource/map/box.png')
+
+        if Map.recovery_stone is None:
+            Map.recovery_stone = load_image('resource/map/recoveryStone.png')
+
         if Map.save_load_key is None:
             Map.save_load_key = load_image("resource/interface/keyInformSave.png")
         if Map.key_information is None:
@@ -159,9 +204,12 @@ class Map:
         self.animation_frame = 0
         self.moving = False
         self.playing_step_sound = False
+        self.sound_playing = False
+        self.rain_sound_playing = False
+
         if type == 0:
             self.bgm = load_music("resource/sound/firstDungeonBGM.mp3")
-            self.bgm.set_volume(60)
+            self.bgm.set_volume(30)
             # 0번 던전의 맵 데이터
             # 0, 4 S에서 출발해서 6, 2 N으로 나가는 던전
             self.rooms = [[room_data.Room(1, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0),
@@ -188,11 +236,39 @@ class Map:
                            room_data.Room(0, 0, 0, 0), room_data.Room(1, 0, 1, 0), room_data.Room(0, 0, 0, 0),
                            room_data.Room(0, 0, 0, 0), room_data.Room(1, 0, 1, 0), room_data.Room(0, 0, 0, 0)],
 
-                          [room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 1, 0), room_data.Room(0, 0, 0, 0),
+                          [room_data.Room(0, 0, 0, 0), room_data.Room(1, 0, 1, 0), room_data.Room(0, 0, 0, 0),
                            room_data.Room(0, 0, 0, 0), room_data.Room(0, 1, 1, 0), room_data.Room(0, 1, 0, 1),
                            room_data.Room(0, 1, 0, 1), room_data.Room(0, 1, 1, 1), room_data.Room(0, 0, 0, 1)]]
             self.location_y = 0
             self.location_x = 4
+
+            self.map_event = [[(RECOVERY, 4), (NON, 0), (NON, 0),
+                               (NON, 0), (NON, 0), (NON, 0),
+                               (NON, 0), (NON, 0), (NON, 0)],
+
+                              [(NON, 0), (NON, 0), (NON, 0),
+                               (NON, 0), (NON, 0), (NON, 0),
+                               (NON, 0), (NON, 0), (NON, 0)],
+
+                              [(CLOSED_BOX, 6), (NON, 0), (NON, 0),
+                               (NON, 0), (NON, 0), (NON, 0),
+                               (NON, 0), (NON, 0), (NON, 0)],
+
+                              [(NON, 0), (NON, 0), (NON, 0),
+                               (NON, 0), (NON, 0), (NON, 0),
+                               (NON, 0), (CLOSED_BOX, 2), (NON, 0)],
+
+                              [(NON, 0), (NON, 0), (NON, 0),
+                               (NON, 0), (CLOSED_BOX, 4), (NON, 0),
+                               (NON, 0), (NON, 0), (NON, 0)],
+
+                              [(NON, 0), (NON, 0), (NON, 0),
+                               (NON, 0), (NON, 0), (NON, 0),
+                               (NON, 0), (NON, 0), (NON, 0)],
+
+                              [(NON, 0), (WAY_OUT, 0), (NON, 0),
+                               (NON, 0), (NON, 0), (NON, 0),
+                               (NON, 0), (NON, 0), (RECOVERY, 2)]]
 
         else:
             # 초기화 된 던전 맵
@@ -235,6 +311,12 @@ class Map:
             self.cur_state.exit(self, event)
             self.cur_state = next_state_table[self.cur_state][event]
             self.cur_state.enter(self, event)
+
+    def is_playing(self):
+        return self.sound_playing
+
+    def set_sound_playing_true(self):
+        self.sound_playing = True
 
     def draw(self):
         self.cur_state.draw(self)
