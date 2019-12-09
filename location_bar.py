@@ -1,13 +1,16 @@
 import game_framework
 from pico2d import *
+import city_state
 
-PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
+PIXEL_PER_METER = (10.0 / 0.3)
 RUN_SPEED_KMPH = 20.0  # Km / Hour
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
 RIGHT_DOWN, LEFT_DOWN, UP_DOWN, DOWN_DOWN, RIGHT_UP, LEFT_UP, UP_UP, DOWN_UP, SPACE = range(9)
+
+FIRST, APARTMENT_ONE, APARTMENT_TWO, TOWER, PYRAMID = range(5)
 
 key_event_table = {
     (SDL_KEYDOWN, SDLK_RIGHT): RIGHT_DOWN,
@@ -122,10 +125,17 @@ class LocationBar:
     def set_colliding(self, tf):
         self.colliding = tf
 
-    def set_background(self, bg):
+    def get_location(self):
+        return self.location
+
+    def set_background(self, bg, dungeon):
         self.bg = bg
-        self.x = self.bg.w / 2
-        self.y = self.bg.h / 2
+
+        x1, y1, x2, y2 = city_state.dungeon_location[dungeon].get_bb()
+
+        if dungeon == FIRST:
+            self.x = (x1 + x2) / 2
+            self.y = (y1 + y2) / 2
 
     def add_event(self, event):
         self.event_que.insert(0, event)

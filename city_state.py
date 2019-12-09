@@ -3,13 +3,19 @@ import game_framework
 import game_world
 from background import Background
 from location_bar import LocationBar
+from dungeon_location import DungeonLocation
 
-name = "MainState"
+FIRST, APARTMENT_ONE, APARTMENT_TWO, TOWER, PYRAMID = range(5)
+
+name = "city_state"
 
 location_bar = None
 background = None
 key_information = None
 dungeon_number = 0
+
+dungeon_location = None
+
 
 def collide(a, b):
     left_a, bottom_a, right_a, top_a = a.get_bb()
@@ -37,7 +43,12 @@ def enter():
     if key_information is None:
         key_information = load_image("resource/interface/keyInformCity.png")
 
-    location_bar.set_background(background)
+    global dungeon_location
+
+    dungeon_location = [DungeonLocation(FIRST), DungeonLocation(APARTMENT_ONE), DungeonLocation(APARTMENT_TWO),
+                        DungeonLocation(TOWER), DungeonLocation(PYRAMID)]
+
+    location_bar.set_background(background, dungeon_number)
     background.set_center_object(location_bar)
     background.update()
 
@@ -73,6 +84,18 @@ def handle_events():
 
 
 def update():
+    colliding = False
+
+    for dl in dungeon_location:
+        dl.set_location(location_bar.get_location())
+        if collide(dl, location_bar):
+            location_bar.set_colliding(True)
+            colliding = True
+            break
+
+    if not colliding:
+        location_bar.set_colliding(False)
+
     for game_object in game_world.all_objects():
         game_object.update()
 
