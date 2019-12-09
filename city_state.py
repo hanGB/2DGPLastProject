@@ -87,11 +87,9 @@ def update():
     colliding = False
 
     for dl in dungeon_location:
-        dl.set_location(location_bar.get_location())
         if collide(dl, location_bar):
             location_bar.set_colliding(True)
             colliding = True
-            break
 
     if not colliding:
         location_bar.set_colliding(False)
@@ -106,9 +104,3 @@ def draw():
         game_object.draw()
     key_information.draw(1150, 300)
     update_canvas()
-
-
-
-
-
-

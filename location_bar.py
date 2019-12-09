@@ -119,9 +119,6 @@ class LocationBar:
         self.cur_state = MovingState
         self.cur_state.enter(self, None)
 
-    def get_bb(self):
-        return self.x - 50, self.y - 50, self.x + 50, self.y + 50
-
     def set_colliding(self, tf):
         self.colliding = tf
 
@@ -133,9 +130,8 @@ class LocationBar:
 
         x1, y1, x2, y2 = city_state.dungeon_location[dungeon].get_bb()
 
-        if dungeon == FIRST:
-            self.x = (x1 + x2) / 2
-            self.y = (y1 + y2) / 2
+        self.x = (x1 + x2) / 2
+        self.y = (y1 + y2) / 2
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -158,3 +154,8 @@ class LocationBar:
         if (event.type, event.key) in key_event_table:
             key_event = key_event_table[(event.type, event.key)]
             self.add_event(key_event)
+
+    def get_bb(self):
+        x = self.x % 3840
+        y = self.y % 2160
+        return x - 30, y - 30, x + 30, y + 30
