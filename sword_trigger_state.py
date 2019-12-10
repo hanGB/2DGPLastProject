@@ -7,6 +7,7 @@ from skill_data import Skill
 from damage_calculator import can_use_skill
 from damage_calculator import use_skill
 from behavior_tree import BehaviorTree, SequenceNode, LeafNode
+import map_state
 
 TIME_PER_SELECTING = 2
 SELECTING_PER_TIME = 1.0 / TIME_PER_SELECTING
@@ -179,6 +180,7 @@ def update():
 
 def draw():
     clear_canvas()
+    battle_state.battle_map.draw(map_state.map.get_type())
     for game_object in game_world.all_objects():
         game_object.draw()
     update_canvas()

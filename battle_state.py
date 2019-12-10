@@ -6,6 +6,7 @@ import battle_enemy_controller
 import battle_player
 import game_world
 import initium_state
+import map_state
 from skill_data import Skill
 
 name = "battle_state"
@@ -38,7 +39,6 @@ def enter():
     battle_enemy = battle_enemy_controller.BattleEnemy()
     battle_ui = battle_component.BattleUi()
 
-    game_world.add_object(battle_map, 0)
     game_world.add_object(battle_enemy, 1)
     game_world.add_object(player, 2)
     game_world.add_object(battle_ui, 2)
@@ -89,6 +89,7 @@ def update():
 
 def draw():
     clear_canvas()
+    battle_map.draw(map_state.map.get_type())
     for game_object in game_world.all_objects():
         game_object.draw()
     update_canvas()

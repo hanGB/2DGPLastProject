@@ -2,6 +2,7 @@ import game_framework
 import map_state
 import random
 import game_world
+import city_state
 from player_data import Player
 
 
@@ -27,8 +28,8 @@ def enter():
     for p in player:
         game_world.add_object(p, 2)
 
-    game_framework.push_state(map_state)
-
+    #game_framework.push_state(map_state)
+    game_framework.push_state(city_state)
 
 def exit():
     global player

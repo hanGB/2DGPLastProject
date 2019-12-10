@@ -4,6 +4,7 @@ import battle_state
 import battle_analyze_state
 import game_world
 from contract_data import contract_enemy
+import map_state
 
 name = "contract_wait_escape_state"
 
@@ -118,6 +119,7 @@ def update():
 
 def draw():
     clear_canvas()
+    battle_state.battle_map.draw(map_state.map.get_type())
     for game_object in game_world.all_objects():
         game_object.draw()
     update_canvas()

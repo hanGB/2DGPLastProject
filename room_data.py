@@ -9,11 +9,28 @@ class Room:
         # n,s,w,e는 True(1), False(0)를 가지며 door_location 값이 0일 경우 없다.
 
         if Room.door is None:
-            Room.door = [load_image('resource/map/frontdoor.png'), load_image('resource/map/leftdoor.png')
+            Room.door = [[load_image('resource/map/frontdoor.png'), load_image('resource/map/leftdoor.png')
                          , load_image('resource/map/rightdoor.png'), load_image('resource/map/dialeftdoor.png')
-                         , load_image('resource/map/diarightdoor.png')]
+                         , load_image('resource/map/diarightdoor.png')],
+                        [load_image('resource/map/apartfrontdoor.png'), load_image('resource/map/apartleftdoor.png')
+                            , load_image('resource/map/apartrightdoor.png'), load_image('resource/map/apartdialeftdoor.png')
+                            , load_image('resource/map/apartdiarightdoor.png')],
+                        [load_image('resource/map/frontdoor.png'), load_image('resource/map/leftdoor.png')
+                            , load_image('resource/map/rightdoor.png'), load_image('resource/map/dialeftdoor.png')
+                            , load_image('resource/map/diarightdoor.png')],
+                        [load_image('resource/map/frontdoor.png'), load_image('resource/map/leftdoor.png')
+                            , load_image('resource/map/rightdoor.png'), load_image('resource/map/dialeftdoor.png')
+                            , load_image('resource/map/diarightdoor.png')]]
+
         if Room.background_map is None:
-            Room.background_map = [load_image('resource/map/colormap.png'), load_image('resource/map/colormapdia.png')]
+            Room.background_map = [[load_image('resource/map/colormap.png'),
+                                    load_image('resource/map/colormapdia.png')],
+                                   [load_image('resource/map/apartmap.png'),
+                                    load_image('resource/map/apartmapdia.png')],
+                                   [load_image('resource/map/colormap.png'),
+                                    load_image('resource/map/colormapdia.png')],
+                                   [load_image('resource/map/colormap.png'),
+                                    load_image('resource/map/colormapdia.png')]]
 
         # door_location - 1이 실제 사용 값
         self.door_location = [(2 * w, 1 * n, 3 * e), (4 * n, 0,  5 * e), (2 * n, 1 * e, 3 * s), (4 * e, 0, 5 * s),
@@ -41,8 +58,8 @@ class Room:
     def update(self):
         pass
 
-    def draw(self):
-        Room.background_map[self.map_direction % 2].draw(640, 360)
+    def draw(self, type):
+        Room.background_map[type][self.map_direction % 2].draw(640, 360)
         for i in range(0, 3):
             if self.door_location[self.map_direction][i] != 0:
-                Room.door[self.door_location[self.map_direction][i] - 1].draw(640, 360)
+                Room.door[type][self.door_location[self.map_direction][i] - 1].draw(640, 360)

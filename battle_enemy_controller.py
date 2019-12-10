@@ -4,9 +4,11 @@ import enemy_data
 import game_framework
 import battle_state
 import death_end_state
+import map_state
 from damage_calculator import use_skill
 from behavior_tree import BehaviorTree, SequenceNode, LeafNode
 
+FIRST, APARTMENT_ONE, TOWER, PYRAMID, APARTMENT_TWO = range(5)
 
 SKILL_FRAMES = 4
 ANIMATION_ACCELERATION = 2.5
@@ -235,7 +237,19 @@ class BattleEnemy:
         self.sub_counter = 0
         self.number_of_enemies = random.randint(1, 4)
         self.selected_enemy = 0
-        self.enemy = [enemy_data.Enemy(random.randint(1, 5)) for n in range(self.number_of_enemies)]
+
+        if map_state.map.get_type() == FIRST:
+            self.enemy = [enemy_data.Enemy(random.randint(1, 5)) for n in range(self.number_of_enemies)]
+
+        elif map_state.map.get_type() == APARTMENT_ONE:
+            self.enemy = [enemy_data.Enemy(random.randint(5, 9)) for n in range(self.number_of_enemies)]
+
+        elif map_state.map.get_type() == TOWER:
+            self.enemy = [enemy_data.Enemy(4) for n in range(self.number_of_enemies)]
+
+        elif map_state.map.get_type() == PYRAMID:
+            self.enemy = [enemy_data.Enemy(random.randint(8, 11)) for n in range(self.number_of_enemies)]
+
         self.event_que = []
         self.cur_state = EnemySelectState
         self.cur_state.enter(self, None)

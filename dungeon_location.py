@@ -1,6 +1,6 @@
 import city_state
 
-FIRST, APARTMENT_ONE, APARTMENT_TWO, TOWER, PYRAMID = range(5)
+FIRST, APARTMENT_ONE, TOWER, PYRAMID, APARTMENT_TWO = range(5)
 
 
 class DungeonLocation:

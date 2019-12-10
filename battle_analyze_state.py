@@ -2,6 +2,7 @@ from pico2d import *
 import game_framework
 import battle_state
 import game_world
+import map_state
 
 name = "battle_analyze_state"
 
@@ -71,7 +72,7 @@ def update():
 
 def draw():
     clear_canvas()
-    battle_state.battle_map.draw()
+    battle_state.battle_map.draw(map_state.map.get_type())
     battle_state.battle_enemy.draw()
     analyze_ui.draw()
     update_canvas()
