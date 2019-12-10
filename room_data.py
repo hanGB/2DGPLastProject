@@ -15,22 +15,22 @@ class Room:
                         [load_image('resource/map/apartfrontdoor.png'), load_image('resource/map/apartleftdoor.png')
                             , load_image('resource/map/apartrightdoor.png'), load_image('resource/map/apartdialeftdoor.png')
                             , load_image('resource/map/apartdiarightdoor.png')],
-                        [load_image('resource/map/frontdoor.png'), load_image('resource/map/leftdoor.png')
-                            , load_image('resource/map/rightdoor.png'), load_image('resource/map/dialeftdoor.png')
-                            , load_image('resource/map/diarightdoor.png')],
-                        [load_image('resource/map/frontdoor.png'), load_image('resource/map/leftdoor.png')
-                            , load_image('resource/map/rightdoor.png'), load_image('resource/map/dialeftdoor.png')
-                            , load_image('resource/map/diarightdoor.png')]]
+                        [load_image('resource/map/towerfrontdoor.png'), load_image('resource/map/towerleftdoor.png')
+                            , load_image('resource/map/towerrightdoor.png'), load_image('resource/map/towerdialeftdoor.png')
+                            , load_image('resource/map/towerdiarightdoor.png')],
+                        [load_image('resource/map/pyramidfrontdoor.png'), load_image('resource/map/pyramidleftdoor.png')
+                            , load_image('resource/map/pyramidrightdoor.png'), load_image('resource/map/pyramiddialeftdoor.png')
+                            , load_image('resource/map/pyramiddiarightdoor.png')]]
 
         if Room.background_map is None:
             Room.background_map = [[load_image('resource/map/colormap.png'),
                                     load_image('resource/map/colormapdia.png')],
                                    [load_image('resource/map/apartmap.png'),
                                     load_image('resource/map/apartmapdia.png')],
-                                   [load_image('resource/map/colormap.png'),
-                                    load_image('resource/map/colormapdia.png')],
-                                   [load_image('resource/map/colormap.png'),
-                                    load_image('resource/map/colormapdia.png')]]
+                                   [load_image('resource/map/towercolormap.png'),
+                                    load_image('resource/map/towercolormapdia.png')],
+                                   [load_image('resource/map/pyramidcolormap.png'),
+                                    load_image('resource/map/pyramidcolormapdia.png')]]
 
         # door_location - 1이 실제 사용 값
         self.door_location = [(2 * w, 1 * n, 3 * e), (4 * n, 0,  5 * e), (2 * n, 1 * e, 3 * s), (4 * e, 0, 5 * s),

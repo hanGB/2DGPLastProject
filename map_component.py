@@ -17,7 +17,7 @@ FRAMES_PER_MOVE = 4
 
 LEFT_DOWN, RIGHT_DOWN, LEFT_UP, RIGHT_UP, UP_KEY, DOWN_KEY, MOVE, SPACE_KEY = range(8)
 
-NON, CLOSED_BOX, OPENED_BOX, RECOVERY, WAY_OUT = range(5)
+NON, CLOSED_BOX, OPENED_BOX, RECOVERY, WAY_OUT, BOSS = range(6)
 FIRST, APARTMENT_ONE, TOWER, PYRAMID, APARTMENT_TWO = range(5)
 N, E, S, W = range(4)
 
@@ -226,8 +226,8 @@ class Map:
         if Map.move_animation is None:
             Map.move_animation = [load_image("resource/animation/moveAni.png"),
                                   load_image("resource/animation/apartmoveAni.png"),
-                                  load_image("resource/animation/moveAni.png"),
-                                  load_image("resource/animation/moveAni.png")]
+                                  load_image("resource/animation/towermoveAni.png"),
+                                  load_image("resource/animation/pyramidmoveAni.png")]
         if Map.step_sound is None:
             Map.step_sound = load_wav("resource/sound/stepSound.wav")
             Map.step_sound.set_volume(120)
@@ -422,30 +422,147 @@ class Map:
                                (NON, 0), (NON, 0), (RECOVERY, 0),
                                (NON, 0), (NON, 0)]]
 
-        else:
-            self.rooms = [[room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0),
-                           room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0),
-                           room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0)],
+        elif type == PYRAMID:
+            self.bgm = load_music("resource/sound/pyramidDungeonBGM.mp3")
+            self.bgm.set_volume(30)
+
+            self.rooms = [[room_data.Room(0, 1, 0, 0), room_data.Room(0, 1, 0, 1), room_data.Room(0, 1, 0, 1),
+                           room_data.Room(0, 1, 0, 1), room_data.Room(0, 1, 0, 1), room_data.Room(0, 1, 0, 1),
+                           room_data.Room(0, 1, 0, 1), room_data.Room(0, 1, 0, 1), room_data.Room(1, 0, 0, 1)],
 
                           [room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0),
                            room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0),
-                           room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0)],
+                           room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(1, 0, 1, 0)],
 
-                          [room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0),
-                           room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0),
-                           room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0)],
+                          [room_data.Room(1, 1, 0, 0), room_data.Room(0, 1, 0, 1), room_data.Room(0, 1, 0, 1),
+                           room_data.Room(0, 1, 0, 1), room_data.Room(0, 1, 0, 1), room_data.Room(0, 1, 0, 1),
+                           room_data.Room(1, 0, 0, 1), room_data.Room(0, 0, 0, 0), room_data.Room(1, 0, 1, 0)],
 
-                          [room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0),
+                          [room_data.Room(1, 0, 1, 0), room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0),
                            room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0),
-                           room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0)],
+                           room_data.Room(1, 0, 1, 0), room_data.Room(0, 0, 0, 0), room_data.Room(1, 0, 1, 0)],
 
-                          [room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0),
-                           room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0),
-                           room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0)],
+                          [room_data.Room(1, 0, 1, 0), room_data.Room(0, 0, 0, 0), room_data.Room(1, 1, 0, 0),
+                           room_data.Room(0, 1, 0, 1), room_data.Room(0, 0, 0, 1), room_data.Room(0, 0, 0, 0),
+                           room_data.Room(1, 0, 1, 0), room_data.Room(0, 0, 0, 0), room_data.Room(1, 0, 1, 0)],
 
-                          [room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0),
+                          [room_data.Room(1, 0, 1, 0), room_data.Room(0, 0, 0, 0), room_data.Room(1, 0, 1, 0),
                            room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0),
-                           room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0)]]
+                           room_data.Room(1, 0, 1, 0), room_data.Room(0, 0, 0, 0), room_data.Room(1, 0, 1, 0)],
+
+                          [room_data.Room(1, 0, 1, 0), room_data.Room(0, 0, 0, 0), room_data.Room(0, 1, 1, 0),
+                           room_data.Room(0, 1, 0, 1), room_data.Room(0, 1, 0, 1), room_data.Room(0, 1, 0, 1),
+                           room_data.Room(0, 0, 1, 1), room_data.Room(0, 0, 0, 0), room_data.Room(1, 0, 1, 0)],
+
+                          [room_data.Room(1, 0, 1, 0), room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0),
+                           room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0),
+                           room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(1, 0, 1, 0)],
+
+                          [room_data.Room(0, 1, 1, 0), room_data.Room(0, 1, 0, 1), room_data.Room(0, 1, 0, 1),
+                           room_data.Room(0, 1, 0, 1), room_data.Room(0, 1, 0, 1), room_data.Room(0, 1, 0, 1),
+                           room_data.Room(0, 1, 0, 1), room_data.Room(0, 1, 0, 1), room_data.Room(0, 0, 1, 1)]]
+
+            if map_state.clear_data[type]:
+                self.location_y = 0
+                self.location_x = 0
+            else:
+                self.location_y = 0
+                self.location_x = 0
+
+            self.map_event = [[(NON, 0), (NON, 0), (NON, 0),
+                               (NON, 0), (NON, 0), (NON, 0),
+                               (NON, 0), (NON, 0), (CLOSED_BOX, 2)],
+
+                              [(NON, 0), (NON, 0), (NON, 0),
+                               (NON, 0), (NON, 0), (NON, 0),
+                               (NON, 0), (NON, 0), (NON, 0)],
+
+                              [(RECOVERY, 4), (NON, 0), (NON, 0),
+                               (NON, 0), (NON, 0), (NON, 0),
+                               (NON, 0), (NON, 0), (NON, 0)],
+
+                              [(NON, 0), (NON, 0), (NON, 0),
+                               (NON, 0), (NON, 0), (NON, 0),
+                               (NON, 0), (NON, 0), (NON, 0)],
+
+                              [(NON, 0), (NON, 0), (RECOVERY, 4),
+                               (NON, 0), (BOSS, 2), (NON, 0),
+                               (NON, 0), (NON, 0), (NON, 0)],
+
+                              [(NON, 0), (NON, 0), (NON, 0),
+                               (NON, 0), (NON, 0), (NON, 0),
+                               (NON, 0), (NON, 0), (NON, 0)],
+
+                              [(NON, 0), (NON, 0), (NON, 0),
+                               (NON, 0), (NON, 0), (NON, 0),
+                               (CLOSED_BOX, 0), (NON, 0), (NON, 0)],
+
+                              [(NON, 0), (NON, 0), (NON, 0),
+                               (NON, 0), (NON, 0), (NON, 0),
+                               (NON, 0), (NON, 0), (NON, 0)],
+
+                              [(CLOSED_BOX, 6), (NON, 0), (NON, 0),
+                               (NON, 0), (NON, 0), (NON, 0),
+                               (NON, 0), (NON, 0), (RECOVERY, 0)]]
+
+        elif type == TOWER:
+            self.bgm = load_music("resource/sound/towerDungeonBGM.mp3")
+            self.bgm.set_volume(30)
+
+            self.rooms = [[room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(1, 0, 0, 0),
+                           room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0)],
+
+                          [room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(1, 0, 1, 0),
+                           room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0)],
+
+                          [room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(1, 0, 1, 0),
+                           room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0)],
+
+                          [room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(1, 0, 1, 0),
+                           room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0)],
+
+                          [room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(1, 0, 1, 0),
+                           room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0)],
+
+                          [room_data.Room(0, 1, 0, 0), room_data.Room(0, 1, 0, 1), room_data.Room(1, 1, 1, 1),
+                           room_data.Room(0, 1, 0, 1), room_data.Room(0, 0, 0, 1)],
+
+                          [room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(1, 0, 1, 0),
+                           room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0)],
+
+                          [room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 1, 0),
+                           room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0)]]
+
+            if map_state.clear_data[type]:
+                self.location_y = 0
+                self.location_x = 2
+            else:
+                self.location_y = 0
+                self.location_x = 2
+
+            self.map_event = [[(NON, 0), (NON, 0), (NON, 0),
+                               (NON, 0), (NON, 0)],
+
+                              [(NON, 0), (NON, 0), (NON, 0),
+                               (NON, 0), (NON, 0)],
+
+                              [(NON, 0), (NON, 0), (NON, 0),
+                               (NON, 0), (NON, 0)],
+
+                              [(NON, 0), (NON, 0), (NON, 0),
+                               (NON, 0), (NON, 0)],
+
+                              [(NON, 0), (NON, 0), (NON, 0),
+                               (NON, 0), (NON, 0)],
+
+                              [(CLOSED_BOX, 6), (NON, 0), (NON, 0),
+                               (NON, 0), (CLOSED_BOX, 2)],
+
+                              [(NON, 0), (NON, 0), (RECOVERY, 0),
+                               (NON, 0), (NON, 0)],
+
+                              [(NON, 0), (NON, 0), (BOSS, 0),
+                               (NON, 0), (NON, 0)]]
 
         self.event_que = []
         self.cur_state = NormalMap
