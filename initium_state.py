@@ -3,13 +3,16 @@ import map_state
 import random
 import game_world
 import city_state
+from enemy_data import Enemy
 from player_data import Player
 
 
 name = "initium_state"
 
 player = None
-
+Lucifel = None
+Lucifer = None
+Alice = None
 
 def enter():
     global player
@@ -28,8 +31,17 @@ def enter():
     for p in player:
         game_world.add_object(p, 2)
 
+    global Alice
+    global Lucifel
+    global Lucifer
+
+    Alice = Enemy(0)
+    Lucifel = Enemy(12)
+    Lucifer = Enemy(13)
+
     #game_framework.push_state(map_state)
     game_framework.push_state(city_state)
+
 
 def exit():
     global player

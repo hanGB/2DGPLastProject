@@ -133,14 +133,14 @@ class Enemy:
             self.level = 63
 
         elif type == 12:
-            self.image = load_image("resource/enemy/12lucipel.png")
+            self.image = load_image("resource/enemy/12lucifel.png")
             self.max_Bd = 5000
             self.stat = [50, 50, 50, 50, 50, 50]
             self.max_turn = 5
             self.level = 77
 
         elif type == 13:
-            self.image = load_image("resource/enemy/13luciper.png")
+            self.image = load_image("resource/enemy/13lucifer.png")
             self.max_Bd = 9999
             self.stat = [99, 99, 99, 99, 99, 99]
             self.max_turn = 9
@@ -206,11 +206,24 @@ class Enemy:
     def set_time_to_show_hit(self):
         self.time_to_show_hit = 0
 
+    def draw_in_map(self):
+        if self.type == 0:
+            self.image.draw(580, 300)
+
+        elif self.type == 12 or self.type == 13:
+            self.image.draw(640, 360)
+
     def draw(self, position, slt):
         level_units = self.level % 10
         level_tens = self.level / 10
 
-        if self.type == 1:
+        if self.type == 0:
+            self.image.draw(580, 300)
+
+        elif self.type == 12 or self.type == 13:
+            self.image.draw(640, 360)
+
+        elif self.type == 1:
             self.image.draw(200 + position * 200, 255)
         else:
             self.image.draw(200 + position * 200, 300)

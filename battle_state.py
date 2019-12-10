@@ -69,9 +69,6 @@ def handle_events():
         if event.type == SDL_QUIT:
             game_framework.quit()
 
-        # 임시 배틀 종료 키
-        # elif event.type == SDL_KEYDOWN and event.key == SDLK_b:
-        #    game_framework.pop_state()
         else:
             if not skill_processing:
                 battle_ui.handle_events(event)

@@ -147,11 +147,22 @@ class NormalMap:
             if map.map_event[map.location_y][map.location_x][0] == RECOVERY:
                 map.recovery_stone.draw(640, 200)
                 map.space_bar.draw(640, 200)
+
             elif map.map_event[map.location_y][map.location_x][0] == CLOSED_BOX:
                 map.box.clip_draw(0, 0, 350, 400, 640, 200)
                 map.space_bar.draw(640, 200)
+
             elif map.map_event[map.location_y][map.location_x][0] == OPENED_BOX:
                 map.box.clip_draw(350, 0, 350, 400, 640, 200)
+
+            elif map.map_event[map.location_y][map.location_x][0] == BOSS:
+                if map.type == TOWER:
+                    initium_state.Alice.draw_in_map()
+                    map.space_bar.draw(465, 270)
+
+                elif map.type == PYRAMID:
+                    initium_state.Lucifel.draw_in_map()
+                    map.space_bar.draw(700, 400)
 
         if map.moving:
             map.move_animation[map.type].clip_draw(map.animation_frame * 1280, 0, 1280, 720, 640, 360)
@@ -466,8 +477,8 @@ class Map:
                 self.location_y = 0
                 self.location_x = 0
             else:
-                self.location_y = 0
-                self.location_x = 0
+                self.location_y = 4
+                self.location_x = 4
 
             self.map_event = [[(NON, 0), (NON, 0), (NON, 0),
                                (NON, 0), (NON, 0), (NON, 0),
@@ -537,7 +548,7 @@ class Map:
                 self.location_y = 0
                 self.location_x = 2
             else:
-                self.location_y = 0
+                self.location_y = 7
                 self.location_x = 2
 
             self.map_event = [[(NON, 0), (NON, 0), (NON, 0),
