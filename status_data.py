@@ -34,15 +34,15 @@ class Card:
             self.skill = [Skill(42), Skill(54), Skill(53), Skill(52), Skill(51)]
 
         elif type == 7:
-            self.attribute = [WEAK, NORMAL, NORMAL, NORMAL, NORMAL, NORMAL, NORMAL, REVEN]
+            self.attribute = [NORMAL, WEAK, NORMAL, NORMAL, NORMAL, NORMAL, NORMAL, REVEN]
             self.skill = [Skill(1), Skill(64), Skill(63), Skill(62), Skill(61)]
 
         elif type == 8:
-            self.attribute = [WEAK, NORMAL, NORMAL, HALF, NORMAL, NORMAL, NORMAL, NORMAL]
+            self.attribute = [NORMAL, WEAK, NORMAL, HALF, NORMAL, NORMAL, NORMAL, NORMAL]
             self.skill = [Skill(11), Skill(52), Skill(54), Skill(12)]
 
         elif type == 9:
-            self.attribute = [SHOCK, NORMAL, HALF, AWFUL, NORMAL, NORMAL, NORMAL, WEAK]
+            self.attribute = [NORMAL, SHOCK, HALF, AWFUL, NORMAL, NORMAL, NORMAL, WEAK]
             self.skill = [Skill(21), Skill(51), Skill(53), Skill(22)]
 
         elif type == 10:

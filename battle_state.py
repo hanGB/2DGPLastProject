@@ -50,6 +50,10 @@ def exit():
 
     del sword_trigger
 
+    global battle_ui
+
+    game_world.remove_object(battle_ui)
+
     game_world.clear()
 
 

@@ -42,8 +42,7 @@ class NormalMap:
     @staticmethod
     def enter(map, event):
         if map.map_event[map.location_y][map.location_x][0] == WAY_OUT:
-            if map.rain_sound.get_volume() == 0:
-                map.rain_sound.set_volume(100)
+            pass
 
         if event == LEFT_DOWN:
             map.direction = -1
@@ -447,7 +446,7 @@ class Map:
             self.bgm = load_music("resource/sound/pyramidDungeonBGM.mp3")
             self.bgm.set_volume(30)
 
-            self.rooms = [[room_data.Room(0, 1, 0, 0), room_data.Room(0, 1, 0, 1), room_data.Room(0, 1, 0, 1),
+            self.rooms = [[room_data.Room(0, 1, 0, 1), room_data.Room(0, 1, 0, 1), room_data.Room(0, 1, 0, 1),
                            room_data.Room(0, 1, 0, 1), room_data.Room(0, 1, 0, 1), room_data.Room(0, 1, 0, 1),
                            room_data.Room(0, 1, 0, 1), room_data.Room(0, 1, 0, 1), room_data.Room(1, 0, 0, 1)],
 
@@ -487,10 +486,10 @@ class Map:
                 self.location_y = 0
                 self.location_x = 0
             else:
-                self.location_y = 4
-                self.location_x = 4
+                self.location_y = 0
+                self.location_x = 0
 
-            self.map_event = [[(NON, 0), (NON, 0), (NON, 0),
+            self.map_event = [[(WAY_OUT, 6), (NON, 0), (NON, 0),
                                (NON, 0), (NON, 0), (NON, 0),
                                (NON, 0), (NON, 0), (CLOSED_BOX, 2)],
 
@@ -558,7 +557,7 @@ class Map:
                 self.location_y = 0
                 self.location_x = 2
             else:
-                self.location_y = 7
+                self.location_y = 0
                 self.location_x = 2
 
             self.map_event = [[(NON, 0), (NON, 0), (WAY_OUT, 4),

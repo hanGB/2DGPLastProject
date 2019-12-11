@@ -60,6 +60,8 @@ def enter():
     Lucifel = Enemy(12)
     Lucifer = Enemy(13)
 
+    map_state.destination = 0
+
     game_framework.push_state(map_state)
     # game_framework.push_state(city_state)
 

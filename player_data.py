@@ -206,8 +206,8 @@ class Player:
         if self.level < 99:
             if self.Bd > 0:
                 self.exp += exp
-                if self.exp > self.level * 30:
-                    self.exp = self.exp - self.level * 30
+                if self.exp > ((self.level ** 2) / 5):
+                    self.exp = self.exp - ((self.level ** 2) / 5)
                     self.level += 1
                     self.level_up = True
 
