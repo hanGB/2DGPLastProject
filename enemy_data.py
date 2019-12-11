@@ -57,77 +57,77 @@ class Enemy:
 
         elif type == 1:
             self.image = load_image("resource/enemy/1slame.png")
-            self.max_Bd = 300
+            self.max_Bd = 80
             self.stat = [5, 5, 5, 5, 5, 5]
             self.max_turn = 1
             self.level = 5
 
         elif type == 2:
             self.image = load_image("resource/enemy/2jack_o_lantern.png")
-            self.max_Bd = 400
+            self.max_Bd = 150
             self.stat = [10, 5, 5, 5, 10, 5]
             self.max_turn = 1
             self.level = 8
 
         elif type == 3:
             self.image = load_image("resource/enemy/3jack_frost.png")
-            self.max_Bd = 500
+            self.max_Bd = 200
             self.stat = [10, 10, 10, 10, 10, 10]
             self.max_turn = 2
             self.level = 12
 
         elif type == 4:
             self.image = load_image("resource/enemy/4loa.png")
-            self.max_Bd = 600
+            self.max_Bd = 300
             self.stat = [5, 10, 20, 10, 5, 10]
             self.max_turn = 2
             self.level = 17
 
         elif type == 5:
             self.image = load_image("resource/enemy/5high_pixie.png")
-            self.max_Bd = 700
+            self.max_Bd = 350
             self.stat = [20, 10, 20, 10, 10, 20]
             self.max_turn = 2
             self.level = 22
 
         elif type == 6:
             self.image = load_image("resource/enemy/6kaiwan.png")
-            self.max_Bd = 1000
+            self.max_Bd = 500
             self.stat = [20, 15, 25, 15, 15, 10]
             self.max_turn = 3
             self.level = 27
 
         elif type == 7:
             self.image = load_image("resource/enemy/7legion.png")
-            self.max_Bd = 1300
+            self.max_Bd = 600
             self.stat = [20, 20, 30, 20, 10, 10]
             self.max_turn = 3
             self.level = 35
 
         elif type == 8:
             self.image = load_image("resource/enemy/8naga.png")
-            self.max_Bd = 1500
+            self.max_Bd = 750
             self.stat = [30, 30, 20, 40, 20, 40]
             self.max_turn = 3
             self.level = 41
 
         elif type == 9:
             self.image = load_image("resource/enemy/9dol.png")
-            self.max_Bd = 1700
+            self.max_Bd = 800
             self.stat = [20, 50, 20, 50, 20, 20]
             self.max_turn = 3
             self.level = 47
 
         elif type == 10:
             self.image = load_image("resource/enemy/10surt.png")
-            self.max_Bd = 2000
+            self.max_Bd = 900
             self.stat = [50, 30, 10, 10, 20, 20]
             self.max_turn = 4
             self.level = 56
 
         elif type == 11:
             self.image = load_image("resource/enemy/11norn.png")
-            self.max_Bd = 2200
+            self.max_Bd = 950
             self.stat = [40, 30, 20, 40, 30, 30]
             self.max_turn = 4
             self.level = 63
