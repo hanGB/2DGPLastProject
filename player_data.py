@@ -70,37 +70,37 @@ class Player:
         # 플레이어 초기화
         if self.pattern == BS:
             self.attribute = [0, HALF, 0, 0, 0, WEAK, 0, 0]
-            self.skill = [Skill(52), Skill(62), Skill(72)]
-            self.future_skill = [[15, 3], [21, 3], [28, 3], [36, 3], [45, 3],
-                                 [55, 3], [66, 3], [78, 3], [81, 3]]
+            self.skill = [Skill(23), Skill(53)]
+            self.future_skill = [[15, 22], [21, 33], [28, 52], [36, 32], [45, 21],
+                                 [55, 51], [66, 31], [78, 50], [81, 20]]
             self.future_skill_number = 0
 
         elif self.pattern == RD:
             self.attribute = [0, 0, 0, HALF, 0, WEAK, 0, 0]
-            self.skill = [Skill(52), Skill(62), Skill(72)]
-            self.future_skill = [[15, 3], [21, 3], [28, 3], [36, 3], [45, 3],
-                                 [55, 3], [66, 3], [78, 3], [81, 3]]
+            self.skill = [Skill(3), Skill(13), Skill(72)]
+            self.future_skill = [[15, 54], [21, 12], [28, 52], [36, 2], [45, 71],
+                                 [55, 11], [66, 1], [78, 70], [81, 10]]
             self.future_skill_number = 0
 
         elif self.pattern == RH:
             self.attribute = [0, 0, 0, WEAK, 0, NON, 0, WEAK]
-            self.skill = [Skill(52), Skill(62), Skill(72)]
-            self.future_skill = [[15, 3], [21, 3], [28, 3], [36, 3], [45, 3],
-                                 [55, 3], [66, 3], [78, 3], [81, 3]]
+            self.skill = [Skill(43), Skill(63)]
+            self.future_skill = [[15, 82], [21, 42], [28, 3], [36, 2], [45, 61],
+                                 [55, 81], [66, 41], [78, 40], [81, 80]]
             self.future_skill_number = 0
 
         elif self.pattern == BC:
             self.attribute = [0, 0, WEAK, 0, 0, 0, 0, HALF]
-            self.skill = [Skill(52), Skill(62), Skill(72)]
-            self.future_skill = [[15, 3], [21, 3], [28, 3], [36, 3], [45, 3],
-                                 [55, 3], [66, 3], [78, 3], [81, 3]]
+            self.skill = [Skill(33), Skill(64)]
+            self.future_skill = [[15, 63], [21, 32], [28, 22], [36, 42], [45, 62],
+                                 [55, 61], [66, 82], [78, 30], [81, 60]]
             self.future_skill_number = 0
 
         elif self.pattern == ZERO:
             self.attribute = [0, 0, 0, 0, 0, 0, 0, 0]
-            self.skill = [Skill(52), Skill(62), Skill(72)]
-            self.future_skill = [[15, 13], [21, 23], [28, 33], [36, 3], [45, 3],
-                                 [55, 3], [66, 3], [78, 3], [81, 3]]
+            self.skill = [Skill(3), Skill(54)]
+            self.future_skill = [[15, 33], [21, 2], [28, 52], [36, 51], [45, 32],
+                                 [55, 1], [66, 72], [78, 50], [81, 0]]
             self.future_skill_number = 0
 
         if self.pattern == ZERO:
