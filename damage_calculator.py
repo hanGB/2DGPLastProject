@@ -7,6 +7,9 @@ HIT, AWFUL, WEAK, HALF, NON, REVEN, SHOCK, MISS = range(8)
 MATTER_ATTACK, MIND_ATTACK, MATTER_DEFENCE, MIND_DEFENCE, HIT_RATE, AVOID_RATE = range(6)
 ATTACK_BUFF, DEFENCE_BUFF = range(2)
 
+def calculate_damage_for_cheat_skill():
+    return HIT, 7500
+
 
 def calculate_damage_for_normal_skill(user, target, skill):
     user_stat = user.get_stat()
@@ -240,6 +243,12 @@ def calculate_damage(user, target, skill):
         else:
             calculate_recovery_for_recovery_skill(target, skill)
             target.set_time_to_show_hit()
+
+    elif skill_type == 10:
+        weakness, damage = calculate_damage_for_cheat_skill()
+        calculate_down_level_for_normal_skill(user, target, weakness, damage)
+        target.set_time_to_show_hit()
+
 
 
 def use_skill(user, target, skill):

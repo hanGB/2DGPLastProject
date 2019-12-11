@@ -6,6 +6,7 @@ import game_framework
 import initium_state
 import city_state
 import map_state
+import boss_state
 
 TIME_PER_CAMERA_MOVE = 2
 CAMERA_MOVE_PER_TIME = 1.0 / TIME_PER_CAMERA_MOVE
@@ -20,6 +21,7 @@ LEFT_DOWN, RIGHT_DOWN, LEFT_UP, RIGHT_UP, UP_KEY, DOWN_KEY, MOVE, SPACE_KEY = ra
 NON, CLOSED_BOX, OPENED_BOX, RECOVERY, WAY_OUT, BOSS = range(6)
 FIRST, APARTMENT_ONE, TOWER, PYRAMID, APARTMENT_TWO = range(5)
 N, E, S, W = range(4)
+ALICE, LUCIFEL, LUCIFER = range(3)
 
 key_event_table = {
     (SDL_KEYDOWN, SDLK_LEFT): LEFT_DOWN,
@@ -75,6 +77,14 @@ class NormalMap:
                     number_of_item = random.randint(1, 5)
                     initium_state.player[0].set_item(item_type, number_of_item)
                     map.map_event[map.location_y][map.location_x] = (OPENED_BOX, now_direction)
+
+                elif map.map_event[map.location_y][map.location_x][0] == BOSS:
+                    if map.type == TOWER:
+                        boss_state.boss = ALICE
+                        map.map_event[map.location_y][map.location_x][0] = NON
+                    elif map.type == PYRAMID:
+                        boss_state.boss = LUCIFEL
+                    game_framework.push_state(boss_state)
 
         elif event == MOVE:
             now_direction = map.rooms[map.location_y][map.location_x].get_map_direction()

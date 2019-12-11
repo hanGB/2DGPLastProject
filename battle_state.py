@@ -18,6 +18,7 @@ battle_map = None
 now_turn = None
 sword_trigger = None
 skill_processing = False
+boss_battle = -1
 
 
 def enter():

@@ -7,8 +7,10 @@ import death_end_state
 import map_state
 from damage_calculator import use_skill
 from behavior_tree import BehaviorTree, SequenceNode, LeafNode
+import initium_state
 
 FIRST, APARTMENT_ONE, TOWER, PYRAMID, APARTMENT_TWO = range(5)
+ALICE, LUCIFEL, LUCIFER = range(3)
 
 SKILL_FRAMES = 4
 ANIMATION_ACCELERATION = 2.5
@@ -50,9 +52,11 @@ class BattleEndState:
                 for player in battle_state.player.get_all_players():
                     player.give_exp(battle_enemy.exp)
                 battle_state.battle_ui.stop_bgm()
+                battle_state.boss_battle = -1
                 game_framework.pop_state()
             else:
                 battle_state.battle_ui.stop_bgm()
+                battle_state.boss_battle = -1
                 game_framework.change_state(death_end_state)
 
     @staticmethod
@@ -237,18 +241,29 @@ class BattleEnemy:
         self.sub_counter = 0
         self.number_of_enemies = random.randint(1, 4)
         self.selected_enemy = 0
+        if battle_state.boss_battle == -1:
+            if map_state.map.get_type() == FIRST:
+                self.enemy = [enemy_data.Enemy(random.randint(1, 5)) for n in range(self.number_of_enemies)]
 
-        if map_state.map.get_type() == FIRST:
-            self.enemy = [enemy_data.Enemy(random.randint(1, 5)) for n in range(self.number_of_enemies)]
+            elif map_state.map.get_type() == APARTMENT_ONE:
+                self.enemy = [enemy_data.Enemy(random.randint(5, 9)) for n in range(self.number_of_enemies)]
 
-        elif map_state.map.get_type() == APARTMENT_ONE:
-            self.enemy = [enemy_data.Enemy(random.randint(5, 9)) for n in range(self.number_of_enemies)]
+            elif map_state.map.get_type() == TOWER:
+                self.enemy = [enemy_data.Enemy(4) for n in range(self.number_of_enemies)]
 
-        elif map_state.map.get_type() == TOWER:
-            self.enemy = [enemy_data.Enemy(4) for n in range(self.number_of_enemies)]
+            elif map_state.map.get_type() == PYRAMID:
+                self.enemy = [enemy_data.Enemy(random.randint(8, 11)) for n in range(self.number_of_enemies)]
+        else:
+            if battle_state.boss_battle == ALICE:
+                self.enemy = [initium_state.Alice]
 
-        elif map_state.map.get_type() == PYRAMID:
-            self.enemy = [enemy_data.Enemy(random.randint(8, 11)) for n in range(self.number_of_enemies)]
+            elif battle_state.boss_battle == LUCIFEL:
+                self.enemy = [initium_state.Lucifel]
+
+            elif battle_state.boss_battle == LUCIFER:
+                self.enemy = [initium_state.Lucifer]
+
+            self.number_of_enemies = 1
 
         self.event_que = []
         self.cur_state = EnemySelectState
@@ -289,7 +304,7 @@ class BattleEnemy:
     def select_skill(self):
         self.user = self.enemy[self.enemy_now]
 
-        skills = self.user.get_card().get_skill()
+        skills = self.user.get_skill()
         usable_skills = []
 
         for skill in skills:

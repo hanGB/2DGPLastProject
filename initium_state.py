@@ -6,6 +6,7 @@ import city_state
 from enemy_data import Enemy
 from player_data import Player
 
+BS, RS, BD, RD, BH, RH, BC, RC, ZERO = range(9)
 
 name = "initium_state"
 
@@ -16,7 +17,7 @@ Alice = None
 
 def enter():
     global player
-    data = [0, 3, 5, 6]
+    data = [BS, RD, RH, BC]
     chosenPlayer = []
 
     chosenPlayer.append(data[random.randint(0, 3)])
@@ -24,7 +25,7 @@ def enter():
 
     chosenPlayer.append(data[random.randint(0, 2)])
 
-    player = [Player(8, 100, 100, [10, 10, 10, 10, 10, 10]),
+    player = [Player(ZERO, 100, 100, [10, 10, 10, 10, 10, 10]),
               Player(chosenPlayer[0], 100, 100, [10, 10, 10, 10, 10, 10]),
               Player(chosenPlayer[1], 100, 100, [10, 10, 10, 10, 10, 10])]
 

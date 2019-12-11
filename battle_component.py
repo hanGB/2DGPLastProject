@@ -171,7 +171,7 @@ class SkillState:
 
     @staticmethod
     def enter(battle_ui, event):
-        SkillState.number_of_skills = len(battle_state.player.get_player(battle_ui.player_now).get_card().get_skill())
+        SkillState.number_of_skills = len(battle_state.player.get_player(battle_ui.player_now).get_skill())
         if event == DOWN_DOWN:
             battle_ui.selecting = 1
             battle_ui.selected_skill = (battle_ui.selected_skill + battle_ui.selecting) % SkillState.number_of_skills
@@ -190,12 +190,12 @@ class SkillState:
         elif event == SPACE_KEY:
             if (can_use_skill(battle_state.player.get_player(battle_state.battle_ui.player_now),
                               battle_state.player.get_player(battle_ui.player_now).
-                              get_card().get_skill()[battle_ui.selected_skill])):
+                              get_skill()[battle_ui.selected_skill])):
 
                 battle_ui.user = battle_state.player.get_player(battle_ui.player_now)
                 battle_ui.selected_skill_data = \
                     battle_state.player.get_player(battle_ui.player_now) \
-                    .get_card().get_skill()[battle_ui.selected_skill]
+                    .get_skill()[battle_ui.selected_skill]
 
                 if battle_ui.selected_skill_data.get_ally_target():
                     players = battle_state.player.get_list()
@@ -237,11 +237,11 @@ class SkillState:
         battle_ui.now_player_mark.draw(880, 200 - battle_ui.player_now * 50)
         battle_ui.player_sign.draw(1250, 200 - battle_ui.player_target * 50)
 
-        for i in range(len(battle_state.player.get_player(battle_ui.player_now).get_card().get_skill())):
+        for i in range(len(battle_state.player.get_player(battle_ui.player_now).get_skill())):
             if battle_ui.selected_skill == i:
-                battle_state.player.get_player(battle_ui.player_now).get_card().get_skill()[i].draw(i, 1)
+                battle_state.player.get_player(battle_ui.player_now).get_skill()[i].draw(i, 1)
             else:
-                battle_state.player.get_player(battle_ui.player_now).get_card().get_skill()[i].draw(i, 0)
+                battle_state.player.get_player(battle_ui.player_now).get_skill()[i].draw(i, 0)
         battle_ui.battle_explain.draw(645, 15)
 
 
@@ -394,7 +394,7 @@ class BattleUi:
     def select_skill(self):
         self.user = battle_state.player.get_list()[self.player_now]
 
-        skills = self.user.get_card().get_skill()
+        skills = self.user.get_skill()
         usable_skills = []
 
         for skill in skills:

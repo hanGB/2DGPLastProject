@@ -84,10 +84,11 @@ def handle_events():
                 battle_state.player.get_player(battle_state.battle_ui.player_now).set_turn(0)
 
             elif cwe_ui.get_key() == 0:
-                battle_state.battle_ui.set_is_main(True)
-                battle_state.battle_ui.set_escape(True)
-                battle_state.battle_ui.stop_bgm()
-                game_framework.pop_state()
+                if battle_state.boss_battle == -1:
+                    battle_state.battle_ui.set_is_main(True)
+                    battle_state.battle_ui.set_escape(True)
+                    battle_state.battle_ui.stop_bgm()
+                    game_framework.pop_state()
 
         elif event.key == SDLK_x and event.type == SDL_KEYDOWN:
             for p in range(battle_state.player.number_of_players):

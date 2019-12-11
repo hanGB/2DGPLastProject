@@ -1,11 +1,12 @@
 from skill_data import Skill
 
+NORMAL, AWFUL, WEAK, HALF, NON, REVEN, SHOCK = range(7)
 
 class Card:
     def __init__(self, type):
         self.attribute = [0, 0, 0, 0, 0, 0, 0, 0]
         if type == 0:
-            self.attribute = [0, 0, 0, 1, 0, 0, 0, 0]
+            self.attribute = [0, 0, 0, 0, 0, 0, 0, 0]
             self.skill = [Skill(2), Skill(43), Skill(63), Skill(72), Skill(81)]
 
         elif type == 1:

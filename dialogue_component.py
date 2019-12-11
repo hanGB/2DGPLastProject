@@ -1,17 +1,15 @@
 import game_framework
+import battle_state
 from pico2d import *
+import death_end_state
 
-ALICE, LUCIFEL, LUCIFER, FIRST, CITY = range(3)
-DEFAULT, SELCECTION = range(3)
-
-SPACE, UP_DOWN, DOWN_DOWN, UP_UP, DOWN_UP, SELECTION = range(6)
+ALICE, LUCIFEL, LUCIFER, FIRST, CITY = range(5)
+SELCECTION, DEFAULT = range(2)
+SPACE, SHIFT = range(2)
 
 key_event_table = {
-    (SDL_KEYDOWN, SDLK_UP): UP_DOWN,
-    (SDL_KEYDOWN, SDLK_DOWN): DOWN_DOWN,
-    (SDL_KEYUP, SDLK_UP): UP_UP,
-    (SDL_KEYUP, SDLK_DOWN): DOWN_UP,
-    (SDL_KEYDOWN, SDLK_SPACE): SPACE
+    (SDL_KEYDOWN, SDLK_SPACE): SPACE,
+    (SDL_KEYDOWN, SDLK_LSHIFT): SHIFT
 }
 
 
@@ -19,48 +17,32 @@ class DeFaultState:
 
     @staticmethod
     def enter(dialogue, event):
-        if event == SPACE:
-            pass
+        if dialogue.dialogue_with == ALICE:
+            if dialogue.dialogue_type[dialogue.now_dialogue] == SELCECTION:
+                if event == SPACE:
+                    game_framework.change_state(death_end_state)
+                elif event == SHIFT:
+                    dialogue.now_dialogue += 1
+            else:
+                if event == SPACE:
+                    dialogue.now_dialogue += 1
 
-        if event == DOWN_DOWN:
-            pass
-        elif event == DOWN_UP:
-            pass
+            if dialogue.now_dialogue >= len(dialogue.dialogue_image):
+                battle_state.boss_battle = ALICE
+                game_framework.change_state(battle_state)
 
-        if event == UP_DOWN:
-            pass
-        elif event == UP_UP:
-            pass
+        else:
+            if event == SPACE:
+                dialogue.now_dialogue += 1
 
-    @staticmethod
-    def exit(dialogue, event):
-        pass
+                if dialogue.dialogue_with == LUCIFEL:
+                    if dialogue.now_dialogue == 3:
+                        dialogue.now_dialogue += 1
+                        battle_state.boss_battle = LUCIFEL
+                        game_framework.push_state(battle_state)
 
-    @staticmethod
-    def do(dialogue):
-        pass
-
-    @staticmethod
-    def draw(dialogue):
-        pass
-
-
-class SelectState:
-
-    @staticmethod
-    def enter(dialogue, event):
-        if event == SPACE:
-            pass
-
-        if event == DOWN_DOWN:
-            pass
-        elif event == DOWN_UP:
-            pass
-
-        if event == UP_DOWN:
-            pass
-        elif event == UP_UP:
-            pass
+                if dialogue.now_dialogue >= len(dialogue.dialogue_image):
+                    pass
 
     @staticmethod
     def exit(dialogue, event):
@@ -72,15 +54,12 @@ class SelectState:
 
     @staticmethod
     def draw(dialogue):
-        pass
+        if dialogue.now_dialogue < len(dialogue.dialogue_image):
+            dialogue.dialogue_image[dialogue.now_dialogue].draw(640, 360)
 
 
 next_state_table = {
-    DeFaultState: {SELECTION: DeFaultState, UP_UP: DeFaultState, UP_DOWN: DeFaultState,
-                   DOWN_UP: DeFaultState, DOWN_DOWN: DeFaultState, SPACE: SelectState},
-
-    SelectState: {SELECTION: SelectState, UP_UP: SelectState, UP_DOWN: SelectState,
-                  DOWN_UP: SelectState, DOWN_DOWN: SelectState, SPACE: DeFaultState}
+    DeFaultState: {SHIFT: DeFaultState, SPACE: DeFaultState},
 }
 
 
@@ -96,10 +75,10 @@ class Dialogue:
 
             self.dialogue_type = [DEFAULT, SELCECTION, DEFAULT]
 
-        elif self.dialogue_with == LUCIFEL:
+        elif self.dialogue_with == LUCIFER:
             self.dialogue_image = [load_image("resource/dialogue/luciferDialogue1.png")]
 
-        elif self.dialogue_with == LUCIFER:
+        elif self.dialogue_with == LUCIFEL:
             self.dialogue_image = [load_image("resource/dialogue/lucifelDialogue1.png"),
                                    load_image("resource/dialogue/lucifelDialogue2.png"),
                                    load_image("resource/dialogue/selfDialogue7.png"),
@@ -125,6 +104,8 @@ class Dialogue:
                                    load_image("resource/dialogue/selfDialogue5.png"),
                                    load_image("resource/dialogue/selfDialogue6.png")]
 
+        self.now_dialogue = 0
+
         self.event_que = []
         self.cur_state = DeFaultState
         self.cur_state.enter(self, None)
@@ -143,7 +124,7 @@ class Dialogue:
     def draw(self):
         self.cur_state.draw(self)
 
-    def handle_event(self, event):
+    def handle_events(self, event):
         if (event.type, event.key) in key_event_table:
             key_event = key_event_table[(event.type, event.key)]
             self.add_event(key_event)

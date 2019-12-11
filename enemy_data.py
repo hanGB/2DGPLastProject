@@ -155,8 +155,17 @@ class Enemy:
         self.hit_weakness = -1
         self.time_to_show_hit = 0
 
+    def get_skill(self):
+        return self.card.get_skill()
+   
+    def get_attribute(self):
+        return self.card.get_attribute()
+
     def get_Bd(self):
         return self.Bd
+
+    def get_max_Bd(self):
+        return self.max_Bd
 
     def set_Bd(self, Bd):
         self.Bd = Bd
@@ -178,9 +187,6 @@ class Enemy:
 
     def get_type(self):
         return self.type
-
-    def get_attribute(self):
-        return self.card.get_attribute()
 
     def get_down_level(self):
         return self.down_level

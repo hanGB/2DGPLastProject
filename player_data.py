@@ -1,13 +1,16 @@
 from pico2d import *
 import status_data
 import game_framework
+from skill_data import Skill
 
 MATTER_ATTACK, MIND_ATTACK, MATTER_DEFENCE, MIND_DEFENCE, HIT_RATE, AVOID_RATE = range(6)
+NORMAL, AWFUL, WEAK, HALF, NON, REVEN, SHOCK = range(7)
 
 TIME_PER_SHOW = 2
 SHOW_PER_TIME = 1.0 / TIME_PER_SHOW
 FRAMES_PER_SHOW = 8
 
+BS, RS, BD, RD, BH, RH, BC, RC, ZERO = range(9)
 
 class Player:
     bar = None
@@ -54,7 +57,7 @@ class Player:
         self.pattern = pattern
         self.max_Bd = Bd
         self.max_Md = Md
-        self.max_turn = 3
+        self.max_turn = 2
         self.level = 10
         self.exp = 0
         self.stat = stat  # MatAtt, MindAtt, MatDef, MindDef, HitRate, AvoidRate
@@ -66,7 +69,43 @@ class Player:
         self.down_level = 0
         self.turn = self.max_turn
 
-        if self.pattern == 8:
+        # 플레이어 초기화
+        if self.pattern == BS:
+            self.attribute = [0, HALF, 0, 0, 0, WEAK, 0, 0]
+            self.skill = [Skill(52), Skill(62), Skill(72)]
+            self.future_skill = [[15, 3], [21, 3], [28, 3], [36, 3], [45, 3],
+                                 [55, 3], [66, 3], [78, 3], [81, 3]]
+            self.future_skill_number = 0
+
+        elif self.pattern == RD:
+            self.attribute = [0, 0, 0, HALF, 0, WEAK, 0, 0]
+            self.skill = [Skill(52), Skill(62), Skill(72)]
+            self.future_skill = [[15, 3], [21, 3], [28, 3], [36, 3], [45, 3],
+                                 [55, 3], [66, 3], [78, 3], [81, 3]]
+            self.future_skill_number = 0
+
+        elif self.pattern == RH:
+            self.attribute = [0, 0, 0, WEAK, 0, NON, 0, WEAK]
+            self.skill = [Skill(52), Skill(62), Skill(72)]
+            self.future_skill = [[15, 3], [21, 3], [28, 3], [36, 3], [45, 3],
+                                 [55, 3], [66, 3], [78, 3], [81, 3]]
+            self.future_skill_number = 0
+
+        elif self.pattern == BC:
+            self.attribute = [0, 0, WEAK, 0, 0, 0, 0, HALF]
+            self.skill = [Skill(52), Skill(62), Skill(72)]
+            self.future_skill = [[15, 3], [21, 3], [28, 3], [36, 3], [45, 3],
+                                 [55, 3], [66, 3], [78, 3], [81, 3]]
+            self.future_skill_number = 0
+
+        elif self.pattern == ZERO:
+            self.attribute = [0, 0, 0, 0, 0, 0, 0, 0]
+            self.skill = [Skill(52), Skill(62), Skill(72)]
+            self.future_skill = [[15, 13], [21, 23], [28, 33], [36, 3], [45, 3],
+                                 [55, 3], [66, 3], [78, 3], [81, 3]]
+            self.future_skill_number = 0
+
+        if self.pattern == ZERO:
             if Player.item_number is None:
                 Player.item_number = load_image("resource/interface/itemNum.png")
 
@@ -82,7 +121,8 @@ class Player:
     def __getstate__(self):
         state = {'pattern': self.pattern, 'max_Bd': self.max_Bd, 'max_Md': self.max_Md,
                  'Bd': self.Bd, 'Md': self.Md, "max_turn": self.max_turn, 'level': self.level,
-                 'exp': self.exp, "stat": self.stat, "card_type ": self.card_type}
+                 'exp': self.exp, "stat": self.stat, "card_type": self.card_type, "skill": self.skill
+                 'attribute': self.attribute}
         return state
 
     def __setstate__(self, state):
@@ -111,7 +151,18 @@ class Player:
         return self.card
 
     def get_attribute(self):
-        return self.card.get_attribute()
+        return self.attribute
+
+    def get_skill(self):
+        return self.skill
+
+    def contract(self, card):
+        if self.pattern == ZERO:
+            self.attribute = card.get_attribute()
+
+        for i in range(len(card.get_skill())):
+            self.skill.remove(self.skill[0])
+            self.skill.append(card.get_skill()[i])
 
     def get_stat(self):
         return self.stat
@@ -163,7 +214,7 @@ class Player:
                     self.level += 1
                     self.level_up = True
 
-                    if self.pattern == 8:
+                    if self.pattern == ZERO:
                         self.max_Bd += 7
                         self.max_Md += 7
                         if self.level % 2 == 0:
@@ -175,7 +226,33 @@ class Player:
                             self.stat[MIND_DEFENCE] += 1
                             self.stat[AVOID_RATE] += 1
 
-                    elif self.pattern == 0:
+                        if self.level == self.future_skill[self.future_skill_number][0]:
+                            if len(self.skill) >= 5:
+                                for i in range(4):
+                                    self.skill[i] = self.skill[i + 1]
+
+                                self.skill.remove(self.skill[4])
+
+                            self.skill.append(Skill(self.future_skill[self.future_skill_number][1]))
+
+                            self.future_skill_number = (self.future_skill_number + 1) % 9
+
+                        if self.level == 30:
+                            self.max_turn = 3
+
+                        elif self.level == 50:
+                            self.max_turn = 4
+
+                        elif self.level == 80:
+                            self.max_turn = 5
+
+                        if self.level == 99:
+                            self.max_Bd = 999
+                            self.max_Md = 999
+                            self.skill.remove(self.skill[0])
+                            self.skill.append(Skill(100))
+
+                    elif self.pattern == BS:
                         self.max_Bd += 9
                         self.max_Md += 5
                         if self.level % 3 == 0:
@@ -190,7 +267,34 @@ class Player:
                             self.stat[AVOID_RATE] += 1
                             self.stat[HIT_RATE] += 1
 
-                    elif self.pattern == 3:
+                        if self.level == self.future_skill[self.future_skill_number][0]:
+                            if len(self.skill) >= 5:
+                                for i in range(4):
+                                    self.skill[i] = self.skill[i + 1]
+
+                                self.skill.insert(4, Skill(self.future_skill[self.future_skill_number][1]))
+
+                            else:
+                                self.skill.append(Skill(self.future_skill[self.future_skill_number][1]))
+
+                            self.future_skill_number = (self.future_skill_number + 1) % 9
+
+                        if self.level == 30:
+                            self.max_turn = 3
+
+                        elif self.level == 50:
+                            self.max_turn = 4
+
+                        elif self.level == 80:
+                            self.max_turn = 5
+
+                        if self.level == 99:
+                            self.max_Bd = 999
+                            self.max_Md = 999
+                            self.skill.remove(self.skill[0])
+                            self.skill.append(Skill(100))
+
+                    elif self.pattern == RD:
                         self.max_Bd += 8
                         self.max_Md += 6
                         if self.level % 2 == 0:
@@ -201,7 +305,33 @@ class Player:
                             self.stat[MIND_DEFENCE] += 1
                             self.stat[AVOID_RATE] += 1
 
-                    elif self.pattern == 5:
+                        if self.level == self.future_skill[self.future_skill_number][0]:
+                            if len(self.skill) >= 5:
+                                for i in range(4):
+                                    self.skill[i] = self.skill[i + 1]
+
+                                self.skill.remove(self.skill[4])
+
+                            self.skill.append(Skill(self.future_skill[self.future_skill_number][1]))
+
+                            self.future_skill_number = (self.future_skill_number + 1) % 9
+
+                        if self.level == 30:
+                            self.max_turn = 3
+
+                        elif self.level == 50:
+                            self.max_turn = 4
+
+                        elif self.level == 80:
+                            self.max_turn = 5
+
+                        if self.level == 99:
+                            self.max_Bd = 999
+                            self.max_Md = 999
+                            self.skill.remove(self.skill[0])
+                            self.skill.append(Skill(100))
+
+                    elif self.pattern == RH:
                         self.max_Bd += 6
                         self.max_Md += 9
                         if self.level % 2 == 0:
@@ -212,7 +342,34 @@ class Player:
                             self.stat[MIND_DEFENCE] += 1
                             self.stat[AVOID_RATE] += 1
 
-                    elif self.pattern == 6:
+                        if self.level == self.future_skill[self.future_skill_number][0]:
+                            if len(self.skill) >= 5:
+                                for i in range(4):
+                                    self.skill[i] = self.skill[i + 1]
+
+                                self.skill.insert(4, Skill(self.future_skill[self.future_skill_number][1]))
+
+                            else:
+                                self.skill.append(Skill(self.future_skill[self.future_skill_number][1]))
+
+                            self.future_skill_number = (self.future_skill_number + 1) % 9
+
+                        if self.level == 30:
+                            self.max_turn = 3
+
+                        elif self.level == 50:
+                            self.max_turn = 4
+
+                        elif self.level == 80:
+                            self.max_turn = 5
+
+                        if self.level == 99:
+                            self.max_Bd = 999
+                            self.max_Md = 999
+                            self.skill.remove(self.skill[0])
+                            self.skill.append(Skill(100))
+
+                    elif self.pattern == BC:
                         self.max_Bd += 6
                         self.max_Md += 8
                         if self.level % 3 == 0:
@@ -227,6 +384,32 @@ class Player:
                             self.stat[MIND_ATTACK] += 1
                             self.stat[AVOID_RATE] += 1
                             self.stat[HIT_RATE] += 1
+
+                        if self.level == self.future_skill[self.future_skill_number][0]:
+                            if len(self.skill) >= 5:
+                                for i in range(4):
+                                    self.skill[i] = self.skill[i + 1]
+
+                                self.skill.remove(self.skill[4])
+
+                            self.skill.append(Skill(self.future_skill[self.future_skill_number][1]))
+
+                            self.future_skill_number = (self.future_skill_number + 1) % 9
+
+                        if self.level == 30:
+                            self.max_turn = 3
+
+                        elif self.level == 50:
+                            self.max_turn = 4
+
+                        elif self.level == 80:
+                            self.max_turn = 5
+
+                        if self.level == 99:
+                            self.max_Bd = 999
+                            self.max_Md = 999
+                            self.skill.remove(self.skill[0])
+                            self.skill.append(Skill(100))
 
     def draw_bar(self, sit):
         Bd_rate = self.Bd / self.max_Bd

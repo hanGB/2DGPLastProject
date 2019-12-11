@@ -406,6 +406,20 @@ class Skill:
                 self.sound = load_wav("resource/sound/triggerSound.wav")
                 self.sound.set_volume(55)
 
+        elif (self.number / 10) < 11:
+            self.image = load_image("resource/skill/per.png")
+            if (self.number % 10) == 0:
+                self.pattern = 8
+                self.turn = 1
+                self.damage = 7500
+                self.rate = 1000
+                self.Md = 750
+                self.ally_target = False
+                self.all_targets = False
+                self.animation = load_image("resource/animation/swordAni.png")
+                self.sound = load_wav("resource/sound/swordSound.wav")
+                self.sound.set_volume(75)
+
     def get_number(self):
         return self.number
 
