@@ -5,14 +5,16 @@ import map_state
 import initium_state
 from dialogue_component import Dialogue
 from room_data import Room
+import clear_end_state
 
-ALICE, LUCIFEL, LUCIFER = range(3)
+ALICE, LUCIFEL, LUCIFER, FIRST, CITY, LUCIFEL_TWO = range(6)
 
 name = "boss_state"
 boss = LUCIFEL
 
 dialogue = None
 battle_map = None
+last_boss = 0
 
 
 def enter():
@@ -36,11 +38,23 @@ def exit():
 
 
 def pause():
-    pass
+    global boss
+
+    if boss == LUCIFEL:
+        boss = LUCIFEL_TWO
 
 
 def resume():
-    pass
+    if boss == LUCIFER:
+        game_framework.change_state(clear_end_state)
+
+    else:
+        global dialogue
+
+        game_world.remove_object(dialogue)
+
+        dialogue = Dialogue(boss)
+        game_world.add_object(dialogue, 2)
 
 
 def handle_events():

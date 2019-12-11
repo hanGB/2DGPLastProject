@@ -3,8 +3,9 @@ import battle_state
 from pico2d import *
 import death_end_state
 import initium_state
+import boss_state
 
-ALICE, LUCIFEL, LUCIFER, FIRST, CITY = range(5)
+ALICE, LUCIFEL, LUCIFER, FIRST, CITY, LUCIFEL_TWO = range(6)
 SELCECTION, DEFAULT = range(2)
 SPACE, SHIFT = range(2)
 
@@ -35,18 +36,24 @@ class DeFaultState:
         else:
             if event == SPACE:
                 dialogue.now_dialogue += 1
-
-                if dialogue.dialogue_with == LUCIFEL:
-                    if dialogue.now_dialogue == 3:
-                        dialogue.now_dialogue += 1
-                        battle_state.boss_battle = LUCIFEL
-                        game_framework.push_state(battle_state)
-
                 if dialogue.now_dialogue >= len(dialogue.dialogue_image):
                     if dialogue.dialogue_with == FIRST:
                         initium_state.first_dialogue_played = True
-                    if dialogue.dialogue_with == CITY:
+
+                    elif dialogue.dialogue_with == CITY:
                         initium_state.city_dialogue_played = True
+
+                    elif dialogue.dialogue_with == LUCIFEL:
+                        battle_state.boss_battle = LUCIFEL
+                        game_framework.push_state(battle_state)
+
+                    elif dialogue.dialogue_with == LUCIFEL_TWO:
+                        boss_state.boss = LUCIFER
+                        game_framework.push_state(boss_state)
+
+                    elif dialogue.dialogue_with == LUCIFER:
+                        battle_state.boss_battle = LUCIFER
+                        game_framework.push_state(battle_state)
 
     @staticmethod
     def exit(dialogue, event):
@@ -82,11 +89,13 @@ class Dialogue:
         elif self.dialogue_with == LUCIFER:
             self.dialogue_image = [load_image("resource/dialogue/luciferDialogue1.png")]
 
+        elif self.dialogue_with == LUCIFEL_TWO:
+            self.dialogue_image = [load_image("resource/dialogue/lucifelDialogue3.png")]
+
         elif self.dialogue_with == LUCIFEL:
             self.dialogue_image = [load_image("resource/dialogue/lucifelDialogue1.png"),
                                    load_image("resource/dialogue/lucifelDialogue2.png"),
-                                   load_image("resource/dialogue/selfDialogue7.png"),
-                                   load_image("resource/dialogue/lucifelDialogue3.png")]
+                                   load_image("resource/dialogue/selfDialogue7.png")]
 
         elif self.dialogue_with == FIRST:
             self.dialogue_image = [load_image("resource/dialogue/selfDialogue1.png"),
