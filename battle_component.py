@@ -19,7 +19,7 @@ FRAMES_PER_SELECTING = 8
 
 W_KEY, A_KEY, S_KEY, D_KEY, F_KEY, X_KEY, C_KEY, TAB_KEY, SHIFT_KEY, SPACE_KEY, \
 UP_DOWN, DOWN_DOWN, UP_UP, DOWN_UP = range(14)
-
+ALICE, LUCIFEL, LUCIFER = range(3)
 
 key_event_table = {
     (SDL_KEYDOWN, SDLK_w): W_KEY,
@@ -313,12 +313,19 @@ class BattleUi:
     player_sign = None
     now_player_mark = None
     battle_explain = None
-    bgm = None
 
     def __init__(self):
-        if BattleUi.bgm is None:
-            BattleUi.bgm = load_music("resource/sound/battleBGM.mp3")
-            BattleUi.bgm.set_volume(20)
+
+        if battle_state.boss_battle == ALICE:
+            self.bgm = load_music("resource/sound/aliceBGM.mp3")
+        elif battle_state.boss_battle == LUCIFEL:
+            self.bgm = load_music("resource/sound/lucifelBGM.mp3")
+        elif battle_state.boss_battle == LUCIFER:
+            self.bgm = load_music("resource/sound/luciferBGM.mp3")
+        else:
+            self.bgm = load_music("resource/sound/battleBGM.mp3")
+
+        self.bgm.set_volume(20)
 
         if BattleUi.main_ui is None:
             BattleUi.main_ui = load_image("resource/interface/newUi.png")
@@ -371,7 +378,7 @@ class BattleUi:
         self.auto_play = False
         self.manual_play = False
 
-        BattleUi.bgm.repeat_play()
+        self.bgm.repeat_play()
 
         self.build_behavior_tree()
 
@@ -540,7 +547,7 @@ class BattleUi:
             self.selected_skill_data.draw_animation(self.skill_frame)
 
     def stop_bgm(self):
-        BattleUi.bgm.stop()
+        self.bgm.stop()
 
     def add_event(self, event):
         self.event_que.insert(0, event)

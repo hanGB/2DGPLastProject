@@ -3,10 +3,12 @@ import map_state
 import random
 import game_world
 import city_state
+from dialogue_component import Dialogue
 from enemy_data import Enemy
 from player_data import Player
 
 BS, RS, BD, RD, BH, RH, BC, RC, ZERO = range(9)
+ALICE, LUCIFEL, LUCIFER, FIRST, CITY = range(5)
 
 name = "initium_state"
 
@@ -15,7 +17,25 @@ Lucifel = None
 Lucifer = None
 Alice = None
 
+first_dialogue_played = False
+city_dialogue_played = False
+
+first_dialogue = None
+city_dialogue = None
+
+
 def enter():
+    global first_dialogue_played
+    global city_dialogue_played
+    global first_dialogue
+    global city_dialogue
+
+    first_dialogue_played = False
+    city_dialogue_played = False
+
+    first_dialogue = Dialogue(FIRST)
+    city_dialogue = Dialogue(CITY)
+
     global player
     data = [BS, RD, RH, BC]
     chosenPlayer = []
@@ -40,8 +60,8 @@ def enter():
     Lucifel = Enemy(12)
     Lucifer = Enemy(13)
 
-    #game_framework.push_state(map_state)
-    game_framework.push_state(city_state)
+    game_framework.push_state(map_state)
+    # game_framework.push_state(city_state)
 
 
 def exit():

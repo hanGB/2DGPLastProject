@@ -64,8 +64,6 @@ class Player:
         self.buff = [0, 0]
         self.Bd = self.max_Bd
         self.Md = self.max_Md
-        self.card_type = 0
-        self.card = status_data.Card(self.card_type)
         self.down_level = 0
         self.turn = self.max_turn
 
@@ -120,13 +118,12 @@ class Player:
 
     def __getstate__(self):
         state = {'pattern': self.pattern, 'max_Bd': self.max_Bd, 'max_Md': self.max_Md,
-                 'Bd': self.Bd, 'Md': self.Md, "max_turn": self.max_turn, 'level': self.level,
-                 'exp': self.exp, "stat": self.stat, "card_type": self.card_type, "skill": self.skill
-                 'attribute': self.attribute}
+                 'Bd': self.Bd, 'Md': self.Md, 'max_turn': self.max_turn, 'level': self.level,
+                 'exp': self.exp, 'stat': self.stat, 'attribute': self.attribute}
         return state
 
     def __setstate__(self, state):
-        self.__init__(state['pattern'], state['max_Bd'], state['max_Md'], state["stat"])
+        self.__init__(state['pattern'], state['max_Bd'], state['max_Md'], state['stat'])
         self.__dict__.update(state)
 
     def get_Bd(self):
@@ -206,7 +203,7 @@ class Player:
             self.item[type] = 9
 
     def give_exp(self, exp):
-        if self.level != 99:
+        if self.level < 99:
             if self.Bd > 0:
                 self.exp += exp
                 if self.exp > self.level * 30:
@@ -246,12 +243,6 @@ class Player:
                         elif self.level == 80:
                             self.max_turn = 5
 
-                        if self.level == 99:
-                            self.max_Bd = 999
-                            self.max_Md = 999
-                            self.skill.remove(self.skill[0])
-                            self.skill.append(Skill(100))
-
                     elif self.pattern == BS:
                         self.max_Bd += 9
                         self.max_Md += 5
@@ -288,12 +279,6 @@ class Player:
                         elif self.level == 80:
                             self.max_turn = 5
 
-                        if self.level == 99:
-                            self.max_Bd = 999
-                            self.max_Md = 999
-                            self.skill.remove(self.skill[0])
-                            self.skill.append(Skill(100))
-
                     elif self.pattern == RD:
                         self.max_Bd += 8
                         self.max_Md += 6
@@ -324,12 +309,6 @@ class Player:
 
                         elif self.level == 80:
                             self.max_turn = 5
-
-                        if self.level == 99:
-                            self.max_Bd = 999
-                            self.max_Md = 999
-                            self.skill.remove(self.skill[0])
-                            self.skill.append(Skill(100))
 
                     elif self.pattern == RH:
                         self.max_Bd += 6
@@ -362,12 +341,6 @@ class Player:
 
                         elif self.level == 80:
                             self.max_turn = 5
-
-                        if self.level == 99:
-                            self.max_Bd = 999
-                            self.max_Md = 999
-                            self.skill.remove(self.skill[0])
-                            self.skill.append(Skill(100))
 
                     elif self.pattern == BC:
                         self.max_Bd += 6
@@ -404,12 +377,15 @@ class Player:
 
                         elif self.level == 80:
                             self.max_turn = 5
-
-                        if self.level == 99:
-                            self.max_Bd = 999
-                            self.max_Md = 999
-                            self.skill.remove(self.skill[0])
-                            self.skill.append(Skill(100))
+        elif self.level == 99:
+            self.exp += exp
+            if self.exp > 50000:
+                self.level = 100
+                if self.level == 100:
+                    self.max_Bd = 999
+                    self.max_Md = 999
+                    self.skill.remove(self.skill[0])
+                    self.skill.append(Skill(100))
 
     def draw_bar(self, sit):
         Bd_rate = self.Bd / self.max_Bd

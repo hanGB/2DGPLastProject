@@ -2,6 +2,7 @@ import game_framework
 import battle_state
 from pico2d import *
 import death_end_state
+import initium_state
 
 ALICE, LUCIFEL, LUCIFER, FIRST, CITY = range(5)
 SELCECTION, DEFAULT = range(2)
@@ -42,7 +43,10 @@ class DeFaultState:
                         game_framework.push_state(battle_state)
 
                 if dialogue.now_dialogue >= len(dialogue.dialogue_image):
-                    pass
+                    if dialogue.dialogue_with == FIRST:
+                        initium_state.first_dialogue_played = True
+                    if dialogue.dialogue_with == CITY:
+                        initium_state.city_dialogue_played = True
 
     @staticmethod
     def exit(dialogue, event):

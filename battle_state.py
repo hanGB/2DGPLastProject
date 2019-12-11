@@ -15,7 +15,7 @@ player = None
 battle_enemy = None
 battle_ui = None
 battle_map = None
-now_turn = None
+now_turn = 0
 sword_trigger = None
 skill_processing = False
 boss_battle = -1
@@ -46,11 +46,9 @@ def enter():
 
 
 def exit():
-    global now_turn
     global sword_trigger
 
     del sword_trigger
-    del now_turn
 
     game_world.clear()
 

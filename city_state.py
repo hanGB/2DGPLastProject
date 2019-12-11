@@ -1,6 +1,7 @@
 from pico2d import *
 import game_framework
 import game_world
+import initium_state
 from background import Background
 from location_bar import LocationBar
 from dungeon_location import DungeonLocation
@@ -81,23 +82,29 @@ def handle_events():
         if event.type == SDL_QUIT:
             game_framework.quit()
         else:
-            location_bar.handle_event(event)
+            if initium_state.city_dialogue_played:
+                location_bar.handle_events(event)
+            else:
+                initium_state.city_dialogue.handle_events(event)
 
 
 def update():
     global destination
     colliding = False
 
-    for dl in dungeon_location:
-        if collide(dl, location_bar):
-            location_bar.set_colliding(True)
-            colliding = True
-            destination = dl.get_type()
-            break
+    if initium_state.city_dialogue_played:
+        for dl in dungeon_location:
+            if collide(dl, location_bar):
+                location_bar.set_colliding(True)
+                colliding = True
+                destination = dl.get_type()
+                break
 
-    if not colliding:
-        location_bar.set_colliding(False)
-        destination = -1
+        if not colliding:
+            location_bar.set_colliding(False)
+            destination = -1
+    else:
+        initium_state.city_dialogue.update()
 
     for game_object in game_world.all_objects():
         game_object.update()
@@ -107,5 +114,7 @@ def draw():
     clear_canvas()
     for game_object in game_world.all_objects():
         game_object.draw()
-    key_information.draw(1150, 300)
+        key_information.draw(1150, 300)
+    else:
+        initium_state.city_dialogue.draw()
     update_canvas()

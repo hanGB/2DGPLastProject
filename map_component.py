@@ -81,7 +81,7 @@ class NormalMap:
                 elif map.map_event[map.location_y][map.location_x][0] == BOSS:
                     if map.type == TOWER:
                         boss_state.boss = ALICE
-                        map.map_event[map.location_y][map.location_x][0] = NON
+                        map.map_event[map.location_y][map.location_x] = (NON, now_direction)
                     elif map.type == PYRAMID:
                         boss_state.boss = LUCIFEL
                     game_framework.push_state(boss_state)
@@ -91,7 +91,7 @@ class NormalMap:
             if map.map_event[map.location_y][map.location_x][0] == WAY_OUT:
                 if now_direction == map.map_event[map.location_y][map.location_x][1]:
                     map.rain_sound.set_volume(0)
-                    city_state.dungeon_number = 0
+                    city_state.dungeon_number = map.type
                     map_state.clear_data[map.type] = True
                     game_framework.change_state(city_state)
 
@@ -530,7 +530,7 @@ class Map:
             self.bgm = load_music("resource/sound/towerDungeonBGM.mp3")
             self.bgm.set_volume(30)
 
-            self.rooms = [[room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(1, 0, 0, 0),
+            self.rooms = [[room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(1, 0, 1, 0),
                            room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0)],
 
                           [room_data.Room(0, 0, 0, 0), room_data.Room(0, 0, 0, 0), room_data.Room(1, 0, 1, 0),
@@ -561,7 +561,7 @@ class Map:
                 self.location_y = 7
                 self.location_x = 2
 
-            self.map_event = [[(NON, 0), (NON, 0), (NON, 0),
+            self.map_event = [[(NON, 0), (NON, 0), (WAY_OUT, 4),
                                (NON, 0), (NON, 0)],
 
                               [(NON, 0), (NON, 0), (NON, 0),

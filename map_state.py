@@ -41,17 +41,23 @@ def handle_events():
     events = get_events()
 
     for event in events:
-        if event.type == SDL_QUIT:
-            game_framework.quit()
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_KP_PLUS:
-            for player in initium_state.player:
-                player.give_exp(10000)
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_p:
-            game_world.save()
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_l:
-            initium_state.load_saved_world()
+        if initium_state.first_dialogue_played:
+            if event.type == SDL_QUIT:
+                game_framework.quit()
+            elif event.type == SDL_KEYDOWN and event.key == SDLK_KP_PLUS:
+                for player in initium_state.player:
+                    player.give_exp(10000)
+            elif event.type == SDL_KEYDOWN and event.key == SDLK_p:
+                game_world.save()
+            elif event.type == SDL_KEYDOWN and event.key == SDLK_l:
+                initium_state.load_saved_world()
+            else:
+                map.handle_events(event)
         else:
-            map.handle_events(event)
+            if event.type == SDL_QUIT:
+                game_framework.quit()
+            else:
+                initium_state.first_dialogue.handle_events(event)
 
 
 def update():
@@ -59,10 +65,16 @@ def update():
         map.start_bgm()
         map.set_sound_playing_true()
 
-    map.update()
+    if initium_state.first_dialogue_played:
+        map.update()
+    else:
+        initium_state.first_dialogue.update()
 
 
 def draw():
     clear_canvas()
     map.draw()
+    if not initium_state.first_dialogue_played:
+        initium_state.first_dialogue.draw()
+
     update_canvas()
