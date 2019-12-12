@@ -50,6 +50,7 @@ class MovingState:
 
         if event == SPACE:
             map_state.destination = city_state.destination
+            city_state.background.stop_music()
             game_framework.change_state(map_state)
 
 

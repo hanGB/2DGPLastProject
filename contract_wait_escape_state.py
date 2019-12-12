@@ -85,6 +85,11 @@ def handle_events():
 
             elif cwe_ui.get_key() == 0:
                 if battle_state.boss_battle == -1:
+                    for player in battle_state.player.get_all_players():
+                        player_buff = player.get_buff()
+                        player_buff[0] = 0
+                        player_buff[1] = 0
+                        player.set_buff(player_buff)
                     battle_state.battle_ui.set_is_main(True)
                     battle_state.battle_ui.set_escape(True)
                     battle_state.battle_ui.stop_bgm()

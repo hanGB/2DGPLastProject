@@ -33,11 +33,11 @@ class BattleEndState:
     @staticmethod
     def enter(battle_enemy, event):
         if event == VICTORY:
-            battle_enemy.is_victory = True
+            battle_enemy.is_player_victory = True
             battle_enemy.waiting_time = 0
 
         elif event == DEFEAT:
-            battle_enemy.is_victory = False
+            battle_enemy.is_player_victory = False
             battle_enemy.waiting_time = 0
 
     @staticmethod
@@ -48,8 +48,12 @@ class BattleEndState:
     def do(battle_enemy):
         battle_enemy.waiting_time += game_framework.frame_time * FRAMES_PER_SELECTING * SELECTING_PER_TIME
         if battle_enemy.waiting_time > 3:
-            if battle_enemy.is_victory:
+            if battle_enemy.is_player_victory:
                 for player in battle_state.player.get_all_players():
+                    player_buff = player.get_buff()
+                    player_buff[0] = 0
+                    player_buff[1] = 0
+                    player.set_buff(player_buff)
                     player.give_exp(battle_enemy.exp)
                 battle_state.battle_ui.stop_bgm()
                 battle_state.boss_battle = -1
@@ -61,7 +65,7 @@ class BattleEndState:
 
     @staticmethod
     def draw(battle_enemy):
-        if battle_enemy.is_victory:
+        if battle_enemy.is_player_victory:
             battle_enemy.battle_result_image.clip_draw(0, 150, 800, 150, 635, 500)
         else:
             battle_enemy.battle_result_image.clip_draw(0, 0, 800, 150, 665, 500)
@@ -70,7 +74,26 @@ class BattleEndState:
 class EnemyAttackState:
     @staticmethod
     def enter(battle_enemy, event):
-        battle_enemy.auto_play = True
+
+        enemy = battle_enemy.enemy[battle_enemy.enemy_now]
+        down_level = enemy.get_down_level()
+
+        if not down_level > 0:
+            if down_level == 3:
+                if enemy.get_turn() > 4:
+                    enemy.set_turn(enemy.get_turn() - 4)
+                else:
+                    enemy.set_turn(0)
+                    battle_enemy.auto_play = False
+            else:
+                if enemy.get_turn() > down_level:
+                    enemy.set_turn(enemy.get_turn() - down_level)
+                else:
+                    enemy.set_turn(0)
+                    battle_enemy.auto_play = False
+            enemy.set_down_level(0)
+            if enemy.get_turn() != 0:
+                battle_enemy.auto_play = True
 
     @staticmethod
     def exit(battle_enemy, event):
@@ -90,11 +113,13 @@ class EnemyAttackState:
                         enemy.set_turn(enemy.get_turn() - 4)
                     else:
                         enemy.set_turn(0)
+                        battle_enemy.auto_play = False
                 else:
                     if enemy.get_turn() > down_level:
                         enemy.set_turn(enemy.get_turn() - down_level)
                     else:
                         enemy.set_turn(0)
+                        battle_enemy.auto_play = False
                 enemy.set_down_level(0)
 
             check_enemy = battle_enemy.enemy_now
@@ -269,7 +294,7 @@ class BattleEnemy:
         self.cur_state = EnemySelectState
         self.cur_state.enter(self, None)
         self.enemy_now = 0
-        self.is_victory = False
+        self.is_player_victory = False
         self.waiting_time = 0
         self.exp = 0
 

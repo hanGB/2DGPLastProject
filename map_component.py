@@ -298,10 +298,11 @@ class Map:
             if map_state.clear_data[type]:
                 self.location_y = 6
                 self.location_x = 1
-                self.direction = 4
+                self.rooms[self.location_y][self.location_x].set_map_direction(4)
             else:
                 self.location_y = 0
                 self.location_x = 4
+                self.rooms[self.location_y][self.location_x].set_map_direction(0)
 
             self.map_event = [[(RECOVERY, 4), (NON, 0), (NON, 0),
                                (NON, 0), (NON, 0), (NON, 0),
@@ -383,9 +384,11 @@ class Map:
             if map_state.clear_data[type]:
                 self.location_y = 0
                 self.location_x = 8
+                self.rooms[self.location_y][self.location_x].set_map_direction(0)
             else:
                 self.location_y = 0
                 self.location_x = 8
+                self.rooms[self.location_y][self.location_x].set_map_direction(0)
 
             self.map_event = [[(NON, 0), (NON, 0), (RECOVERY, 0),
                                (NON, 0), (NON, 0), (CLOSED_BOX, 0),
@@ -485,9 +488,11 @@ class Map:
             if map_state.clear_data[type]:
                 self.location_y = 0
                 self.location_x = 0
+                self.rooms[self.location_y][self.location_x].set_map_direction(2)
             else:
                 self.location_y = 0
                 self.location_x = 0
+                self.rooms[self.location_y][self.location_x].set_map_direction(2)
 
             self.map_event = [[(WAY_OUT, 6), (NON, 0), (NON, 0),
                                (NON, 0), (NON, 0), (NON, 0),
@@ -556,9 +561,11 @@ class Map:
             if map_state.clear_data[type]:
                 self.location_y = 0
                 self.location_x = 2
+                self.rooms[self.location_y][self.location_x].set_map_direction(0)
             else:
                 self.location_y = 0
                 self.location_x = 2
+                self.rooms[self.location_y][self.location_x].set_map_direction(0)
 
             self.map_event = [[(NON, 0), (NON, 0), (WAY_OUT, 4),
                                (NON, 0), (NON, 0)],

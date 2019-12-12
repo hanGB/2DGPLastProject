@@ -98,13 +98,6 @@ class MainState:
 
     @staticmethod
     def do(battle_ui):
-        down_level = battle_state.player.get_player(battle_ui.get_player_now()).get_down_level()
-        if down_level != 0:
-            turn = battle_state.player.get_player(battle_ui.player_now).get_turn() - down_level
-            if turn < 0:
-                turn = 0
-            battle_state.player.get_player(battle_ui.player_now).set_turn(turn)
-
         if battle_state.now_turn == 0:
             player = battle_state.player.get_player(battle_ui.player_now)
             down_level = player.get_down_level()

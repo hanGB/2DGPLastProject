@@ -51,9 +51,12 @@ def exit():
     del sword_trigger
 
     global battle_ui
+    global now_turn
+    global skill_processing
 
     game_world.remove_object(battle_ui)
-
+    now_turn = 0
+    skill_processing = False
     game_world.clear()
 
 
